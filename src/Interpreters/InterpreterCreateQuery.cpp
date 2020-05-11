@@ -588,7 +588,7 @@ bool InterpreterCreateQuery::doCreateTable(ASTCreateQuery & create,
     if (need_add_to_database)
     {
         database = DatabaseCatalog::instance().getDatabase(create.database);
-        if (database->getEngineName() == "Atomic" || database->getEngineName() == "Replicated")
+        if (database->getEngineName() == "Atomic") // || database->getEngineName() == "Replicated")
         {
             /// TODO implement ATTACH FROM 'path/to/data': generate UUID and move table data to store/
             if (create.attach && create.uuid == UUIDHelpers::Nil)
@@ -663,7 +663,7 @@ bool InterpreterCreateQuery::doCreateTable(ASTCreateQuery & create,
     }
 
     
-    if (database->getEngineName() == "Replicated") {
+    if (database->getEngineName() == "Replicated" && !context.from_replicated_log) {
         // propose
         // try to 
         database->propose(query_ptr);
