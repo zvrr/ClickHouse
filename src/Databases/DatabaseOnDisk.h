@@ -30,7 +30,7 @@ String getObjectDefinitionFromCreateQuery(const ASTPtr & query);
 class DatabaseOnDisk : public DatabaseWithOwnTablesBase
 {
 public:
-    DatabaseOnDisk(const String & name, const String & metadata_path_, const String & data_path_, const String & logger, const Context & context);
+    DatabaseOnDisk(const String & name, const String & metadata_path_, const String & data_path_, const String & logger, Context & context);
 
     void createTable(
         const Context & context,
@@ -84,7 +84,7 @@ protected:
 
     const String metadata_path;
     const String data_path;
-    const Context & global_context;
+    Context & global_context;
 };
 
 }

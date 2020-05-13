@@ -1,3 +1,6 @@
+#include <Databases/IDatabase.h>
+#include <Databases/DatabaseReplicated.h>
+
 #include <Storages/StorageFactory.h>
 #include <Storages/StorageMergeTree.h>
 #include <Storages/StorageReplicatedMergeTree.h>
@@ -363,9 +366,17 @@ static StoragePtr create(const StorageFactory::Arguments & args)
 
     String name_part = args.engine_name.substr(0, args.engine_name.size() - strlen("MergeTree"));
 
-    bool replicated = startsWith(name_part, "Replicated");
-    if (replicated)
+    bool replicatedStorage = startsWith(name_part, "Replicated");
+    if (replicatedStorage)
         name_part = name_part.substr(strlen("Replicated"));
+
+    String database_name = args.query.database;
+    auto database = DatabaseCatalog::instance().getDatabase(database_name);
+    bool replicatedDatabase = false;
+
+    if (database->getEngineName() == "Replicated") {
+        replicatedDatabase = true;
+    }
 
     MergeTreeData::MergingParams merging_params;
     merging_params.mode = MergeTreeData::MergingParams::Ordinary;
@@ -408,7 +419,7 @@ static StoragePtr create(const StorageFactory::Arguments & args)
         needed_params += "]";
     };
 
-    if (replicated)
+    if (replicatedStorage && !replicatedDatabase)
     {
         add_mandatory_param("path in ZooKeeper");
         add_mandatory_param("replica name");
@@ -478,7 +489,7 @@ static StoragePtr create(const StorageFactory::Arguments & args)
     String zookeeper_path;
     String replica_name;
 
-    if (replicated)
+    if (replicatedStorage && !replicatedDatabase)
     {
         const auto * ast = engine_args[arg_num]->as<ASTLiteral>();
         if (ast && ast->value.getType() == Field::Types::String)
@@ -502,6 +513,12 @@ static StoragePtr create(const StorageFactory::Arguments & args)
                 "No replica name in config" + getMergeTreeVerboseHelp(is_extended_storage_def),
                 ErrorCodes::NO_REPLICA_NAME_GIVEN);
         ++arg_num;
+    }
+
+    if (replicatedStorage && replicatedDatabase) {
+        auto * database_replicated = typeid_cast<DatabaseReplicated *>(database.get());
+        zookeeper_path = database_replicated->zookeeper_path + "/tables/" + toString(args.query.uuid);
+        replica_name   = database_replicated->replica_name;
     }
 
     if (merging_params.mode == MergeTreeData::MergingParams::Collapsing)
@@ -658,7 +675,7 @@ static StoragePtr create(const StorageFactory::Arguments & args)
     metadata.sample_by_ast = sample_by_ast;
     metadata.settings_ast = settings_ast;
 
-    if (replicated)
+    if (replicatedStorage)
         return StorageReplicatedMergeTree::create(
             zookeeper_path, replica_name, args.attach, args.table_id, args.relative_data_path,
             metadata, args.context, date_column_name,  merging_params, std::move(storage_settings),
