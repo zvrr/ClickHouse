@@ -186,7 +186,8 @@ public:
     void removeChildren(const std::string & path);
 
     /// Remove all children nodes (non recursive).
-    /// If there're no children, this method doesn't throw an exception
+    /// If there're no children for the given path,
+    /// this method does not throw an exception.
     void tryRemoveChildren(const std::string & path);
 
     /// Wait for the node to disappear or return immediately if it doesn't exist.

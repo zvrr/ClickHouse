@@ -109,7 +109,6 @@ BlockIO InterpreterDropQuery::executeToTable(
 
             auto table_lock = table->lockExclusively(context.getCurrentQueryId(), context.getSettingsRef().lock_acquire_timeout);
             /// Drop table data, don't touch metadata
-            // should we add it here as well? do we support truncate
             if (database->getEngineName() == "Replicated" && !context.from_replicated_log) {
                 database->propose(query_ptr);
             }
