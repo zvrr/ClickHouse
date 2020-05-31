@@ -1,5 +1,7 @@
 include(ExternalProject)
 
+set (CMAKE_CXX_STANDARD 17)
+
 # === thrift
 
 set(LIBRARY_DIR ${ClickHouse_SOURCE_DIR}/contrib/thrift/lib/cpp)
@@ -81,7 +83,7 @@ add_custom_command(OUTPUT orc_proto.pb.h orc_proto.pb.cc
 set(FLATBUFFERS_SRC_DIR ${ClickHouse_SOURCE_DIR}/contrib/flatbuffers)
 set(FLATBUFFERS_BINARY_DIR ${ClickHouse_BINARY_DIR}/contrib/flatbuffers)
 set(FLATBUFFERS_INCLUDE_DIR ${FLATBUFFERS_SRC_DIR}/include)
-set(FLATBUFFERS_COMPILER "${FLATBUFFERS_BINARY_DIR}/flatc")
+set(FLATBUFFERS_COMPILER "$<TARGET_FILE:flatc>")
 
 # set flatbuffers CMake options
 if (${USE_STATIC_LIBRARIES})
@@ -346,6 +348,7 @@ if (ARROW_WITH_ZLIB)
 endif ()
 if (ARROW_WITH_ZSTD)
     target_link_libraries(${ARROW_LIBRARY} PRIVATE ${ZSTD_LIBRARY})
+    target_include_directories(${ARROW_LIBRARY} SYSTEM BEFORE PRIVATE ${ZLIB_INCLUDE_DIR})
 endif ()
 
 target_include_directories(${ARROW_LIBRARY} PRIVATE SYSTEM ${ORC_INCLUDE_DIR})

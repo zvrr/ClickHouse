@@ -1,14 +1,37 @@
 # Third-party libraries may have substandard code.
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -w")
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++1z")
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -w")
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++1z")
+# Put all targets defined here and in added subfolders under "contrib/" folder in GUI-based IDEs by default.
+# Some of third-party projects may override CMAKE_FOLDER or FOLDER property of their targets, so they will
+# appear not in "contrib/" as originally planned here.
+get_filename_component (_current_dir_name "${CMAKE_CURRENT_LIST_DIR}" NAME)
+if (CMAKE_FOLDER)
+    set (CMAKE_FOLDER "${CMAKE_FOLDER}/${_current_dir_name}")
+else ()
+    set (CMAKE_FOLDER "${_current_dir_name}")
 endif ()
+unset (_current_dir_name)
+
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -w")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w")
 
 set_property(DIRECTORY PROPERTY EXCLUDE_FROM_ALL 1)
+
+add_subdirectory (cctz-cmake)
+add_subdirectory (consistent-hashing-sumbur)
+add_subdirectory (consistent-hashing)
+add_subdirectory (croaring)
+add_subdirectory (FastMemcpy)
+add_subdirectory (jemalloc-cmake)
+add_subdirectory (libcpuid-cmake)
+add_subdirectory (murmurhash)
+add_subdirectory (replxx-cmake)
+add_subdirectory (ryu-cmake)
+add_subdirectory (unixodbc-cmake)
+
+add_subdirectory (poco-cmake)
+
+
+# TODO: refactor the contrib libraries below this comment.
 
 if (USE_INTERNAL_BOOST_LIBRARY)
     add_subdirectory (boost-cmake)
@@ -44,15 +67,11 @@ if (USE_INTERNAL_METROHASH_LIBRARY)
     add_subdirectory (libmetrohash)
 endif ()
 
-add_subdirectory (murmurhash)
-add_subdirectory (croaring)
-
 if (USE_INTERNAL_BTRIE_LIBRARY)
     add_subdirectory (libbtrie)
 endif ()
 
 if (USE_INTERNAL_ZLIB_LIBRARY)
-    unset (BUILD_SHARED_LIBS CACHE)
     set (ZLIB_ENABLE_TESTS 0 CACHE INTERNAL "")
     set (SKIP_INSTALL_ALL 1 CACHE INTERNAL "")
     set (ZLIB_COMPAT 1 CACHE INTERNAL "") # also enables WITH_GZFILEOP
@@ -68,23 +87,15 @@ if (USE_INTERNAL_ZLIB_LIBRARY)
     add_subdirectory (${INTERNAL_ZLIB_NAME})
     # We should use same defines when including zlib.h as used when zlib compiled
     target_compile_definitions (zlib PUBLIC ZLIB_COMPAT WITH_GZFILEOP)
-    target_compile_definitions (zlibstatic PUBLIC ZLIB_COMPAT WITH_GZFILEOP)
-    if (ARCH_AMD64 OR ARCH_AARCH64)
-       target_compile_definitions (zlib PUBLIC X86_64 UNALIGNED_OK)
-       target_compile_definitions (zlibstatic PUBLIC X86_64 UNALIGNED_OK)
+    if (TARGET zlibstatic)
+        target_compile_definitions (zlibstatic PUBLIC ZLIB_COMPAT WITH_GZFILEOP)
     endif ()
-endif ()
-
-if (USE_INTERNAL_CCTZ_LIBRARY)
-    add_subdirectory (cctz-cmake)
-endif ()
-
-if (ENABLE_JEMALLOC AND USE_INTERNAL_JEMALLOC_LIBRARY)
-    add_subdirectory (jemalloc-cmake)
-endif ()
-
-if (USE_INTERNAL_CPUID_LIBRARY)
-    add_subdirectory (libcpuid)
+    if (ARCH_AMD64 OR ARCH_AARCH64)
+        target_compile_definitions (zlib PUBLIC X86_64 UNALIGNED_OK)
+        if (TARGET zlibstatic)
+            target_compile_definitions (zlibstatic PUBLIC X86_64 UNALIGNED_OK)
+        endif ()
+    endif ()
 endif ()
 
 if (USE_INTERNAL_H3_LIBRARY)
@@ -94,10 +105,12 @@ endif ()
 if (USE_INTERNAL_SSL_LIBRARY)
     add_subdirectory (openssl-cmake)
 
-    # This is for Poco library
-    set (POCO_SKIP_OPENSSL_FIND 1)
     add_library(OpenSSL::Crypto ALIAS ${OPENSSL_CRYPTO_LIBRARY})
     add_library(OpenSSL::SSL ALIAS ${OPENSSL_SSL_LIBRARY})
+endif ()
+
+if (ENABLE_LDAP AND USE_INTERNAL_LDAP_LIBRARY)
+    add_subdirectory (openldap-cmake)
 endif ()
 
 function(mysql_support)
@@ -114,7 +127,7 @@ function(mysql_support)
     endif()
     if (USE_INTERNAL_ZLIB_LIBRARY)
         set(ZLIB_FOUND ON)
-        set(ZLIB_LIBRARY zlibstatic)
+        set(ZLIB_LIBRARY ${ZLIB_LIBRARIES})
         set(WITH_EXTERNAL_ZLIB ON)
     endif()
     add_subdirectory (mariadb-connector-c)
@@ -135,14 +148,20 @@ if (USE_RDKAFKA)
     add_subdirectory (cppkafka-cmake)
 endif()
 
-if (ENABLE_ODBC AND USE_INTERNAL_ODBC_LIBRARY)
-    add_subdirectory (unixodbc-cmake)
-    add_library(ODBC::ODBC ALIAS ${ODBC_LIBRARIES})
-endif ()
-
 if (ENABLE_ICU AND USE_INTERNAL_ICU_LIBRARY)
     add_subdirectory (icu-cmake)
 endif ()
+
+if(USE_INTERNAL_SNAPPY_LIBRARY)
+    set(SNAPPY_BUILD_TESTS 0 CACHE INTERNAL "")
+
+    add_subdirectory(snappy)
+
+    set (SNAPPY_INCLUDE_DIR "${ClickHouse_SOURCE_DIR}/contrib/snappy")
+    if(SANITIZE STREQUAL "undefined")
+        target_compile_options(${SNAPPY_LIBRARY} PRIVATE -fno-sanitize=undefined)
+    endif()
+endif()
 
 if (USE_INTERNAL_PARQUET_LIBRARY)
 if (USE_INTERNAL_PARQUET_LIBRARY_NATIVE_CMAKE)
@@ -167,40 +186,29 @@ if (USE_INTERNAL_PARQUET_LIBRARY_NATIVE_CMAKE)
         set (PARQUET_ARROW_LINKAGE "static" CACHE INTERNAL "")
         set (ARROW_TEST_LINKAGE "static" CACHE INTERNAL "")
         set (ARROW_BUILD_STATIC ${MAKE_STATIC_LIBRARIES} CACHE INTERNAL "")
-    else()
+    else ()
         set (PARQUET_ARROW_LINKAGE "shared" CACHE INTERNAL "")
         set (ARROW_TEST_LINKAGE "shared" CACHE INTERNAL "")
-    endif()
+    endif ()
 
-    if(CMAKE_BUILD_TYPE STREQUAL "RELWITHDEBINFO")
-        set(_save_build_type ${CMAKE_BUILD_TYPE})
-        set(CMAKE_BUILD_TYPE RELEASE)
-    endif()
+    if (CMAKE_BUILD_TYPE_UC STREQUAL "RELWITHDEBINFO")
+        set (_save_build_type ${CMAKE_BUILD_TYPE})
+        set (CMAKE_BUILD_TYPE Release)
+        string (TOUPPER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE_UC)
+    endif ()
 
     # Because Arrow uses CMAKE_SOURCE_DIR as a project path
     # Hopefully will be fixed in https://github.com/apache/arrow/pull/2676
     set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${ClickHouse_SOURCE_DIR}/contrib/arrow/cpp/cmake_modules")
     add_subdirectory (arrow/cpp)
 
-    if(_save_build_type)
-        set(CMAKE_BUILD_TYPE ${_save_build_type})
-    endif()
+    if (_save_build_type)
+        set (CMAKE_BUILD_TYPE ${_save_build_type})
+        unset (_save_build_type)
+        string (TOUPPER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE_UC)
+    endif ()
 
 else()
-    if(USE_INTERNAL_SNAPPY_LIBRARY)
-        set(SNAPPY_BUILD_TESTS 0 CACHE INTERNAL "")
-        if (NOT MAKE_STATIC_LIBRARIES)
-            set(BUILD_SHARED_LIBS 1) # TODO: set at root dir
-        endif()
-
-        add_subdirectory(snappy)
-
-        set (SNAPPY_INCLUDE_DIR "${ClickHouse_SOURCE_DIR}/contrib/snappy")
-        if(SANITIZE STREQUAL "undefined")
-            target_compile_options(${SNAPPY_LIBRARY} PRIVATE -fno-sanitize=undefined)
-        endif()
-    endif()
-
     add_subdirectory(arrow-cmake)
 
     # The library is large - avoid bloat.
@@ -210,28 +218,9 @@ else()
 endif()
 endif()
 
-if (USE_INTERNAL_POCO_LIBRARY)
-    set (POCO_VERBOSE_MESSAGES 0 CACHE INTERNAL "")
-    set (save_CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
-    set (save_CMAKE_C_FLAGS ${CMAKE_C_FLAGS})
-    set (_save ${ENABLE_TESTS})
-    set (ENABLE_TESTS 0)
-    set (POCO_ENABLE_TESTS 0)
-    set (CMAKE_DISABLE_FIND_PACKAGE_ZLIB 1)
-    if (MSVC OR NOT USE_POCO_DATAODBC)
-        set (ENABLE_DATA_ODBC 0 CACHE INTERNAL "") # TODO (build fail)
-    endif ()
-    add_subdirectory (poco)
-    unset (CMAKE_DISABLE_FIND_PACKAGE_ZLIB)
-    set (ENABLE_TESTS ${_save})
-    set (CMAKE_CXX_FLAGS ${save_CMAKE_CXX_FLAGS})
-    set (CMAKE_C_FLAGS ${save_CMAKE_C_FLAGS})
-
-    if (OPENSSL_FOUND AND TARGET Crypto AND (NOT DEFINED ENABLE_POCO_NETSSL OR ENABLE_POCO_NETSSL))
-        # Bug in poco https://github.com/pocoproject/poco/pull/2100 found on macos
-        target_include_directories(Crypto SYSTEM PUBLIC ${OPENSSL_INCLUDE_DIR})
-    endif ()
-endif ()
+if (USE_INTERNAL_AVRO_LIBRARY)
+    add_subdirectory(avro-cmake)
+endif()
 
 if(USE_INTERNAL_GTEST_LIBRARY)
     # Google Test from sources
@@ -253,6 +242,7 @@ if (USE_EMBEDDED_COMPILER AND USE_INTERNAL_LLVM_LIBRARY)
     set (LLVM_ENABLE_PIC 0 CACHE INTERNAL "")
     set (LLVM_TARGETS_TO_BUILD "X86;AArch64" CACHE STRING "")
     add_subdirectory (llvm/llvm)
+    target_include_directories(LLVMSupport SYSTEM BEFORE PRIVATE ${ZLIB_INCLUDE_DIR})
 endif ()
 
 if (USE_INTERNAL_LIBGSASL_LIBRARY)
@@ -269,18 +259,15 @@ if (USE_INTERNAL_BROTLI_LIBRARY)
 endif ()
 
 if (USE_INTERNAL_PROTOBUF_LIBRARY)
-    if (MAKE_STATIC_LIBRARIES)
-        set(protobuf_BUILD_SHARED_LIBS OFF CACHE INTERNAL "" FORCE)
-    else ()
-        set(protobuf_BUILD_SHARED_LIBS ON CACHE INTERNAL "" FORCE)
-    endif ()
-    set(protobuf_WITH_ZLIB 0 CACHE INTERNAL "" FORCE) # actually will use zlib, but skip find
-    set(protobuf_BUILD_TESTS OFF CACHE INTERNAL "" FORCE)
-    add_subdirectory(protobuf/cmake)
+    add_subdirectory(protobuf-cmake)
 endif ()
 
 if (USE_INTERNAL_HDFS3_LIBRARY)
     add_subdirectory(libhdfs3-cmake)
+endif ()
+
+if (USE_INTERNAL_GRPC_LIBRARY)
+    add_subdirectory(grpc-cmake)
 endif ()
 
 if (USE_INTERNAL_AWS_S3_LIBRARY)
@@ -300,7 +287,7 @@ if (USE_INTERNAL_AWS_S3_LIBRARY)
     # The library is large - avoid bloat.
     target_compile_options (aws_s3 PRIVATE -g0)
     target_compile_options (aws_s3_checksums PRIVATE -g0)
-    target_compile_options (libcurl PRIVATE -g0)
+    target_compile_options (curl PRIVATE -g0)
 endif ()
 
 if (USE_BASE64)
@@ -308,12 +295,13 @@ if (USE_BASE64)
 endif()
 
 if (USE_INTERNAL_HYPERSCAN_LIBRARY)
-    add_subdirectory (hyperscan)
-
     # The library is large - avoid bloat.
     if (USE_STATIC_LIBRARIES)
+        add_subdirectory (hyperscan)
         target_compile_options (hs PRIVATE -g0)
     else ()
+        set(BUILD_SHARED_LIBS 1 CACHE INTERNAL "")
+        add_subdirectory (hyperscan)
         target_compile_options (hs_shared PRIVATE -g0)
     endif ()
 endif()
@@ -322,10 +310,8 @@ if (USE_SIMDJSON)
     add_subdirectory (simdjson-cmake)
 endif()
 
-if (USE_MIMALLOC)
-    add_subdirectory (mimalloc)
-endif()
-
 if (USE_FASTOPS)
     add_subdirectory (fastops-cmake)
 endif()
+
+add_subdirectory (fmtlib-cmake)
