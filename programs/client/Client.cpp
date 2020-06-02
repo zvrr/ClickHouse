@@ -10,6 +10,8 @@
 #   include <common/LineReader.h>
 #endif
 
+#include <pcg_random.hpp>
+#include <cstdlib>
 #include <stdlib.h>
 #include <fcntl.h>
 #include <signal.h>
@@ -28,6 +30,7 @@
 #include <Poco/Util/Application.h>
 #include <common/find_symbols.h>
 #include <common/LineReader.h>
+#include <Common/assert_cast.h>
 #include <Common/ClickHouseRevision.h>
 #include <Common/Stopwatch.h>
 #include <Common/Exception.h>
@@ -54,6 +57,11 @@
 #include <DataStreams/AsynchronousBlockInputStream.h>
 #include <DataStreams/AddingDefaultsBlockInputStream.h>
 #include <DataStreams/InternalTextLogsRowOutputStream.h>
+#include <Parsers/ASTExpressionList.h>
+#include <Parsers/ASTFunction.h>
+#include <Parsers/ASTSelectQuery.h>
+#include <Parsers/ASTSubquery.h>
+#include <Parsers/ASTTablesInSelectQuery.h>
 #include <Parsers/ParserQuery.h>
 #include <Parsers/ASTSetQuery.h>
 #include <Parsers/ASTUseQuery.h>
@@ -691,9 +699,9 @@ private:
             while (begin < end)
             {
                 const char * pos = begin;
-                ASTPtr ast = parseQuery(pos, end, true);
+                ASTPtr orig_ast = parseQuery(pos, end, true);
 
-                if (!ast)
+                if (!orig_ast)
                 {
                     if (ignore_error)
                     {
@@ -708,7 +716,7 @@ private:
                     return true;
                 }
 
-                auto * insert = ast->as<ASTInsertQuery>();
+                auto * insert = orig_ast->as<ASTInsertQuery>();
 
                 if (insert && insert->data)
                 {
@@ -726,27 +734,110 @@ private:
                 expected_client_error = test_hint.clientError();
                 expected_server_error = test_hint.serverError();
 
-                try
+                fprintf(stderr, "1\n");
+                bool got_error_from_psq = false;
+                ASTPtr fuzz_base = orig_ast;
+                for (int fuzz_step = 0; fuzz_step < 100; fuzz_step++)
                 {
-                    auto ast_to_process = ast;
-                    if (insert && insert->data)
-                        ast_to_process = nullptr;
+                    ASTPtr ast_to_process;
+                    fprintf(stderr, "fuzz step %d\n", fuzz_step);
+                    try
+                    {
+                        if (insert && insert->data)
+                        {
+                            ast_to_process = nullptr;
+                        }
+                        else
+                        {
+                            auto very_original_text = fuzz_base->formatForErrorMessage();
+//                            fprintf(stderr, "original:\n");
+//                            fuzz_base->dumpTree(std::cerr);
 
-                    if (!processSingleQuery(str, ast_to_process) && !ignore_error)
-                        return false;
+                            ast_to_process = fuzz_base->clone();
+
+//                            fprintf(stderr, "cloned:\n");
+//                            ast_to_process->dumpTree(std::cerr);
+
+                            fuzzMain(ast_to_process);
+                            auto fuzzed_text = ast_to_process->formatForErrorMessage();
+                            auto fuzz_base_text = fuzz_base->formatForErrorMessage();
+                            if (fuzz_step > 0
+                                && fuzzed_text == fuzz_base_text)
+                            {
+                                fprintf(stderr, "got boring ast\n");
+                                fprintf(stderr, "fuzzed %s\n",
+                                        fuzz_base_text.c_str());
+//                                fprintf(stderr, "original %s\n",
+//                                        fuzzed_text.c_str());
+//                                fprintf(stderr, "very original %s\n",
+//                                        very_original_text.c_str());
+//
+                                if (very_original_text != fuzz_base_text)
+                                {
+                                    fprintf(stderr, "they are really different!\n");
+                                }
+                                continue;
+                            }
+                            fprintf(stderr, "3\n");
+                        }
+
+                        /*
+                        if (!processSingleQuery(str, ast_to_process) && !ignore_error)
+                            return false;
+                        */
+
+                        got_error_from_psq = !processSingleQuery(str, ast_to_process);
+                    }
+                    catch (...)
+                    {
+                        last_exception = std::make_unique<Exception>(getCurrentExceptionMessage(true), getCurrentExceptionCode());
+                        actual_client_error = last_exception->code();
+                        if (!ignore_error && (!actual_client_error || actual_client_error != expected_client_error))
+                            std::cerr << "Error on processing query: " << str << std::endl << last_exception->message();
+                        got_exception = true;
+                    }
+
+                    if (!test_hint.checkActual(actual_server_error, actual_client_error, got_exception, last_exception))
+                        connection->forceConnected(connection_parameters.timeouts);
+
+
+                    fprintf(stderr, "got exception %d, psq %d, ignore error %d\n",
+                            got_exception, got_error_from_psq, ignore_error);
+
+                    got_exception |= got_error_from_psq;
+
+                    if (ast_to_process)
+                    {
+                        if (got_exception && !ignore_error)
+                        {
+                            // fuzz again
+                            fprintf(stderr, "got error, will fuzz again\n");
+                            continue;
+                        }
+                        else if (ast_to_process->formatForErrorMessage().size()
+                                 > 500)
+                        {
+                            // ast too long, please no
+                            // start from original ast
+                            fprintf(stderr, "current ast too long, won't "
+                                    "elaborate\n");
+                            fuzz_base = orig_ast;
+                        }
+                        else
+                        {
+                            // fuzz starting from this successful query
+                            fprintf(stderr, "using this ast as etalon\n");
+                            fuzz_base = ast_to_process;
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
-                catch (...)
-                {
-                    last_exception = std::make_unique<Exception>(getCurrentExceptionMessage(true), getCurrentExceptionCode());
-                    actual_client_error = last_exception->code();
-                    if (!ignore_error && (!actual_client_error || actual_client_error != expected_client_error))
-                        std::cerr << "Error on processing query: " << str << std::endl << last_exception->message();
-                    got_exception = true;
-                }
-
-                if (!test_hint.checkActual(actual_server_error, actual_client_error, got_exception, last_exception))
-                    connection->forceConnected(connection_parameters.timeouts);
-
+                /**
+                 * just ignore all errors -- we're fuzzing
+                 *
                 if (got_exception && !ignore_error)
                 {
                     if (is_interactive)
@@ -754,6 +845,7 @@ private:
                     else
                         return false;
                 }
+                */
             }
 
             return true;
@@ -974,6 +1066,448 @@ private:
         }
     }
 
+    //pcg64 fuzz_rand{static_cast<UInt64>(rand())};
+    pcg64 fuzz_rand{clock_gettime_ns()};
+
+    // Collection of asts with alias.
+    /*
+    std::unordered_map<std::string, ASTPtr> with_alias_map;
+    std::vector<ASTPtr> with_alias;
+    */
+
+    std::unordered_set<std::string> aliases_set;
+    std::vector<std::string> aliases;
+
+    std::unordered_map<std::string, const ASTPtr> column_like_map;
+    std::vector<const ASTPtr> column_like;
+
+    std::unordered_map<std::string, const ASTPtr> table_like_map;
+    std::vector<const ASTPtr> table_like;
+
+    Field getRandomField(int type)
+    {
+        switch(type)
+        {
+        case 0:
+        {
+            static constexpr Int64 values[]
+                = {-2, -1, 0, 1, 2, 3, 7, 10, 100, 255, 256, 257, 1023, 1024,
+                   1025, 65535, 65536, 65537, 1024 * 1024 - 1, 1024 * 1024,
+                   1024 * 1024 + 1, INT64_MIN, INT64_MAX};
+            return values[fuzz_rand() % (sizeof(values) / sizeof(*values))];
+        }
+        case 1:
+        {
+            static constexpr float values[]
+                = {NAN, INFINITY, -INFINITY, 0., 0.0001, 0.5, 0.9999,
+                   1., 1.0001, 2., 10.0001, 100.0001, 1000.0001};
+            return values[fuzz_rand() % (sizeof(values) / sizeof(*values))];
+        }
+        case 2:
+        {
+            static constexpr Int64 values[]
+                = {-2, -1, 0, 1, 2, 3, 7, 10, 100, 255, 256, 257, 1023, 1024,
+                   1025, 65535, 65536, 65537, 1024 * 1024 - 1, 1024 * 1024,
+                   1024 * 1024 + 1, INT64_MIN, INT64_MAX};
+            static constexpr UInt64 scales[] = {0, 1, 2, 10};
+            return DecimalField<Decimal64>(
+                values[fuzz_rand() % (sizeof(values) / sizeof(*values))],
+                scales[fuzz_rand() % (sizeof(scales) / sizeof(*scales))]
+            );
+        }
+        default:
+            assert(false);
+        }
+    }
+
+    Field fuzzField(Field field)
+    {
+        const auto type = field.getType();
+
+        int type_index = -1;
+
+        if (type == Field::Types::Int64
+            || type == Field::Types::UInt64)
+        {
+            type_index = 0;
+        }
+        else if (type == Field::Types::Float64)
+        {
+            type_index = 1;
+        }
+        else if (type == Field::Types::Decimal32
+            || type == Field::Types::Decimal64
+            || type == Field::Types::Decimal128)
+        {
+            type_index = 2;
+        }
+
+        if (fuzz_rand() % 20 == 0)
+        {
+            return Null{};
+        }
+
+        if (type_index >= 0)
+        {
+            if (fuzz_rand() % 20 == 0)
+            {
+                // Change type sometimes, but not often, because it mostly leads to
+                // boring errors.
+                type_index = fuzz_rand() % 3;
+            }
+            return getRandomField(type_index);
+        }
+
+        if (type == Field::Types::String)
+        {
+            auto & str = field.get<std::string>();
+            UInt64 action = fuzz_rand() % 10;
+            switch (action)
+            {
+            case 0:
+                str = "";
+                break;
+            case 1:
+                str = str + str;
+                break;
+            case 2:
+                str = str + str + str + str;
+                break;
+            case 4:
+                if (str.size() > 0)
+                {
+                    str[fuzz_rand() % str.size()] = '\0';
+                }
+                break;
+            default:
+                // Do nothing
+                break;
+            }
+        }
+        else if (type == Field::Types::Array || type == Field::Types::Tuple)
+        {
+            auto & arr = field.reinterpret<FieldVector>();
+
+            if (fuzz_rand() % 5 == 0 && arr.size() > 0)
+            {
+                size_t pos = fuzz_rand() % arr.size();
+                arr.erase(arr.begin() + pos);
+                fprintf(stderr, "erased\n");
+            }
+
+            if (fuzz_rand() % 5 == 0)
+            {
+                if (!arr.empty())
+                {
+                    size_t pos = fuzz_rand() % arr.size();
+                    arr.insert(arr.begin() + pos, fuzzField(arr[pos]));
+                    fprintf(stderr, "inserted (pos %d)\n", pos);
+                }
+                else
+                {
+                    arr.insert(arr.begin(), getRandomField(0));
+                    fprintf(stderr, "inserted (0)\n");
+                }
+
+            }
+
+            for (auto & element : arr)
+            {
+                element = fuzzField(element);
+            }
+        }
+
+        return field;
+    }
+
+    ASTPtr getRandomColumnLike()
+    {
+        if (column_like.empty())
+        {
+            return nullptr;
+        }
+
+        ASTPtr new_ast = column_like[fuzz_rand() % column_like.size()]->clone();
+        new_ast->setAlias("");
+
+        return new_ast;
+    }
+
+    void replaceWithColumnLike(ASTPtr & ast)
+    {
+        if (column_like.empty())
+        {
+            return;
+        }
+
+        std::string old_alias = ast->tryGetAlias();
+        ast = getRandomColumnLike();
+        ast->setAlias(old_alias);
+    }
+
+    void replaceWithTableLike(ASTPtr & ast)
+    {
+        if (table_like.empty())
+        {
+            return;
+        }
+
+        ASTPtr new_ast = table_like[fuzz_rand() % table_like.size()]->clone();
+
+        std::string old_alias = ast->tryGetAlias();
+        new_ast->setAlias(old_alias);
+
+        ast = new_ast;
+    }
+
+    void fuzzColumnLikeExpressionList(ASTPtr ast)
+    {
+        if (!ast)
+        {
+            return;
+        }
+
+        auto * impl = assert_cast<ASTExpressionList *>(ast.get());
+        if (fuzz_rand() % 50 == 0 && impl->children.size() > 1)
+        {
+            // Don't remove last element -- this leads to questionable
+            // constructs such as empty select.
+            impl->children.erase(impl->children.begin()
+                                 + fuzz_rand() % impl->children.size());
+        }
+        if (fuzz_rand() % 50 == 0)
+        {
+            auto pos = impl->children.empty()
+                    ? impl->children.begin()
+                    : impl->children.begin() + fuzz_rand() % impl->children.size();
+            auto col = getRandomColumnLike();
+            if (col)
+            {
+                impl->children.insert(pos, col);
+            }
+            else
+            {
+                fprintf(stderr, "no random col!\n");
+            }
+        }
+
+        /*
+        fuzz(impl->children);
+        */
+    }
+
+    void fuzz(ASTs & asts)
+    {
+        for (auto & ast : asts)
+        {
+            fuzz(ast);
+        }
+    }
+
+    void fuzz(ASTPtr & ast)
+    {
+        if (!ast)
+            return;
+
+        //fprintf(stderr, "name: %s\n", demangle(typeid(*ast).name()).c_str());
+
+        const auto type_hash = typeid(*ast).hash_code();
+        if (auto * impl = typeid_cast<ASTSelectWithUnionQuery *>(ast.get()))
+        {
+            fuzz(impl->list_of_selects);
+        }
+        else if (auto * impl = typeid_cast<ASTTablesInSelectQuery *>(ast.get()))
+        {
+            fuzz(impl->children);
+        }
+        else if (auto * impl = typeid_cast<ASTTablesInSelectQueryElement *>(ast.get()))
+        {
+            fuzz(impl->table_join);
+            fuzz(impl->table_expression);
+            fuzz(impl->array_join);
+        }
+        else if (auto * impl = typeid_cast<ASTTableExpression *>(ast.get()))
+        {
+            fuzz(impl->database_and_table_name);
+            fuzz(impl->subquery);
+            fuzz(impl->table_function);
+        }
+        else if (auto * impl = typeid_cast<ASTExpressionList *>(ast.get()))
+        {
+            fuzz(impl->children);
+        }
+        else if (auto * impl = typeid_cast<ASTFunction *>(ast.get()))
+        {
+            fuzzColumnLikeExpressionList(impl->arguments);
+            fuzzColumnLikeExpressionList(impl->parameters);
+
+            fuzz(impl->children);
+        }
+        else if (auto * impl = typeid_cast<ASTSelectQuery *>(ast.get()))
+        {
+            fuzzColumnLikeExpressionList(impl->select());
+            fuzzColumnLikeExpressionList(impl->groupBy());
+
+            fuzz(impl->children);
+        }
+        else if (auto * impl = typeid_cast<ASTLiteral *>(ast.get()))
+        {
+            // Only change the queries sometimes.
+            int r = fuzz_rand() % 10;
+            if (r == 0)
+            {
+                impl->value = fuzzField(impl->value);
+            }
+            else if (r == 1)
+            {
+                /* replace with a random function? */
+            }
+            else if (r == 2)
+            {
+                /* replace with something column-like */
+                replaceWithColumnLike(ast);
+            }
+        }
+        else
+        {
+            fuzz(ast->children);
+        }
+
+        /*
+        if (auto * with_alias = dynamic_cast<ASTWithAlias *>(ast.get()))
+        {
+            int dice = fuzz_rand() % 20;
+            if (dice == 0)
+            {
+                with_alias->alias = aliases[fuzz_rand() % aliases.size()];
+            }
+            else if (dice < 5)
+            {
+                with_alias->alias = "";
+            }
+        }
+        */
+    }
+
+    void collectFuzzInfoMain(const ASTPtr ast)
+    {
+        collectFuzzInfoRecurse(ast);
+
+        /*
+        with_alias.clear();
+        for (const auto & [name, value] : with_alias_map)
+        {
+            with_alias.push_back(value);
+            //fprintf(stderr, "alias %s\n", value->formatForErrorMessage().c_str());
+        }
+        */
+
+        aliases.clear();
+        for (const auto & alias : aliases_set)
+        {
+            aliases.push_back(alias);
+            //fprintf(stderr, "alias %s\n", alias.c_str());
+        }
+
+        column_like.clear();
+        for (const auto & [name, value] : column_like_map)
+        {
+            column_like.push_back(value);
+            //fprintf(stderr, "column %s\n", name.c_str());
+        }
+
+        table_like.clear();
+        for (const auto & [name, value] : table_like_map)
+        {
+            table_like.push_back(value);
+            //fprintf(stderr, "table %s\n", name.c_str());
+        }
+    }
+
+    void addTableLike(const ASTPtr ast)
+    {
+        if (table_like_map.size() > 1000)
+        {
+            return;
+        }
+
+        const auto name = ast->formatForErrorMessage();
+        if (name.size() < 200)
+        {
+            table_like_map.insert({name, ast});
+        }
+    }
+
+    void addColumnLike(const ASTPtr ast)
+    {
+        if (column_like_map.size() > 1000)
+        {
+            return;
+        }
+
+        const auto name = ast->formatForErrorMessage();
+        if (name.size() < 200)
+        {
+            column_like_map.insert({name, ast});
+        }
+    }
+
+    void collectFuzzInfoRecurse(const ASTPtr ast)
+    {
+        if (auto * impl = dynamic_cast<ASTWithAlias *>(ast.get()))
+        {
+            if (aliases_set.size() < 1000)
+            {
+                aliases_set.insert(impl->alias);
+            }
+        }
+
+        if (auto * impl = typeid_cast<ASTLiteral *>(ast.get()))
+        {
+            addColumnLike(ast);
+        }
+        else if (auto * impl = typeid_cast<ASTIdentifier *>(ast.get()))
+        {
+            addColumnLike(ast);
+        }
+        else if (auto * impl = typeid_cast<ASTFunction *>(ast.get()))
+        {
+            addColumnLike(ast);
+        }
+        else if (auto * impl = typeid_cast<ASTTableExpression *>(ast.get()))
+        {
+            addTableLike(ast);
+        }
+        else if (auto * impl = typeid_cast<ASTSubquery *>(ast.get()))
+        {
+            addTableLike(ast);
+        }
+
+        for (const auto & child : ast->children)
+        {
+            collectFuzzInfoRecurse(child);
+        }
+    }
+
+    void fuzzMain(ASTPtr & ast)
+    {
+        /*
+        std::cerr << "before: " << std::endl;
+        ast->dumpTree(std::cerr);
+        */
+
+        collectFuzzInfoMain(ast);
+        fuzz(ast);
+
+        /*
+        std::cerr << "after: " << std::endl;
+        ast->dumpTree(std::cerr);
+        */
+
+        std::cout << std::endl;
+        formatAST(*ast, std::cout);
+        std::cout << std::endl << std::endl;
+    }
 
     ASTPtr parseQuery(const char * & pos, const char * end, bool allow_multi_statements)
     {
@@ -998,6 +1532,8 @@ private:
         }
         else
             res = parseQueryAndMovePosition(parser, pos, end, "", allow_multi_statements, max_length, settings.max_parser_depth);
+
+        //fuzzMain(res);
 
         if (is_interactive)
         {
