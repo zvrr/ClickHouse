@@ -654,6 +654,11 @@ bool InterpreterCreateQuery::doCreateTable(ASTCreateQuery & create,
         return true;
     }
 
+    if (database->getEngineName() == "Replicated" && context.getClientInfo().query_kind != ClientInfo::QueryKind::REPLICATED_LOG_QUERY) {
+        database->propose(query_ptr);
+        return true;
+    }
+
     StoragePtr res;
     /// NOTE: CREATE query may be rewritten by Storage creator or table function
     if (create.as_table_function)
@@ -672,11 +677,6 @@ bool InterpreterCreateQuery::doCreateTable(ASTCreateQuery & create,
             properties.columns,
             properties.constraints,
             false);
-    }
-
-    
-    if (database->getEngineName() == "Replicated" && context.getClientInfo().query_kind != ClientInfo::QueryKind::REPLICATED_LOG_QUERY) {
-        database->propose(query_ptr);
     }
     database->createTable(context, table_name, res, query_ptr);
 
