@@ -224,7 +224,9 @@ So we have 14 combinations:
 
 In most of cases, you need MergeTree or ReplicatedMergeTree.
 
-For replicated merge trees, you need to supply a path in ZooKeeper and a replica name as the first two parameters.
+For replicated merge trees, you need to supply a path in ZooKeeper and a replica name as the first two parameters,
+unless Replicated database engine is used. In that case, ZooKeeper path is a subpath of ZooKeeper path of the database
+and replica name is the same as database's replica name.
 Path in ZooKeeper is like '/clickhouse/tables/01/' where /clickhouse/tables/ is a common prefix and 01 is a shard name.
 Replica name is like 'mtstat01-1' - it may be the hostname or any suitable string identifying replica.
 You may use macro substitutions for these parameters. It's like ReplicatedMergeTree('/clickhouse/tables/{shard}/', '{replica}'...
