@@ -1,5 +1,6 @@
 #include <Processors/Sources/DelayedSource.h>
-#include "NullSource.h"
+#include <Processors/Sources/NullSource.h>
+#include <Processors/NullSink.h>
 
 namespace DB
 {
@@ -104,13 +105,29 @@ Processors DelayedSource::expandPipeline()
     return std::move(processors);
 }
 
-Pipe createDelayedPipe(const Block & header, DelayedSource::Creator processors_creator)
+Pipe createDelayedPipe(const Block & header, DelayedSource::Creator processors_creator, bool add_totals_port, bool add_extremes_port)
 {
     auto source = std::make_shared<DelayedSource>(header, std::move(processors_creator));
 
     Pipe pipe(&source->getPort(DelayedSource::Main));
-    pipe.setTotalsPort(&source->getPort(DelayedSource::Totals));
-    pipe.setExtremesPort(&source->getPort(DelayedSource::Extremes));
+
+    if (add_totals_port)
+        pipe.setTotalsPort(&source->getPort(DelayedSource::Totals));
+    else
+    {
+        auto null_sink = std::make_shared<NullSink>(header);
+        connect(source->getPort(DelayedSource::Totals), null_sink->getPort());
+        pipe.addProcessors({std::move(null_sink)});
+    }
+
+    if (add_extremes_port)
+        pipe.setExtremesPort(&source->getPort(DelayedSource::Extremes));
+    else
+    {
+        auto null_sink = std::make_shared<NullSink>(header);
+        connect(source->getPort(DelayedSource::Extremes), null_sink->getPort());
+        pipe.addProcessors({std::move(null_sink)});
+    }
 
     pipe.addProcessors({std::move(source)});
     return pipe;

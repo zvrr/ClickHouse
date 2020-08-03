@@ -40,6 +40,6 @@ private:
 };
 
 /// Creates pipe from DelayedSource.
-Pipe createDelayedPipe(const Block & header, DelayedSource::Creator processors_creator);
+Pipe createDelayedPipe(const Block & header, DelayedSource::Creator processors_creator, bool add_totals_port, bool add_extremes_port);
 
 }
