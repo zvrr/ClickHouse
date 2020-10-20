@@ -1,17 +1,13 @@
-#include "config_functions.h"
-#if USE_H3
-#    include <Columns/ColumnsNumber.h>
-#    include <DataTypes/DataTypesNumber.h>
-#    include <Functions/FunctionFactory.h>
-#    include <Functions/IFunction.h>
-#    include <Common/typeid_cast.h>
-#    include <ext/range.h>
+#include <Columns/ColumnsNumber.h>
+#include <DataTypes/DataTypesNumber.h>
+#include <Functions/FunctionFactory.h>
+#include <Functions/IFunction.h>
+#include <IO/WriteHelpers.h>
+#include <Common/typeid_cast.h>
+#include <ext/range.h>
 
-#    if __has_include(<h3/h3api.h>)
-#        include <h3/h3api.h>
-#    else
-#        include <h3api.h>
-#    endif
+#include <constants.h>
+#include <h3api.h>
 
 
 namespace DB
@@ -19,7 +15,12 @@ namespace DB
 namespace ErrorCodes
 {
     extern const int ILLEGAL_TYPE_OF_ARGUMENT;
+    extern const int ARGUMENT_OUT_OF_BOUND;
 }
+
+namespace
+{
+
 class FunctionH3EdgeAngle : public IFunction
 {
 public:
@@ -43,9 +44,9 @@ public:
         return std::make_shared<DataTypeFloat64>();
     }
 
-    void executeImpl(Block & block, const ColumnNumbers & arguments, size_t result, size_t input_rows_count) override
+    void executeImpl(ColumnsWithTypeAndName & columns, const ColumnNumbers & arguments, size_t result, size_t input_rows_count) const override
     {
-        const auto * col_hindex = block.getByPosition(arguments[0]).column.get();
+        const auto * col_hindex = columns[arguments[0]].column.get();
 
         auto dst = ColumnVector<Float64>::create();
         auto & dst_data = dst->getData();
@@ -54,6 +55,9 @@ public:
         for (const auto row : ext::range(0, input_rows_count))
         {
             const int resolution = col_hindex->getUInt(row);
+            if (resolution > MAX_H3_RES)
+                throw Exception("The argument 'resolution' (" + toString(resolution) + ") of function " + getName()
+                    + " is out of bounds because the maximum resolution in H3 library is " + toString(MAX_H3_RES), ErrorCodes::ARGUMENT_OUT_OF_BOUND);
 
             // Numerical constant is 180 degrees / pi / Earth radius, Earth radius is from h3 sources
             Float64 res = 8.99320592271288084e-6 * edgeLengthM(resolution);
@@ -61,10 +65,11 @@ public:
             dst_data[row] = res;
         }
 
-        block.getByPosition(result).column = std::move(dst);
+        columns[result].column = std::move(dst);
     }
 };
 
+}
 
 void registerFunctionH3EdgeAngle(FunctionFactory & factory)
 {
@@ -72,4 +77,3 @@ void registerFunctionH3EdgeAngle(FunctionFactory & factory)
 }
 
 }
-#endif

@@ -1,11 +1,11 @@
 ---
 machine_translated: true
-machine_translated_rev: 3e185d24c9fe772c7cf03d5475247fb829a21dfa
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 45
 toc_title: Cadena fija (N)
 ---
 
-# Cuerda Fija {#fixedstring}
+# Cuerda fija {#fixedstring}
 
 Una cadena de longitud fija de `N` bytes (ni caracteres ni puntos de código).
 
@@ -22,7 +22,7 @@ El `FixedString` tipo es eficiente cuando los datos tienen la longitud de `N` by
 Ejemplos de los valores que se pueden almacenar eficientemente en `FixedString`escrito columnas:
 
 -   La representación binaria de direcciones IP (`FixedString(16)` para IPv6).
--   Language codes (ru\_RU, en\_US … ).
+-   Language codes (ru_RU, en_US … ).
 -   Currency codes (USD, RUB … ).
 -   Representación binaria de hashes (`FixedString(16)` para MD5, `FixedString(32)` para SHA256).
 

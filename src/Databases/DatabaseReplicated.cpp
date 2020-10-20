@@ -11,7 +11,6 @@
 #include <Common/ZooKeeper/KeeperException.h>
 #include <Common/ZooKeeper/Types.h>
 #include <Common/ZooKeeper/ZooKeeper.h>
-#include <Common/ZooKeeper/Lock.h>
 
 
 namespace DB
@@ -48,10 +47,11 @@ zkutil::ZooKeeperPtr DatabaseReplicated::getZooKeeper() const
 DatabaseReplicated::DatabaseReplicated(
     const String & name_,
     const String & metadata_path_,
+    const UUID & uuid,
     const String & zookeeper_path_,
     const String & replica_name_,
     Context & context_)
-    : DatabaseAtomic(name_, metadata_path_, "store/", "DatabaseReplicated (" + name_ + ")", context_)
+    : DatabaseAtomic(name_, metadata_path_, uuid, "DatabaseReplicated (" + name_ + ")", context_)
     , zookeeper_path(zookeeper_path_)
     , replica_name(replica_name_)
 {

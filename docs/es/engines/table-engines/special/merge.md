@@ -1,6 +1,6 @@
 ---
 machine_translated: true
-machine_translated_rev: 3e185d24c9fe772c7cf03d5475247fb829a21dfa
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 36
 toc_title: Fusionar
 ---
@@ -31,7 +31,7 @@ La forma típica de usar el `Merge` para trabajar con un gran número de `TinyLo
 
 Ejemplo 2:
 
-Digamos que tiene una tabla antigua (WatchLog\_old) y decidió cambiar la partición sin mover datos a una nueva tabla (WatchLog\_new) y necesita ver datos de ambas tablas.
+Digamos que tiene una tabla antigua (WatchLog_old) y decidió cambiar la partición sin mover datos a una nueva tabla (WatchLog_new) y necesita ver datos de ambas tablas.
 
 ``` sql
 CREATE TABLE WatchLog_old(date Date, UserId Int64, EventType String, Cnt UInt64)

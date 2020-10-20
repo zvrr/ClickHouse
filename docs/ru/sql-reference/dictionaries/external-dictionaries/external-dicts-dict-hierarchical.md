@@ -20,7 +20,7 @@ ClickHouse поддерживает иерархические словари с
 
 Эту иерархию можно выразить в виде следующей таблицы-словаря.
 
-| region\_id | parent\_region | region\_name  |
+| region_id | parent_region | region_name  |
 |------------|----------------|---------------|
 | 1          | 0              | Russia        |
 | 2          | 1              | Moscow        |
@@ -32,7 +32,7 @@ ClickHouse поддерживает иерархические словари с
 
 ClickHouse поддерживает свойство [hierarchical](external-dicts-dict-structure.md#hierarchical-dict-attr) для атрибутов [внешнего словаря](index.md). Это свойство позволяет конфигурировать словари, подобные описанному выше.
 
-С помощью функции [dictGetHierarchy](../../../sql-reference/dictionaries/external-dictionaries/external-dicts-dict-hierarchical.md#dictgethierarchy) можно получить цепочку предков элемента.
+С помощью функции [dictGetHierarchy](../../../sql-reference/functions/ext-dict-functions.md#dictgethierarchy) можно получить цепочку предков элемента.
 
 Структура словаря для нашего примера может выглядеть следующим образом:
 

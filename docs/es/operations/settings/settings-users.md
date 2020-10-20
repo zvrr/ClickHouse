@@ -1,13 +1,16 @@
 ---
 machine_translated: true
-machine_translated_rev: 3e185d24c9fe772c7cf03d5475247fb829a21dfa
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 63
 toc_title: "Configuraci\xF3n del usuario"
 ---
 
-# Configuración Del Usuario {#user-settings}
+# Configuración del usuario {#user-settings}
 
 El `users` sección de la `user.xml` el archivo de configuración contiene la configuración del usuario.
+
+!!! note "Información"
+    ClickHouse también es compatible [Flujo de trabajo controlado por SQL](../access-rights.md#access-control) para la gestión de usuarios. Recomendamos usarlo.
 
 Estructura del `users` apartado:
 
@@ -18,6 +21,8 @@ Estructura del `users` apartado:
         <password></password>
         <!-- Or -->
         <password_sha256_hex></password_sha256_hex>
+
+        <access_management>0|1</access_management>
 
         <networks incl="networks" replace="replace">
         </networks>
@@ -38,7 +43,7 @@ Estructura del `users` apartado:
 </users>
 ```
 
-### user\_name/contraseña {#user-namepassword}
+### user_name/contraseña {#user-namepassword}
 
 La contraseña se puede especificar en texto sin formato o en SHA256 (formato hexagonal).
 
@@ -70,7 +75,18 @@ La contraseña se puede especificar en texto sin formato o en SHA256 (formato he
 
     La primera línea del resultado es la contraseña. La segunda línea es el hash SHA1 doble correspondiente.
 
-### user\_name/redes {#user-namenetworks}
+### access_management {#access_management-user-setting}
+
+Esta configuración habilita deshabilita el uso de [control de acceso y gestión de cuentas](../access-rights.md#access-control) para el usuario.
+
+Valores posibles:
+
+-   0 — Disabled.
+-   1 — Enabled.
+
+Valor predeterminado: 0.
+
+### user_name/redes {#user-namenetworks}
 
 Lista de redes desde las que el usuario puede conectarse al servidor ClickHouse.
 
@@ -112,18 +128,18 @@ Para abrir el acceso solo desde localhost, especifique:
 <ip>127.0.0.1</ip>
 ```
 
-### user\_name/perfil {#user-nameprofile}
+### user_name/perfil {#user-nameprofile}
 
 Puede asignar un perfil de configuración para el usuario. Los perfiles de configuración se configuran en una sección separada del `users.xml` file. Para obtener más información, consulte [Perfiles de configuración](settings-profiles.md).
 
-### user\_name/cuota {#user-namequota}
+### user_name/cuota {#user-namequota}
 
 Las cuotas le permiten realizar un seguimiento o limitar el uso de recursos durante un período de tiempo. Las cuotas se configuran en el `quotas`
 sección de la `users.xml` archivo de configuración.
 
 Puede asignar un conjunto de cuotas para el usuario. Para obtener una descripción detallada de la configuración de las cuotas, consulte [Cuota](../quotas.md#quotas).
 
-### nombre\_usuario/bases de datos {#user-namedatabases}
+### nombre_usuario/bases de datos {#user-namedatabases}
 
 En esta sección, puede limitar las filas devueltas por ClickHouse para `SELECT` consultas realizadas por el usuario actual, implementando así la seguridad básica a nivel de fila.
 

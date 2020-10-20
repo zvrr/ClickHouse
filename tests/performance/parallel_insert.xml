@@ -1,7 +1,7 @@
-<test>
+<test max_ignored_relative_change="0.3">
 
     <preconditions>
-        <table_exists>default.hits_10m_single</table_exists>
+        <table_exists>hits_10m_single</table_exists>
     </preconditions>
 
     <create_query>

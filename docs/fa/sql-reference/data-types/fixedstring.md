@@ -1,6 +1,6 @@
 ---
 machine_translated: true
-machine_translated_rev: d734a8e46ddd7465886ba4133bff743c55190626
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 45
 toc_title: "\u0631\u0634\u062A\u0647 \u062B\u0627\u0628\u062A)"
 ---
@@ -22,7 +22,7 @@ toc_title: "\u0631\u0634\u062A\u0647 \u062B\u0627\u0628\u062A)"
 نمونه هایی از مقادیر است که می تواند موثر در ذخیره می شود `FixedString`- ستون های تایپ شده:
 
 -   نمایندگی دودویی نشانی های اینترنتی (`FixedString(16)` برای ایپو6).
--   Language codes (ru\_RU, en\_US … ).
+-   Language codes (ru_RU, en_US … ).
 -   Currency codes (USD, RUB … ).
 -   نمایش دودویی رشته هش (`FixedString(16)` برای ام دی 5, `FixedString(32)` برای شی256).
 
@@ -30,7 +30,7 @@ toc_title: "\u0631\u0634\u062A\u0647 \u062B\u0627\u0628\u062A)"
 
 هنگام قرار دادن داده ها, تاتر:
 
--   مکمل یک رشته با null بایت اگر رشته شامل کمتر از `N` بایت
+-   مکمل یک رشته با بایت پوچ اگر رشته شامل کمتر از `N` بایت
 -   پرتاب `Too large value for FixedString(N)` استثنا اگر رشته شامل بیش از `N` بایت
 
 در هنگام انتخاب داده, تاتر می کند بایت پوچ در پایان رشته را حذف کنید. اگر شما استفاده از `WHERE` بند, شما باید بایت پوچ دستی اضافه برای مطابقت با `FixedString` ارزش. مثال زیر نشان میدهد که چگونه به استفاده از `WHERE` بند با `FixedString`.

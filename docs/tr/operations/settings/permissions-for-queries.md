@@ -1,13 +1,13 @@
 ---
 machine_translated: true
-machine_translated_rev: e8cd92bba3269f47787db090899f7c242adf7818
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 58
 toc_title: "Sorgular i\xE7in izinler"
 ---
 
-# Sorgular için Izinler {#permissions_for_queries}
+# Sorgular için izinler {#permissions_for_queries}
 
-Clickhouse’daki sorgular birkaç türe ayrılabilir:
+Clickhouse'daki sorgular birkaç türe ayrılabilir:
 
 1.  Veri sorgularını oku: `SELECT`, `SHOW`, `DESCRIBE`, `EXISTS`.
 2.  Veri sorgularını yaz: `INSERT`, `OPTIMIZE`.
@@ -18,7 +18,7 @@ Clickhouse’daki sorgular birkaç türe ayrılabilir:
 Aşağıdaki ayarlar, kullanıcı izinlerini sorgu Türüne göre düzenler:
 
 -   [readonly](#settings_readonly) — Restricts permissions for all types of queries except DDL queries.
--   [allow\_ddl](#settings_allow_ddl) — Restricts permissions for DDL queries.
+-   [allow_ddl](#settings_allow_ddl) — Restricts permissions for DDL queries.
 
 `KILL QUERY` herhangi bir ayar ile yapılabilir.
 
@@ -43,7 +43,7 @@ sadece belirli ayarları değiştirmekten, ayrıntılar için bkz [ayarlardaki k
 
 Varsayılan değer: 0
 
-## allow\_ddl {#settings_allow_ddl}
+## allow_ddl {#settings_allow_ddl}
 
 İzin verir veya reddeder [DDL](https://en.wikipedia.org/wiki/Data_definition_language) sorgular.
 

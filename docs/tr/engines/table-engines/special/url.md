@@ -1,6 +1,6 @@
 ---
 machine_translated: true
-machine_translated_rev: e8cd92bba3269f47787db090899f7c242adf7818
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 41
 toc_title: URL
 ---
@@ -10,9 +10,9 @@ toc_title: URL
 Uzak bir HTTP/HTTPS sunucusundaki verileri yönetir. Bu motor benzer
 to the [Dosya](file.md) motor.
 
-## ClickHouse Sunucusunda Motoru Kullanma {#using-the-engine-in-the-clickhouse-server}
+## ClickHouse sunucusunda motoru kullanma {#using-the-engine-in-the-clickhouse-server}
 
-Bu `format` Clickhouse’un kullanabileceği bir tane olmalı
+Bu `format` Clickhouse'un kullanabileceği bir tane olmalı
 `SELECT` sorgular ve gerekirse `INSERTs`. Desteklenen formatların tam listesi için bkz.
 [Biçimliler](../../../interfaces/formats.md#formats).
 
@@ -24,7 +24,7 @@ sunucudan yanıt almak için ek başlıklar.
 sırasıyla. İşleme için `POST` istekleri, uzak sunucu desteklemesi gerekir
 [Yığınlı aktarım kodlaması](https://en.wikipedia.org/wiki/Chunked_transfer_encoding).
 
-Kullanarak HTTP get yönlendirme şerbetçiotu sayısını sınırlayabilirsiniz [max\_http\_get\_redirects](../../../operations/settings/settings.md#setting-max_http_get_redirects) ayar.
+Kullanarak HTTP get yönlendirme şerbetçiotu sayısını sınırlayabilirsiniz [max_http_get_redirects](../../../operations/settings/settings.md#setting-max_http_get_redirects) ayar.
 
 **Örnek:**
 

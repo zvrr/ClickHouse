@@ -1,6 +1,6 @@
 ---
 machine_translated: true
-machine_translated_rev: 3e185d24c9fe772c7cf03d5475247fb829a21dfa
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 45
 toc_title: Hdfs
 ---
@@ -55,12 +55,12 @@ Construcciones con `{}` son similares a la [función de tabla remota](../../sql-
 
 1.  Supongamos que tenemos varios archivos con los siguientes URI en HDFS:
 
--   ‘hdfs://hdfs1:9000/some\_dir/some\_file\_1’
--   ‘hdfs://hdfs1:9000/some\_dir/some\_file\_2’
--   ‘hdfs://hdfs1:9000/some\_dir/some\_file\_3’
--   ‘hdfs://hdfs1:9000/another\_dir/some\_file\_1’
--   ‘hdfs://hdfs1:9000/another\_dir/some\_file\_2’
--   ‘hdfs://hdfs1:9000/another\_dir/some\_file\_3’
+-   ‘hdfs://hdfs1:9000/some_dir/some_file_1’
+-   ‘hdfs://hdfs1:9000/some_dir/some_file_2’
+-   ‘hdfs://hdfs1:9000/some_dir/some_file_3’
+-   ‘hdfs://hdfs1:9000/another_dir/some_file_1’
+-   ‘hdfs://hdfs1:9000/another_dir/some_file_2’
+-   ‘hdfs://hdfs1:9000/another_dir/some_file_3’
 
 1.  Consulta la cantidad de filas en estos archivos:
 

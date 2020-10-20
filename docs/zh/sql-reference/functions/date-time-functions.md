@@ -22,11 +22,11 @@ SELECT
 
 将Date或DateTime转换为指定的时区。
 
-## 玩一年 {#toyear}
+## toYear {#toyear}
 
 将Date或DateTime转换为包含年份编号（AD）的UInt16类型的数字。
 
-## 到四分钟 {#toquarter}
+## toQuarter {#toquarter}
 
 将Date或DateTime转换为包含季度编号的UInt8类型的数字。
 
@@ -116,7 +116,7 @@ SELECT
 
 将DateTime以十五分钟为单位向前取整到最接近的时间点。
 
-## toStartOfInterval(time\_or\_data,间隔x单位\[,time\_zone\]) {#tostartofintervaltime-or-data-interval-x-unit-time-zone}
+## toStartOfInterval(time_or_data,间隔x单位\[,time_zone\]) {#tostartofintervaltime-or-data-interval-x-unit-time-zone}
 
 这是名为`toStartOf*`的所有函数的通用函数。例如，
 `toStartOfInterval（t，INTERVAL 1 year）`返回与`toStartOfYear（t）`相同的结果，

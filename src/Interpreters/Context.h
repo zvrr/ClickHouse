@@ -3,7 +3,7 @@
 #include <Core/Block.h>
 #include <Core/NamesAndTypes.h>
 #include <Core/Settings.h>
-#include <Core/Types.h>
+#include <common/types.h>
 #include <Core/UUID.h>
 #include <DataStreams/IBlockStream_fwd.h>
 #include <Interpreters/ClientInfo.h>
@@ -51,8 +51,10 @@ class Context;
 class ContextAccess;
 struct User;
 using UserPtr = std::shared_ptr<const User>;
+struct EnabledRolesInfo;
 class EnabledRowPolicies;
 class EnabledQuota;
+struct QuotaUsage;
 class AccessFlags;
 struct AccessRightsElement;
 class AccessRightsElements;
@@ -78,7 +80,9 @@ class PartLog;
 class TextLog;
 class TraceLog;
 class MetricLog;
+class AsynchronousMetricLog;
 struct MergeTreeSettings;
+class StorageS3Settings;
 class IDatabase;
 class DDLWorker;
 class ITableFunction;
@@ -95,15 +99,17 @@ class IDisk;
 using DiskPtr = std::shared_ptr<IDisk>;
 class DiskSelector;
 using DiskSelectorPtr = std::shared_ptr<const DiskSelector>;
+using DisksMap = std::map<String, DiskPtr>;
 class StoragePolicy;
 using StoragePolicyPtr = std::shared_ptr<const StoragePolicy>;
+using StoragePoliciesMap = std::map<String, StoragePolicyPtr>;
 class StoragePolicySelector;
 using StoragePolicySelectorPtr = std::shared_ptr<const StoragePolicySelector>;
 
 class IOutputFormat;
 using OutputFormatPtr = std::shared_ptr<IOutputFormat>;
-class VolumeJBOD;
-using VolumeJBODPtr = std::shared_ptr<VolumeJBOD>;
+class IVolume;
+using VolumePtr = std::shared_ptr<IVolume>;
 struct NamedSession;
 
 
@@ -166,7 +172,7 @@ private:
     InputBlocksReader input_blocks_reader;
 
     std::optional<UUID> user_id;
-    std::vector<UUID> current_roles;
+    boost::container::flat_set<UUID> current_roles;
     bool use_default_roles = false;
     std::shared_ptr<const ContextAccess> access;
     std::shared_ptr<const EnabledRowPolicies> initial_row_policy;
@@ -221,14 +227,14 @@ public:
     String getUserFilesPath() const;
     String getDictionariesLibPath() const;
 
-    VolumeJBODPtr getTemporaryVolume() const;
+    VolumePtr getTemporaryVolume() const;
 
     void setPath(const String & path);
     void setFlagsPath(const String & path);
     void setUserFilesPath(const String & path);
     void setDictionariesLibPath(const String & path);
 
-    VolumeJBODPtr setTemporaryStorage(const String & path, const String & policy_name = "");
+    VolumePtr setTemporaryStorage(const String & path, const String & policy_name = "");
 
     using ConfigurationPtr = Poco::AutoPtr<Poco::Util::AbstractConfiguration>;
 
@@ -239,6 +245,9 @@ public:
     AccessControlManager & getAccessControlManager();
     const AccessControlManager & getAccessControlManager() const;
 
+    /// Sets external authenticators config (LDAP).
+    void setExternalAuthenticatorsConfig(const Poco::Util::AbstractConfiguration & config);
+
     /** Take the list of users, quotas and configuration profiles from this config.
       * The list of users is completely replaced.
       * The accumulated quota values are not reset if the quota is not deleted.
@@ -248,18 +257,25 @@ public:
 
     /// Sets the current user, checks the password and that the specified host is allowed.
     /// Must be called before getClientInfo.
-    void setUser(const String & name, const String & password, const Poco::Net::SocketAddress & address, const String & quota_key);
+    void setUser(const String & name, const String & password, const Poco::Net::SocketAddress & address);
+
+    /// Sets the current user, *do not checks the password and that the specified host is allowed*.
+    /// Must be called before getClientInfo.
+    ///
+    /// (Used only internally in cluster, if the secret matches)
+    void setUserWithoutCheckingPassword(const String & name, const Poco::Net::SocketAddress & address);
+
+    void setQuotaKey(String quota_key_);
 
     UserPtr getUser() const;
     String getUserName() const;
     std::optional<UUID> getUserID() const;
 
-    void setCurrentRoles(const std::vector<UUID> & current_roles_);
+    void setCurrentRoles(const boost::container::flat_set<UUID> & current_roles_);
     void setCurrentRolesDefault();
-    std::vector<UUID> getCurrentRoles() const;
-    Strings getCurrentRolesNames() const;
-    std::vector<UUID> getEnabledRoles() const;
-    Strings getEnabledRolesNames() const;
+    boost::container::flat_set<UUID> getCurrentRoles() const;
+    boost::container::flat_set<UUID> getEnabledRoles() const;
+    std::shared_ptr<const EnabledRolesInfo> getRolesInfo() const;
 
     /// Checks access rights.
     /// Empty database means the current database.
@@ -278,7 +294,6 @@ public:
 
     std::shared_ptr<const ContextAccess> getAccess() const;
 
-    std::shared_ptr<const EnabledRowPolicies> getRowPolicies() const;
     ASTPtr getRowPolicyCondition(const String & database, const String & table_name, RowPolicy::ConditionType type) const;
 
     /// Sets an extra row policy based on `client_info.initial_user`, if it exists.
@@ -287,6 +302,7 @@ public:
     void setInitialRowPolicy();
 
     std::shared_ptr<const EnabledQuota> getQuota() const;
+    std::optional<QuotaUsage> getQuotaUsage() const;
 
     /// We have to copy external tables inside executeQuery() to track limits. Therefore, set callback for it. Must set once.
     void setExternalTablesInitializer(ExternalTablesInitializer && initializer);
@@ -343,6 +359,9 @@ public:
     String getInitialQueryId() const;
 
     void setCurrentDatabase(const String & name);
+    /// Set current_database for global context. We don't validate that database
+    /// exists because it should be set before databases loading.
+    void setCurrentDatabaseNameInGlobalContext(const String & name);
     void setCurrentQueryId(const String & query_id);
 
     void killCurrentQuery();
@@ -368,7 +387,7 @@ public:
     /// Checks the constraints.
     void checkSettingsConstraints(const SettingChange & change) const;
     void checkSettingsConstraints(const SettingsChanges & changes) const;
-    void clampToSettingsConstraints(SettingChange & change) const;
+    void checkSettingsConstraints(SettingsChanges & changes) const;
     void clampToSettingsConstraints(SettingsChanges & changes) const;
 
     /// Returns the current constraints (can return null).
@@ -436,11 +455,7 @@ public:
 
     void makeQueryContext() { query_context = this; }
     void makeSessionContext() { session_context = this; }
-    void makeGlobalContext()
-    {
-        global_context = this;
-        DatabaseCatalog::init(this);
-    }
+    void makeGlobalContext() { initGlobal(); global_context = this; }
 
     const Settings & getSettingsRef() const { return settings; }
 
@@ -465,10 +480,14 @@ public:
     /// If the current session is expired at the time of the call, synchronously creates and returns a new session with the startNewSession() call.
     /// If no ZooKeeper configured, throws an exception.
     std::shared_ptr<zkutil::ZooKeeper> getZooKeeper() const;
+    /// Same as above but return a zookeeper connection from auxiliary_zookeepers configuration entry.
+    std::shared_ptr<zkutil::ZooKeeper> getAuxiliaryZooKeeper(const String & name) const;
     /// Has ready or expired ZooKeeper
     bool hasZooKeeper() const;
     /// Reset current zookeeper session. Do not create a new one.
     void resetZooKeeper() const;
+    // Reload Zookeeper
+    void reloadZooKeeperIfChanged(const ConfigurationPtr & config) const;
 
     /// Create a cache of uncompressed blocks of specified size. This can be done only once.
     void setUncompressedCache(size_t max_size_in_bytes);
@@ -492,6 +511,7 @@ public:
     BackgroundProcessingPool & getBackgroundPool();
     BackgroundProcessingPool & getBackgroundMovePool();
     BackgroundSchedulePool & getSchedulePool();
+    BackgroundSchedulePool & getMessageBrokerSchedulePool();
     BackgroundSchedulePool & getDistributedSchedulePool();
     BackgroundSchedulePool & getReplicatedSchedulePool();
 
@@ -522,12 +542,15 @@ public:
     std::shared_ptr<TraceLog> getTraceLog();
     std::shared_ptr<TextLog> getTextLog();
     std::shared_ptr<MetricLog> getMetricLog();
+    std::shared_ptr<AsynchronousMetricLog> getAsynchronousMetricLog();
 
-    /// Returns an object used to log opertaions with parts if it possible.
-    /// Provide table name to make required cheks.
+    /// Returns an object used to log operations with parts if it possible.
+    /// Provide table name to make required checks.
     std::shared_ptr<PartLog> getPartLog(const String & part_database);
 
     const MergeTreeSettings & getMergeTreeSettings() const;
+    const MergeTreeSettings & getReplicatedMergeTreeSettings() const;
+    const StorageS3Settings & getStorageS3Settings() const;
 
     /// Prevents DROP TABLE if its size is greater than max_size (50GB by default, max_size=0 turn off this check)
     void setMaxTableSizeToDrop(size_t max_size);
@@ -540,14 +563,12 @@ public:
     /// Lets you select the compression codec according to the conditions described in the configuration file.
     std::shared_ptr<ICompressionCodec> chooseCompressionCodec(size_t part_size, double part_size_ratio) const;
 
-    DiskSelectorPtr getDiskSelector() const;
 
     /// Provides storage disks
     DiskPtr getDisk(const String & name) const;
-    DiskPtr getDefaultDisk() const { return getDisk("default"); }
 
-    StoragePolicySelectorPtr getStoragePolicySelector() const;
-
+    StoragePoliciesMap getPoliciesMap() const;
+    DisksMap getDisksMap() const;
     void updateStorageConfiguration(const Poco::Util::AbstractConfiguration & config);
 
     /// Provides storage politics schemes
@@ -614,6 +635,8 @@ public:
 private:
     std::unique_lock<std::recursive_mutex> getLock() const;
 
+    void initGlobal();
+
     /// Compute and set actual user settings, client_info.current_user should be set
     void calculateAccessRights();
 
@@ -625,6 +648,13 @@ private:
     EmbeddedDictionaries & getEmbeddedDictionariesImpl(bool throw_on_error) const;
 
     void checkCanBeDropped(const String & database, const String & table, const size_t & size, const size_t & max_size_to_drop) const;
+
+    StoragePolicySelectorPtr getStoragePolicySelector(std::lock_guard<std::mutex> & lock) const;
+
+    DiskSelectorPtr getDiskSelector(std::lock_guard<std::mutex> & /* lock */) const;
+
+    /// If the password is not set, the password will not be checked
+    void setUserImpl(const String & name, const std::optional<String> & password, const Poco::Net::SocketAddress & address);
 };
 
 

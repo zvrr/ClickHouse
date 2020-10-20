@@ -1,6 +1,6 @@
 ---
 machine_translated: true
-machine_translated_rev: e8cd92bba3269f47787db090899f7c242adf7818
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 45
 toc_title: FixedString(N)
 ---
@@ -22,7 +22,7 @@ Bu `FixedString` veri tam olarak uzunluğa sahip olduğunda tür etkilidir `N` b
 Verimli bir şekilde depolan theabilen değerlere örnekler `FixedString`- yazılan sütunlar:
 
 -   IP adreslerinin ikili gösterimi (`FixedString(16)` IPv6 için).
--   Language codes (ru\_RU, en\_US … ).
+-   Language codes (ru_RU, en_US … ).
 -   Currency codes (USD, RUB … ).
 -   Karma ikili gösterimi (`FixedString(16)` MD5 için, `FixedString(32)` SHA256 için).
 

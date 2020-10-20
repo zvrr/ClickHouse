@@ -2,6 +2,9 @@
 
 Раздел `users` конфигурационного файла `user.xml` содержит настройки для пользователей.
 
+!!! note "Информация"
+    Для управления пользователями рекомендуется использовать [SQL-ориентированный воркфлоу](../access-rights.md#access-control), который также поддерживается в ClickHouse.
+
 Структура раздела `users`:
 
 ``` xml
@@ -11,6 +14,8 @@
         <password></password>
         <!-- Or -->
         <password_sha256_hex></password_sha256_hex>
+
+        <access_management>0|1</access_management>
 
         <networks incl="networks" replace="replace">
         </networks>
@@ -31,7 +36,7 @@
 </users>
 ```
 
-### user\_name/password {#user-namepassword}
+### user_name/password {#user-namepassword}
 
 Пароль можно указать в текстовом виде или в виде SHA256 (шестнадцатеричный формат).
 
@@ -67,7 +72,18 @@
 
         Первая строка результата — пароль. Вторая строка — соответствующий ему двойной хэш SHA1.
 
-### user\_name/networks {#user-namenetworks}
+### access_management {#access_management-user-setting}
+
+Включает или выключает SQL-ориентированное [управление доступом](../access-rights.md#access-control) для пользователя.
+
+Возможные значения:
+
+- 0 — Выключено.
+- 1 — Включено.
+
+Значение по умолчанию: 0.
+
+### user_name/networks {#user-namenetworks}
 
 Список сетей, из которых пользователь может подключиться к серверу ClickHouse.
 
@@ -109,17 +125,17 @@
 <ip>127.0.0.1</ip>
 ```
 
-### user\_name/profile {#user-nameprofile}
+### user_name/profile {#user-nameprofile}
 
 Пользователю можно назначить профиль настроек. Профили настроек конфигурируются в отдельной секции файла `users.xml`. Подробнее читайте в разделе [Профили настроек](settings-profiles.md).
 
-### user\_name/quota {#user-namequota}
+### user_name/quota {#user-namequota}
 
 Квотирование позволяет отслеживать или ограничивать использование ресурсов в течение определённого периода времени. Квоты настраиваются в разделе `quotas` конфигурационного файла `users.xml`.
 
 Пользователю можно назначить квоты. Подробное описание настройки квот смотрите в разделе [Квоты](../quotas.md#quotas).
 
-### user\_name/databases {#user-namedatabases}
+### user_name/databases {#user-namedatabases}
 
 В этом разделе вы можете ограничить выдачу ClickHouse запросами `SELECT` для конкретного пользователя, таким образом реализуя базовую защиту на уровне строк.
 

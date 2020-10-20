@@ -1,13 +1,13 @@
 ---
 machine_translated: true
-machine_translated_rev: 3e185d24c9fe772c7cf03d5475247fb829a21dfa
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 57
 toc_title: "Configuraci\xF3n del servidor"
 ---
 
-# Configuración Del Servidor {#server-settings}
+# Configuración del servidor {#server-settings}
 
-## builtin\_dictionaries\_reload\_interval {#builtin-dictionaries-reload-interval}
+## builtin_dictionaries_reload_interval {#builtin-dictionaries-reload-interval}
 
 El intervalo en segundos antes de volver a cargar los diccionarios integrados.
 
@@ -68,7 +68,7 @@ Si no se cumplen condiciones para un elemento de datos, ClickHouse utiliza el `l
 </compression>
 ```
 
-## default\_database {#default-database}
+## default_database {#default-database}
 
 La base de datos predeterminada.
 
@@ -80,7 +80,7 @@ Para obtener una lista de bases de datos, [SHOW DATABASES](../../sql-reference/s
 <default_database>default</default_database>
 ```
 
-## default\_profile {#default-profile}
+## default_profile {#default-profile}
 
 Perfil de configuración predeterminado.
 
@@ -92,7 +92,7 @@ Los perfiles de configuración se encuentran en el archivo especificado en el pa
 <default_profile>default</default_profile>
 ```
 
-## Diccionarios\_config {#server_configuration_parameters-dictionaries_config}
+## Diccionarios_config {#server_configuration_parameters-dictionaries_config}
 
 La ruta de acceso al archivo de configuración para diccionarios externos.
 
@@ -109,7 +109,7 @@ Ver también “[Diccionarios externos](../../sql-reference/dictionaries/externa
 <dictionaries_config>*_dictionary.xml</dictionaries_config>
 ```
 
-## Diccionarios\_lazy\_load {#server_configuration_parameters-dictionaries_lazy_load}
+## Diccionarios_lazy_load {#server_configuration_parameters-dictionaries_lazy_load}
 
 La carga perezosa de los diccionarios.
 
@@ -125,7 +125,7 @@ El valor predeterminado es `true`.
 <dictionaries_lazy_load>true</dictionaries_lazy_load>
 ```
 
-## format\_schema\_path {#server_configuration_parameters-format_schema_path}
+## format_schema_path {#server_configuration_parameters-format_schema_path}
 
 La ruta de acceso al directorio con los esquemas para los datos de entrada, como los esquemas [CapnProto](../../interfaces/formats.md#capnproto) formato.
 
@@ -146,11 +146,11 @@ Configuración:
 -   port – The port on the Graphite server.
 -   interval – The interval for sending, in seconds.
 -   timeout – The timeout for sending data, in seconds.
--   root\_path – Prefix for keys.
+-   root_path – Prefix for keys.
 -   metrics – Sending data from the [sistema.métricas](../../operations/system-tables.md#system_tables-metrics) tabla.
 -   events – Sending deltas data accumulated for the time period from the [sistema.evento](../../operations/system-tables.md#system_tables-events) tabla.
--   events\_cumulative – Sending cumulative data from the [sistema.evento](../../operations/system-tables.md#system_tables-events) tabla.
--   asynchronous\_metrics – Sending data from the [sistema.asynchronous\_metrics](../../operations/system-tables.md#system_tables-asynchronous_metrics) tabla.
+-   events_cumulative – Sending cumulative data from the [sistema.evento](../../operations/system-tables.md#system_tables-events) tabla.
+-   asynchronous_metrics – Sending data from the [sistema.asynchronous_metrics](../../operations/system-tables.md#system_tables-asynchronous_metrics) tabla.
 
 Puede configurar múltiples `<graphite>` clausula. Por ejemplo, puede usar esto para enviar datos diferentes a intervalos diferentes.
 
@@ -170,7 +170,7 @@ Puede configurar múltiples `<graphite>` clausula. Por ejemplo, puede usar esto 
 </graphite>
 ```
 
-## graphite\_rollup {#server_configuration_parameters-graphite-rollup}
+## graphite_rollup {#server_configuration_parameters-graphite-rollup}
 
 Ajustes para reducir los datos de grafito.
 
@@ -198,7 +198,7 @@ Para obtener más información, consulte [GraphiteMergeTree](../../engines/table
 </graphite_rollup_example>
 ```
 
-## http\_port/https\_port {#http-porthttps-port}
+## http_port/https_port {#http-porthttps-port}
 
 El puerto para conectarse al servidor a través de HTTP(s).
 
@@ -209,10 +209,10 @@ Si `http_port` se especifica, la configuración de OpenSSL se ignora incluso si 
 **Ejemplo**
 
 ``` xml
-<https>0000</https>
+<https_port>9999</https_port>
 ```
 
-## http\_server\_default\_response {#server_configuration_parameters-http_server_default_response}
+## http_server_default_response {#server_configuration_parameters-http_server_default_response}
 
 La página que se muestra de forma predeterminada al acceder al servidor HTTP de ClickHouse.
 El valor predeterminado es “Ok.” (con un avance de línea al final)
@@ -227,7 +227,7 @@ Abrir `https://tabix.io/` al acceder `http://localhost: http_port`.
 </http_server_default_response>
 ```
 
-## include\_from {#server_configuration_parameters-include_from}
+## include_from {#server_configuration_parameters-include_from}
 
 La ruta al archivo con sustituciones.
 
@@ -249,7 +249,7 @@ Puerto para el intercambio de datos entre servidores ClickHouse.
 <interserver_http_port>9009</interserver_http_port>
 ```
 
-## Sistema Abierto {#interserver-http-host}
+## Sistema abierto {#interserver-http-host}
 
 El nombre de host que pueden utilizar otros servidores para acceder a este servidor.
 
@@ -263,7 +263,7 @@ Si se omite, se define de la misma manera que el `hostname-f` comando.
 <interserver_http_host>example.yandex.ru</interserver_http_host>
 ```
 
-## interserver\_http\_credentials {#server-settings-interserver-http-credentials}
+## interserver_http_credentials {#server-settings-interserver-http-credentials}
 
 El nombre de usuario y la contraseña utilizados para [replicación](../../engines/table-engines/mergetree-family/replication.md) con los motores Replicated\*. Estas credenciales sólo se utilizan para la comunicación entre réplicas y no están relacionadas con las credenciales de los clientes de ClickHouse. El servidor está comprobando estas credenciales para conectar réplicas y utiliza las mismas credenciales cuando se conecta a otras réplicas. Por lo tanto, estas credenciales deben establecerse igual para todas las réplicas de un clúster.
 De forma predeterminada, la autenticación no se utiliza.
@@ -282,7 +282,7 @@ Esta sección contiene los siguientes parámetros:
 </interserver_http_credentials>
 ```
 
-## keep\_alive\_timeout {#keep-alive-timeout}
+## keep_alive_timeout {#keep-alive-timeout}
 
 El número de segundos que ClickHouse espera las solicitudes entrantes antes de cerrar la conexión. El valor predeterminado es de 3 segundos.
 
@@ -292,7 +292,7 @@ El número de segundos que ClickHouse espera las solicitudes entrantes antes de 
 <keep_alive_timeout>3</keep_alive_timeout>
 ```
 
-## listen\_host {#server_configuration_parameters-listen_host}
+## listen_host {#server_configuration_parameters-listen_host}
 
 Restricción en hosts de los que pueden provenir las solicitudes. Si desea que el servidor responda a todos ellos, especifique `::`.
 
@@ -343,10 +343,10 @@ También se admite la escritura en el syslog. Config ejemplo:
 
 Claves:
 
--   use\_syslog — Required setting if you want to write to the syslog.
+-   use_syslog — Required setting if you want to write to the syslog.
 -   address — The host\[:port\] of syslogd. If omitted, the local daemon is used.
 -   hostname — Optional. The name of the host that logs are sent from.
--   facility — [La palabra clave syslog facility](https://en.wikipedia.org/wiki/Syslog#Facility) en letras mayúsculas con el “LOG\_” prefijo: (`LOG_USER`, `LOG_DAEMON`, `LOG_LOCAL3` y así sucesivamente).
+-   facility — [La palabra clave syslog facility](https://en.wikipedia.org/wiki/Syslog#Facility) en letras mayúsculas con el “LOG_” prefijo: (`LOG_USER`, `LOG_DAEMON`, `LOG_LOCAL3` y así sucesivamente).
     Valor predeterminado: `LOG_USER` si `address` se especifica, `LOG_DAEMON otherwise.`
 -   format – Message format. Possible values: `bsd` y `syslog.`
 
@@ -364,7 +364,7 @@ Para obtener más información, consulte la sección “[Creación de tablas rep
 <macros incl="macros" optional="true" />
 ```
 
-## Método De codificación De Datos: {#server-mark-cache-size}
+## Método de codificación de datos: {#server-mark-cache-size}
 
 Tamaño aproximado (en bytes) de la memoria caché de marcas utilizadas por los motores de [Método de codificación de datos:](../../engines/table-engines/mergetree-family/mergetree.md) familia.
 
@@ -376,7 +376,7 @@ La memoria caché se comparte para el servidor y la memoria se asigna según sea
 <mark_cache_size>5368709120</mark_cache_size>
 ```
 
-## max\_concurrent\_queries {#max-concurrent-queries}
+## max_concurrent_queries {#max-concurrent-queries}
 
 El número máximo de solicitudes procesadas simultáneamente.
 
@@ -386,7 +386,7 @@ El número máximo de solicitudes procesadas simultáneamente.
 <max_concurrent_queries>100</max_concurrent_queries>
 ```
 
-## max\_connections {#max-connections}
+## max_connections {#max-connections}
 
 El número máximo de conexiones entrantes.
 
@@ -396,13 +396,13 @@ El número máximo de conexiones entrantes.
 <max_connections>4096</max_connections>
 ```
 
-## max\_open\_files {#max-open-files}
+## max_open_files {#max-open-files}
 
 El número máximo de archivos abiertos.
 
 Predeterminada: `maximum`.
 
-Recomendamos el uso de esta opción en Mac OS X desde la `getrlimit()` la función devuelve un valor incorrecto.
+Recomendamos usar esta opción en Mac OS X desde el `getrlimit()` función devuelve un valor incorrecto.
 
 **Ejemplo**
 
@@ -410,11 +410,11 @@ Recomendamos el uso de esta opción en Mac OS X desde la `getrlimit()` la funci�
 <max_open_files>262144</max_open_files>
 ```
 
-## max\_table\_size\_to\_drop {#max-table-size-to-drop}
+## max_table_size_to_drop {#max-table-size-to-drop}
 
 Restricción en la eliminación de tablas.
 
-Si el tamaño de un [Método de codificación de datos:](../../engines/table-engines/mergetree-family/mergetree.md) tabla supera `max_table_size_to_drop` (en bytes), no puede eliminarlo usando una consulta DROP.
+Si el tamaño de un [Método de codificación de datos:](../../engines/table-engines/mergetree-family/mergetree.md) mesa excede `max_table_size_to_drop` (en bytes), no puede eliminarlo usando una consulta DROP.
 
 Si aún necesita eliminar la tabla sin reiniciar el servidor ClickHouse, cree el `<clickhouse-path>/flags/force_drop_table` y ejecute la consulta DROP.
 
@@ -428,7 +428,7 @@ El valor 0 significa que puede eliminar todas las tablas sin restricciones.
 <max_table_size_to_drop>0</max_table_size_to_drop>
 ```
 
-## merge\_tree {#server_configuration_parameters-merge_tree}
+## merge_tree {#server_configuration_parameters-merge_tree}
 
 Ajuste fino para tablas en el [Método de codificación de datos:](../../engines/table-engines/mergetree-family/mergetree.md).
 
@@ -453,7 +453,7 @@ Claves para la configuración del servidor/cliente:
 -   privateKeyFile – The path to the file with the secret key of the PEM certificate. The file may contain a key and certificate at the same time.
 -   certificateFile – The path to the client/server certificate file in PEM format. You can omit it if `privateKeyFile` contiene el certificado.
 -   caConfig – The path to the file or directory that contains trusted root certificates.
--   verificationMode – The method for checking the node’s certificates. Details are in the description of the [Contexto](https://github.com/ClickHouse-Extras/poco/blob/master/NetSSL_OpenSSL/include/Poco/Net/Context.h) clase. Valores posibles: `none`, `relaxed`, `strict`, `once`.
+-   verificationMode – The method for checking the node's certificates. Details are in the description of the [Contexto](https://github.com/ClickHouse-Extras/poco/blob/master/NetSSL_OpenSSL/include/Poco/Net/Context.h) clase. Valores posibles: `none`, `relaxed`, `strict`, `once`.
 -   verificationDepth – The maximum length of the verification chain. Verification will fail if the certificate chain length exceeds the set value.
 -   loadDefaultCAFile – Indicates that built-in CA certificates for OpenSSL will be used. Acceptable values: `true`, `false`. \|
 -   cipherList – Supported OpenSSL encryptions. For example: `ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH`.
@@ -463,9 +463,9 @@ Claves para la configuración del servidor/cliente:
 -   sessionTimeout – Time for caching the session on the server.
 -   extendedVerification – Automatically extended verification of certificates after the session ends. Acceptable values: `true`, `false`.
 -   requireTLSv1 – Require a TLSv1 connection. Acceptable values: `true`, `false`.
--   requireTLSv1\_1 – Require a TLSv1.1 connection. Acceptable values: `true`, `false`.
+-   requireTLSv1_1 – Require a TLSv1.1 connection. Acceptable values: `true`, `false`.
 -   requireTLSv1 – Require a TLSv1.2 connection. Acceptable values: `true`, `false`.
--   fips – Activates OpenSSL FIPS mode. Supported if the library’s OpenSSL version supports FIPS.
+-   fips – Activates OpenSSL FIPS mode. Supported if the library's OpenSSL version supports FIPS.
 -   privateKeyPassphraseHandler – Class (PrivateKeyPassphraseHandler subclass) that requests the passphrase for accessing the private key. For example: `<privateKeyPassphraseHandler>`, `<name>KeyFileHandler</name>`, `<options><password>test</password></options>`, `</privateKeyPassphraseHandler>`.
 -   invalidCertificateHandler – Class (a subclass of CertificateHandler) for verifying invalid certificates. For example: `<invalidCertificateHandler> <name>ConsoleCertificateHandler</name> </invalidCertificateHandler>` .
 -   disableProtocols – Protocols that are not allowed to use.
@@ -501,11 +501,11 @@ Claves para la configuración del servidor/cliente:
 </openSSL>
 ```
 
-## part\_log {#server_configuration_parameters-part-log}
+## part_log {#server_configuration_parameters-part-log}
 
 Registro de eventos asociados con [Método de codificación de datos:](../../engines/table-engines/mergetree-family/mergetree.md). Por ejemplo, agregar o fusionar datos. Puede utilizar el registro para simular algoritmos de combinación y comparar sus características. Puede visualizar el proceso de fusión.
 
-Las consultas se registran en el [sistema.part\_log](../../operations/system-tables.md#system_tables-part-log) tabla, no en un archivo separado. Puede configurar el nombre de esta tabla en el `table` parámetro (ver más abajo).
+Las consultas se registran en el [sistema.part_log](../../operations/system-tables.md#system_tables-part-log) tabla, no en un archivo separado. Puede configurar el nombre de esta tabla en el `table` parámetro (ver más abajo).
 
 Utilice los siguientes parámetros para configurar el registro:
 
@@ -538,13 +538,37 @@ La ruta de acceso al directorio que contiene los datos.
 <path>/var/lib/clickhouse/</path>
 ```
 
-## query\_log {#server_configuration_parameters-query-log}
+## prometeo {#server_configuration_parameters-prometheus}
 
-Configuración de las consultas de registro recibidas con [log\_queries=1](../settings/settings.md) configuración.
+Exponer datos de métricas para raspar desde [Prometeo](https://prometheus.io).
 
-Las consultas se registran en el [sistema.query\_log](../../operations/system-tables.md#system_tables-query_log) tabla, no en un archivo separado. Puede cambiar el nombre de la tabla en el `table` parámetro (ver más abajo).
+Configuración:
 
-Utilice los siguientes parámetros para configurar el inicio de sesión:
+-   `endpoint` – HTTP endpoint for scraping metrics by prometheus server. Start from ‘/’.
+-   `port` – Port for `endpoint`.
+-   `metrics` – Flag that sets to expose metrics from the [sistema.métricas](../system-tables.md#system_tables-metrics) tabla.
+-   `events` – Flag that sets to expose metrics from the [sistema.evento](../system-tables.md#system_tables-events) tabla.
+-   `asynchronous_metrics` – Flag that sets to expose current metrics values from the [sistema.asynchronous_metrics](../system-tables.md#system_tables-asynchronous_metrics) tabla.
+
+**Ejemplo**
+
+``` xml
+ <prometheus>
+        <endpoint>/metrics</endpoint>
+        <port>8001</port>
+        <metrics>true</metrics>
+        <events>true</events>
+        <asynchronous_metrics>true</asynchronous_metrics>
+    </prometheus>
+```
+
+## query_log {#server_configuration_parameters-query-log}
+
+Configuración de las consultas de registro recibidas con [log_queries=1](../settings/settings.md) configuración.
+
+Las consultas se registran en el [sistema.query_log](../../operations/system-tables.md#system_tables-query_log) tabla, no en un archivo separado. Puede cambiar el nombre de la tabla en el `table` parámetro (ver más abajo).
+
+Utilice los siguientes parámetros para configurar el registro:
 
 -   `database` – Name of the database.
 -   `table` – Name of the system table the queries will be logged in.
@@ -564,13 +588,13 @@ Si la tabla no existe, ClickHouse la creará. Si la estructura del registro de c
 </query_log>
 ```
 
-## Sistema Abierto {#server_configuration_parameters-query-thread-log}
+## Sistema abierto {#server_configuration_parameters-query-thread-log}
 
-Configuración de subprocesos de registro de consultas recibidas con [Log\_query\_threads = 1](../settings/settings.md#settings-log-query-threads) configuración.
+Configuración de subprocesos de registro de consultas recibidas con [Log_query_threads = 1](../settings/settings.md#settings-log-query-threads) configuración.
 
 Las consultas se registran en el [sistema.Sistema abierto.](../../operations/system-tables.md#system_tables-query-thread-log) tabla, no en un archivo separado. Puede cambiar el nombre de la tabla en el `table` parámetro (ver más abajo).
 
-Utilice los siguientes parámetros para configurar el inicio de sesión:
+Utilice los siguientes parámetros para configurar el registro:
 
 -   `database` – Name of the database.
 -   `table` – Name of the system table the queries will be logged in.
@@ -590,9 +614,9 @@ Si la tabla no existe, ClickHouse la creará. Si la estructura del registro de s
 </query_thread_log>
 ```
 
-## trace\_log {#server_configuration_parameters-trace_log}
+## trace_log {#server_configuration_parameters-trace_log}
 
-La configuración para el [trace\_log](../../operations/system-tables.md#system_tables-trace_log) operación de la tabla del sistema.
+Ajustes para el [trace_log](../../operations/system-tables.md#system_tables-trace_log) operación de la tabla del sistema.
 
 Parámetros:
 
@@ -612,7 +636,7 @@ El archivo de configuración del servidor predeterminado `config.xml` contiene l
 </trace_log>
 ```
 
-## query\_masking\_rules {#query-masking-rules}
+## query_masking_rules {#query-masking-rules}
 
 Reglas basadas en Regexp, que se aplicarán a las consultas, así como a todos los mensajes de registro antes de almacenarlos en los registros del servidor,
 `system.query_log`, `system.text_log`, `system.processes` tabla, y en los registros enviados al cliente. Eso permite prevenir
@@ -643,7 +667,7 @@ Las reglas de enmascaramiento se aplican a toda la consulta (para evitar fugas d
 Para consultas distribuidas, cada servidor debe configurarse por separado; de lo contrario, las subconsultas pasan a otros
 los nodos se almacenarán sin enmascarar.
 
-## remote\_servers {#server-settings-remote-servers}
+## remote_servers {#server-settings-remote-servers}
 
 Configuración de los clústeres utilizados por [Distribuido](../../engines/table-engines/special/distributed.md) motor de mesa y por el `cluster` función de la tabla.
 
@@ -657,9 +681,9 @@ Para el valor de la `incl` atributo, consulte la sección “[Archivos de config
 
 **Ver también**
 
--   [skip\_unavailable\_shards](../settings/settings.md#settings-skip_unavailable_shards)
+-   [skip_unavailable_shards](../settings/settings.md#settings-skip_unavailable_shards)
 
-## Zona Horaria {#server_configuration_parameters-timezone}
+## Zona horaria {#server_configuration_parameters-timezone}
 
 La zona horaria del servidor.
 
@@ -673,7 +697,7 @@ La zona horaria es necesaria para las conversiones entre los formatos String y D
 <timezone>Europe/Moscow</timezone>
 ```
 
-## Tcp\_port {#server_configuration_parameters-tcp_port}
+## Tcp_port {#server_configuration_parameters-tcp_port}
 
 Puerto para comunicarse con clientes a través del protocolo TCP.
 
@@ -683,7 +707,7 @@ Puerto para comunicarse con clientes a través del protocolo TCP.
 <tcp_port>9000</tcp_port>
 ```
 
-## Tcp\_port\_secure {#server_configuration_parameters-tcp_port-secure}
+## Tcp_port_secure {#server_configuration_parameters-tcp_port_secure}
 
 Puerto TCP para una comunicación segura con los clientes. Úselo con [OpenSSL](#server_configuration_parameters-openssl) configuración.
 
@@ -697,7 +721,7 @@ Entero positivo.
 <tcp_port_secure>9440</tcp_port_secure>
 ```
 
-## mysql\_port {#server_configuration_parameters-mysql_port}
+## mysql_port {#server_configuration_parameters-mysql_port}
 
 Puerto para comunicarse con clientes a través del protocolo MySQL.
 
@@ -711,7 +735,7 @@ Ejemplo
 <mysql_port>9004</mysql_port>
 ```
 
-## tmp\_path {#server-settings-tmp_path}
+## tmp_path {#server-settings-tmp_path}
 
 Ruta de acceso a datos temporales para procesar consultas grandes.
 
@@ -724,7 +748,7 @@ Ruta de acceso a datos temporales para procesar consultas grandes.
 <tmp_path>/var/lib/clickhouse/tmp/</tmp_path>
 ```
 
-## tmp\_policy {#server-settings-tmp-policy}
+## tmp_policy {#server-settings-tmp-policy}
 
 Política de [`storage_configuration`](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-multiple-volumes) para almacenar archivos temporales.
 Si no se establece [`tmp_path`](#server-settings-tmp_path) se utiliza, de lo contrario se ignora.
@@ -735,11 +759,11 @@ Si no se establece [`tmp_path`](#server-settings-tmp_path) se utiliza, de lo con
 - `max_data_part_size_bytes` se ignora
 - debe tener exactamente un volumen en esa política
 
-## Uncompressed\_cache\_size {#server-settings-uncompressed_cache_size}
+## Uncompressed_cache_size {#server-settings-uncompressed_cache_size}
 
 Tamaño de la memoria caché (en bytes) para los datos sin comprimir utilizados por los motores de [Método de codificación de datos:](../../engines/table-engines/mergetree-family/mergetree.md).
 
-Hay una caché compartida para el servidor. La memoria se asigna a pedido. La caché se usa si la opción [Use\_uncompressed\_cache](../settings/settings.md#setting-use_uncompressed_cache) está habilitado.
+Hay una caché compartida para el servidor. La memoria se asigna a pedido. La caché se usa si la opción [Use_uncompressed_cache](../settings/settings.md#setting-use_uncompressed_cache) está habilitado.
 
 La caché sin comprimir es ventajosa para consultas muy cortas en casos individuales.
 
@@ -749,7 +773,7 @@ La caché sin comprimir es ventajosa para consultas muy cortas en casos individu
 <uncompressed_cache_size>8589934592</uncompressed_cache_size>
 ```
 
-## user\_files\_path {#server_configuration_parameters-user_files_path}
+## user_files_path {#server_configuration_parameters-user_files_path}
 
 El directorio con archivos de usuario. Utilizado en la función de tabla [file()](../../sql-reference/table-functions/file.md).
 
@@ -759,7 +783,7 @@ El directorio con archivos de usuario. Utilizado en la función de tabla [file()
 <user_files_path>/var/lib/clickhouse/user_files/</user_files_path>
 ```
 
-## users\_config {#users-config}
+## users_config {#users-config}
 
 Ruta de acceso al archivo que contiene:
 
@@ -827,13 +851,13 @@ Esta sección contiene los siguientes parámetros:
 -   [Replicación](../../engines/table-engines/mergetree-family/replication.md)
 -   [Guía del programador ZooKeeper](http://zookeeper.apache.org/doc/current/zookeeperProgrammers.html)
 
-## use\_minimalistic\_part\_header\_in\_zookeeper {#server-settings-use_minimalistic_part_header_in_zookeeper}
+## use_minimalistic_part_header_in_zookeeper {#server-settings-use_minimalistic_part_header_in_zookeeper}
 
 Método de almacenamiento para encabezados de parte de datos en ZooKeeper.
 
 Esta configuración sólo se aplica a `MergeTree` familia. Se puede especificar:
 
--   A nivel mundial en el [merge\_tree](#server_configuration_parameters-merge_tree) sección de la `config.xml` file.
+-   A nivel mundial en el [merge_tree](#server_configuration_parameters-merge_tree) sección de la `config.xml` file.
 
     ClickHouse utiliza la configuración para todas las tablas del servidor. Puede cambiar la configuración en cualquier momento. Las tablas existentes cambian su comportamiento cuando cambia la configuración.
 
@@ -855,18 +879,28 @@ Si `use_minimalistic_part_header_in_zookeeper = 1`, entonces [repetición](../..
 
 **Valor predeterminado:** 0.
 
-## disable\_internal\_dns\_cache {#server-settings-disable-internal-dns-cache}
+## disable_internal_dns_cache {#server-settings-disable-internal-dns-cache}
 
 Deshabilita la memoria caché DNS interna. Recomendado para operar ClickHouse en sistemas
 con infraestructura que cambia frecuentemente como Kubernetes.
 
 **Valor predeterminado:** 0.
 
-## dns\_cache\_update\_period {#server-settings-dns-cache-update-period}
+## dns_cache_update_period {#server-settings-dns-cache-update-period}
 
 El período de actualización de las direcciones IP almacenadas en la caché DNS interna de ClickHouse (en segundos).
 La actualización se realiza de forma asíncrona, en un subproceso del sistema separado.
 
 **Valor predeterminado**: 15.
+
+## access_control_path {#access_control_path}
+
+Ruta de acceso a una carpeta donde un servidor ClickHouse almacena configuraciones de usuario y rol creadas por comandos SQL.
+
+Valor predeterminado: `/var/lib/clickhouse/access/`.
+
+**Ver también**
+
+-   [Control de acceso y gestión de cuentas](../access-rights.md#access-control)
 
 [Artículo Original](https://clickhouse.tech/docs/en/operations/server_configuration_parameters/settings/) <!--hide-->

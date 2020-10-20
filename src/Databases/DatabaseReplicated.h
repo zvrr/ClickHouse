@@ -6,6 +6,9 @@
 
 namespace DB
 {
+
+class Context;
+
 /** DatabaseReplicated engine
   * supports replication of metadata
   * via DDL log being written to ZooKeeper
@@ -31,7 +34,8 @@ namespace DB
 class DatabaseReplicated : public DatabaseAtomic
 {
 public:
-    DatabaseReplicated(const String & name_, const String & metadata_path_, const String & zookeeper_path_, const String & replica_name_, Context & context);
+    DatabaseReplicated(const String & name_, const String & metadata_path_, const UUID & uuid,
+                       const String & zookeeper_path_, const String & replica_name_, Context & context);
 
     void drop(const Context & /*context*/) override;
 

@@ -1,6 +1,6 @@
 ---
 machine_translated: true
-machine_translated_rev: e8cd92bba3269f47787db090899f7c242adf7818
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 45
 toc_title: "Hiyerar\u015Fik s\xF6zl\xFCkler"
 ---
@@ -27,7 +27,7 @@ Aşağıdaki hiyerarşik yapıya bakın:
 
 Bu hiyerarşi aşağıdaki sözlük tablosu olarak ifade edilebilir.
 
-| region\_id | parent\_region | region\_name |
+| region_id | parent_region | region_name |
 |------------|----------------|--------------|
 | 1          | 0              | Rusya        |
 | 2          | 1              | Moskova      |

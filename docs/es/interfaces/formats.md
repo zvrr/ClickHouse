@@ -1,11 +1,11 @@
 ---
 machine_translated: true
-machine_translated_rev: 3e185d24c9fe772c7cf03d5475247fb829a21dfa
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 21
 toc_title: Formatos de entrada y salida
 ---
 
-# Formatos Para Datos De Entrada y Salida {#formats}
+# Formatos para datos de entrada y salida {#formats}
 
 ClickHouse puede aceptar y devolver datos en varios formatos. Se puede utilizar un formato admitido para la entrada para analizar los datos proporcionados a `INSERT`s, para llevar a cabo `SELECT`s de una tabla respaldada por archivos como File, URL o HDFS, o para leer un diccionario externo. Se puede utilizar un formato compatible con la salida para organizar el
 resultados de un `SELECT`, y realizar `INSERT`s en una tabla respaldada por archivos.
@@ -72,13 +72,13 @@ SELECT EventDate, count() AS c FROM test.hits GROUP BY EventDate WITH TOTALS ORD
 2014-03-22      1031592
 2014-03-23      1046491
 
-0000-00-00      8873898
+1970-01-01      8873898
 
 2014-03-17      1031592
 2014-03-23      1406958
 ```
 
-### Formato De Datos {#data-formatting}
+### Formato de datos {#data-formatting}
 
 Los números enteros se escriben en forma decimal. Los números pueden contener un extra “+” carácter al principio (ignorado al analizar y no grabado al formatear). Los números no negativos no pueden contener el signo negativo. Al leer, se permite analizar una cadena vacía como cero, o (para tipos con signo) una cadena que consiste en solo un signo menos como cero. Los números que no encajan en el tipo de datos correspondiente se pueden analizar como un número diferente, sin un mensaje de error.
 
@@ -201,7 +201,7 @@ Configuración `format_template_resultset` especifica la ruta al archivo, que co
 -   `min` es la fila con valores mínimos en `format_template_row` formato (cuando los extremos se establecen en 1)
 -   `max` es la fila con valores máximos en `format_template_row` formato (cuando los extremos se establecen en 1)
 -   `rows` es el número total de filas de salida
--   `rows_before_limit` es el número mínimo de filas que habría habido sin LIMIT. Salida solo si la consulta contiene LIMIT. Si la consulta contiene GROUP BY, rows\_before\_limit\_at\_least es el número exacto de filas que habría habido sin un LIMIT .
+-   `rows_before_limit` es el número mínimo de filas que habría habido sin LIMIT. Salida solo si la consulta contiene LIMIT. Si la consulta contiene GROUP BY, rows_before_limit_at_least es el número exacto de filas que habría habido sin un LIMIT .
 -   `time` es el tiempo de ejecución de la solicitud en segundos
 -   `rows_read` es el número de filas que se ha leído
 -   `bytes_read` es el número de bytes (sin comprimir) que se ha leído
@@ -317,7 +317,7 @@ format_template_resultset = '/some/path/resultset.format', format_template_row =
 
 ## TSKV {#tskv}
 
-Similar a TabSeparated, pero las salidas de un valor en nombre=valor de formato. Los nombres se escapó de la misma manera como en TabSeparated formato, y el símbolo = es también escapó.
+Similar a TabSeparated , pero genera un valor en formato name=value . Los nombres se escapan de la misma manera que en el formato TabSeparated, y el símbolo = también se escapa.
 
 ``` text
 SearchPhrase=   count()=8267016
@@ -352,21 +352,21 @@ El análisis permite la presencia del campo adicional `tskv` sin el signo igual 
 
 Formato de valores separados por comas ([RFC](https://tools.ietf.org/html/rfc4180)).
 
-Al formatear, las filas están encerradas en comillas dobles. Una comilla doble dentro de una cadena se genera como dos comillas dobles en una fila. No hay otras reglas para escapar de los personajes. Fecha y fecha-hora están encerrados en comillas dobles. Los números se emiten sin comillas. Los valores están separados por un carácter delimitador, que es `,` predeterminada. El carácter delimitador se define en la configuración [Formato\_csv\_delimiter](../operations/settings/settings.md#settings-format_csv_delimiter). Las filas se separan usando el avance de línea Unix (LF). Las matrices se serializan en CSV de la siguiente manera: primero, la matriz se serializa en una cadena como en el formato TabSeparated, y luego la cadena resultante se envía a CSV en comillas dobles. Las tuplas en formato CSV se serializan como columnas separadas (es decir, se pierde su anidamiento en la tupla).
+Al formatear, las filas están encerradas en comillas dobles. Una comilla doble dentro de una cadena se genera como dos comillas dobles en una fila. No hay otras reglas para escapar de los personajes. Fecha y fecha-hora están encerrados en comillas dobles. Los números se emiten sin comillas. Los valores están separados por un carácter delimitador, que es `,` predeterminada. El carácter delimitador se define en la configuración [Formato_csv_delimiter](../operations/settings/settings.md#settings-format_csv_delimiter). Las filas se separan usando el avance de línea Unix (LF). Las matrices se serializan en CSV de la siguiente manera: primero, la matriz se serializa en una cadena como en el formato TabSeparated, y luego la cadena resultante se envía a CSV en comillas dobles. Las tuplas en formato CSV se serializan como columnas separadas (es decir, se pierde su anidamiento en la tupla).
 
 ``` bash
 $ clickhouse-client --format_csv_delimiter="|" --query="INSERT INTO test.csv FORMAT CSV" < data.csv
 ```
 
-\*De forma predeterminada, el delimitador es `,`. Ver el [Formato\_csv\_delimiter](../operations/settings/settings.md#settings-format_csv_delimiter) para obtener más información.
+\*De forma predeterminada, el delimitador es `,`. Ver el [Formato_csv_delimiter](../operations/settings/settings.md#settings-format_csv_delimiter) para obtener más información.
 
 Al analizar, todos los valores se pueden analizar con o sin comillas. Ambas comillas dobles y simples son compatibles. Las filas también se pueden organizar sin comillas. En este caso, se analizan hasta el carácter delimitador o el avance de línea (CR o LF). En violación del RFC, al analizar filas sin comillas, se ignoran los espacios y pestañas iniciales y finales. Para el avance de línea, se admiten los tipos Unix (LF), Windows (CR LF) y Mac OS Classic (CR LF).
 
 Los valores de entrada vacíos sin comillas se sustituyen por valores predeterminados para las columnas respectivas, si
-[Entrada\_format\_defaults\_for\_omitted\_fields](../operations/settings/settings.md#session_settings-input_format_defaults_for_omitted_fields)
+[Entrada_format_defaults_for_omitted_fields](../operations/settings/settings.md#session_settings-input_format_defaults_for_omitted_fields)
 está habilitado.
 
-`NULL` se formatea como `\N` o `NULL` o una cadena vacía sin comillas (consulte la configuración [input\_format\_csv\_unquoted\_null\_literal\_as\_null](../operations/settings/settings.md#settings-input_format_csv_unquoted_null_literal_as_null) y [Entrada\_format\_defaults\_for\_omitted\_fields](../operations/settings/settings.md#session_settings-input_format_defaults_for_omitted_fields)).
+`NULL` se formatea como `\N` o `NULL` o una cadena vacía sin comillas (consulte la configuración [input_format_csv_unquoted_null_literal_as_null](../operations/settings/settings.md#settings-input_format_csv_unquoted_null_literal_as_null) y [Entrada_format_defaults_for_omitted_fields](../operations/settings/settings.md#session_settings-input_format_defaults_for_omitted_fields)).
 
 El formato CSV admite la salida de totales y extremos de la misma manera que `TabSeparated`.
 
@@ -451,12 +451,12 @@ SELECT SearchPhrase, count() AS c FROM test.hits GROUP BY SearchPhrase WITH TOTA
 }
 ```
 
-El JSON es compatible con JavaScript. Para garantizar esto, algunos caracteres se escapan adicionalmente: la barra inclinada `/` se escapa como `\/`; saltos de línea alternativos `U+2028` y `U+2029`, que rompen algunos navegadores, se escapan como `\uXXXX`. Los caracteres de control ASCII se escapan: retroceso, avance de formulario, avance de línea, retorno de carro y tabulación horizontal se reemplazan con `\b`, `\f`, `\n`, `\r`, `\t` , así como los bytes restantes en el rango 00-1F usando `\uXXXX` sequences. Invalid UTF-8 sequences are changed to the replacement character � so the output text will consist of valid UTF-8 sequences. For compatibility with JavaScript, Int64 and UInt64 integers are enclosed in double-quotes by default. To remove the quotes, you can set the configuration parameter [output\_format\_json\_quote\_64bit\_integers](../operations/settings/settings.md#session_settings-output_format_json_quote_64bit_integers) a 0.
+El JSON es compatible con JavaScript. Para garantizar esto, algunos caracteres se escapan adicionalmente: la barra inclinada `/` se escapa como `\/`; saltos de línea alternativos `U+2028` y `U+2029`, que rompen algunos navegadores, se escapan como `\uXXXX`. Los caracteres de control ASCII se escapan: retroceso, avance de formulario, avance de línea, retorno de carro y tabulación horizontal se reemplazan con `\b`, `\f`, `\n`, `\r`, `\t` , así como los bytes restantes en el rango 00-1F usando `\uXXXX` sequences. Invalid UTF-8 sequences are changed to the replacement character � so the output text will consist of valid UTF-8 sequences. For compatibility with JavaScript, Int64 and UInt64 integers are enclosed in double-quotes by default. To remove the quotes, you can set the configuration parameter [output_format_json_quote_64bit_integers](../operations/settings/settings.md#session_settings-output_format_json_quote_64bit_integers) a 0.
 
 `rows` – The total number of output rows.
 
 `rows_before_limit_at_least` El número mínimo de filas habría sido sin LIMIT . Salida solo si la consulta contiene LIMIT.
-Si la consulta contiene GROUP BY, rows\_before\_limit\_at\_least es el número exacto de filas que habría habido sin un LIMIT .
+Si la consulta contiene GROUP BY, rows_before_limit_at_least es el número exacto de filas que habría habido sin un LIMIT .
 
 `totals` – Total values (when using WITH TOTALS).
 
@@ -526,7 +526,7 @@ Al usar este formato, ClickHouse genera filas como objetos JSON separados, delim
 
 Al insertar los datos, debe proporcionar un objeto JSON independiente para cada fila.
 
-### Insertar Datos {#inserting-data}
+### Insertar datos {#inserting-data}
 
 ``` sql
 INSERT INTO UserActivity FORMAT JSONEachRow {"PageViews":5, "UserID":"4324182021466249494", "Duration":146,"Sign":-1} {"UserID":"4324182021466249494","PageViews":6,"Duration":185,"Sign":1}
@@ -543,7 +543,7 @@ ClickHouse ignora los espacios entre los elementos y las comas después de los o
 
 ClickHouse sustituye los valores omitidos por los valores predeterminados para el [tipos de datos](../sql-reference/data-types/index.md).
 
-Si `DEFAULT expr` se especifica, ClickHouse utiliza diferentes reglas de sustitución dependiendo de la [Entrada\_format\_defaults\_for\_omitted\_fields](../operations/settings/settings.md#session_settings-input_format_defaults_for_omitted_fields) configuración.
+Si `DEFAULT expr` se especifica, ClickHouse utiliza diferentes reglas de sustitución dependiendo de la [Entrada_format_defaults_for_omitted_fields](../operations/settings/settings.md#session_settings-input_format_defaults_for_omitted_fields) configuración.
 
 Considere la siguiente tabla:
 
@@ -561,7 +561,7 @@ CREATE TABLE IF NOT EXISTS example_table
 !!! note "Advertencia"
     Al insertar datos con `insert_sample_with_metadata = 1`, ClickHouse consume más recursos computacionales, en comparación con la inserción con `insert_sample_with_metadata = 0`.
 
-### Selección De Datos {#selecting-data}
+### Selección de datos {#selecting-data}
 
 Considere el `UserActivity` tabla como un ejemplo:
 
@@ -584,9 +584,9 @@ A diferencia de la [JSON](#json) formato, no hay sustitución de secuencias UTF-
 !!! note "Nota"
     Cualquier conjunto de bytes se puede generar en las cadenas. Utilice el `JSONEachRow` si está seguro de que los datos de la tabla se pueden formatear como JSON sin perder ninguna información.
 
-### Uso De Estructuras Anidadas {#jsoneachrow-nested}
+### Uso de estructuras anidadas {#jsoneachrow-nested}
 
-Si tienes una mesa con [Anidar](../sql-reference/data-types/nested-data-structures/nested.md) columnas de tipo de datos, puede insertar datos JSON con la misma estructura. Habilite esta función con el [Entrada\_format\_import\_nested\_json](../operations/settings/settings.md#settings-input_format_import_nested_json) configuración.
+Si tienes una mesa con [Anidar](../sql-reference/data-types/nested-data-structures/nested.md) columnas de tipo de datos, puede insertar datos JSON con la misma estructura. Habilite esta función con el [Entrada_format_import_nested_json](../operations/settings/settings.md#settings-input_format_import_nested_json) configuración.
 
 Por ejemplo, considere la siguiente tabla:
 
@@ -600,7 +600,7 @@ Como se puede ver en el `Nested` descripción del tipo de datos, ClickHouse trat
 INSERT INTO json_each_row_nested FORMAT JSONEachRow {"n.s": ["abc", "def"], "n.i": [1, 23]}
 ```
 
-Para insertar datos como un objeto JSON jerárquico, establezca [input\_format\_import\_nested\_json=1](../operations/settings/settings.md#settings-input_format_import_nested_json).
+Para insertar datos como un objeto JSON jerárquico, establezca [input_format_import_nested_json=1](../operations/settings/settings.md#settings-input_format_import_nested_json).
 
 ``` json
 {
@@ -645,7 +645,7 @@ SELECT * FROM json_each_row_nested
 
 ## Nativo {#native}
 
-El formato más eficiente. Los datos son escritos y leídos por bloques en formato binario. Para cada bloque, el número de filas, número de columnas, nombres y tipos de columnas y partes de columnas de este bloque se registran una tras otra. En otras palabras, este formato es “columnar” – it doesn’t convert columns to rows. This is the format used in the native interface for interaction between servers, for using the command-line client, and for C++ clients.
+El formato más eficiente. Los datos son escritos y leídos por bloques en formato binario. Para cada bloque, el número de filas, número de columnas, nombres y tipos de columnas y partes de columnas de este bloque se registran una tras otra. En otras palabras, este formato es “columnar” – it doesn't convert columns to rows. This is the format used in the native interface for interaction between servers, for using the command-line client, and for C++ clients.
 
 Puede utilizar este formato para generar rápidamente volcados que sólo pueden ser leídos por el DBMS de ClickHouse. No tiene sentido trabajar con este formato usted mismo.
 
@@ -708,7 +708,7 @@ SELECT EventDate, count() AS c FROM test.hits GROUP BY EventDate WITH TOTALS ORD
 
 Totals:
 ┌──EventDate─┬───────c─┐
-│ 0000-00-00 │ 8873898 │
+│ 1970-01-01 │ 8873898 │
 └────────────┴─────────┘
 
 Extremes:
@@ -782,11 +782,11 @@ The minimum set of characters that you need to escape when passing data in Value
 
 Este es el formato que se utiliza en `INSERT INTO t VALUES ...`, pero también puede usarlo para formatear los resultados de la consulta.
 
-Ver también: [input\_format\_values\_interpret\_expressions](../operations/settings/settings.md#settings-input_format_values_interpret_expressions) y [input\_format\_values\_deduce\_templates\_of\_expressions](../operations/settings/settings.md#settings-input_format_values_deduce_templates_of_expressions) configuración.
+Ver también: [input_format_values_interpret_expressions](../operations/settings/settings.md#settings-input_format_values_interpret_expressions) y [input_format_values_deduce_templates_of_expressions](../operations/settings/settings.md#settings-input_format_values_deduce_templates_of_expressions) configuración.
 
 ## Vertical {#vertical}
 
-Imprime cada valor en una línea independiente con el nombre de la columna especificada. Este formato es conveniente para imprimir solo una o varias filas si cada fila consta de un gran número de columnas.
+Imprime cada valor en una línea independiente con el nombre de columna especificado. Este formato es conveniente para imprimir solo una o varias filas si cada fila consta de un gran número de columnas.
 
 [NULL](../sql-reference/syntax.md) se emite como `ᴺᵁᴸᴸ`.
 
@@ -897,9 +897,9 @@ Las matrices se emiten como `<array><elem>Hello</elem><elem>World</elem>...</arr
 
 ## CapnProto {#capnproto}
 
-Cap’n Proto es un formato de mensaje binario similar a Protocol Buffers y Thrift, pero no como JSON o MessagePack.
+Cap'n Proto es un formato de mensaje binario similar a Protocol Buffers y Thrift, pero no como JSON o MessagePack.
 
-Los mensajes de Cap’n Proto están estrictamente escritos y no autodescribidos, lo que significa que necesitan una descripción de esquema externo. El esquema se aplica sobre la marcha y se almacena en caché para cada consulta.
+Los mensajes de Cap'n Proto están estrictamente escritos y no autodescribidos, lo que significa que necesitan una descripción de esquema externo. El esquema se aplica sobre la marcha y se almacena en caché para cada consulta.
 
 ``` bash
 $ cat capnproto_messages.bin | clickhouse-client --query "INSERT INTO test.hits FORMAT CapnProto SETTINGS format_schema='schema:Message'"
@@ -991,13 +991,13 @@ Ver también [cómo leer / escribir mensajes protobuf delimitados por longitud e
 
 El formato ClickHouse Avro admite lectura y escritura [Archivos de datos Avro](http://avro.apache.org/docs/current/spec.html#Object+Container+Files).
 
-### Coincidencia De Tipos De Datos {#data_types-matching}
+### Coincidencia de tipos de datos {#data_types-matching}
 
 La siguiente tabla muestra los tipos de datos admitidos y cómo coinciden con ClickHouse [tipos de datos](../sql-reference/data-types/index.md) en `INSERT` y `SELECT` consulta.
 
 | Tipo de datos Avro `INSERT`                 | Tipo de datos ClickHouse                                                                                                | Tipo de datos Avro `SELECT`  |
 |---------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|------------------------------|
-| `boolean`, `int`, `long`, `float`, `double` | [¿cómo funciona?)](../sql-reference/data-types/int-uint.md), [UInt(8\|16\|32)](../sql-reference/data-types/int-uint.md) | `int`                        |
+| `boolean`, `int`, `long`, `float`, `double` | [¿Cómo funciona?)](../sql-reference/data-types/int-uint.md), [UInt(8\|16\|32)](../sql-reference/data-types/int-uint.md) | `int`                        |
 | `boolean`, `int`, `long`, `float`, `double` | [Int64](../sql-reference/data-types/int-uint.md), [UInt64](../sql-reference/data-types/int-uint.md)                     | `long`                       |
 | `boolean`, `int`, `long`, `float`, `double` | [Float32](../sql-reference/data-types/float.md)                                                                         | `float`                      |
 | `boolean`, `int`, `long`, `float`, `double` | [Float64](../sql-reference/data-types/float.md)                                                                         | `double`                     |
@@ -1008,7 +1008,7 @@ La siguiente tabla muestra los tipos de datos admitidos y cómo coinciden con Cl
 | `union(null, T)`, `union(T, null)`          | [Nivel de Cifrado WEP)](../sql-reference/data-types/date.md)                                                            | `union(null, T)`             |
 | `null`                                      | [Nullable (nada)](../sql-reference/data-types/special-data-types/nothing.md)                                            | `null`                       |
 | `int (date)` \*                             | [Fecha](../sql-reference/data-types/date.md)                                                                            | `int (date)` \*              |
-| `long (timestamp-millis)` \*                | [¿qué puedes encontrar en neodigit)](../sql-reference/data-types/datetime.md)                                           | `long (timestamp-millis)` \* |
+| `long (timestamp-millis)` \*                | [¿Qué puedes encontrar en Neodigit)](../sql-reference/data-types/datetime.md)                                           | `long (timestamp-millis)` \* |
 | `long (timestamp-micros)` \*                | [Cómo hacer esto?)](../sql-reference/data-types/datetime.md)                                                            | `long (timestamp-micros)` \* |
 
 \* [Tipos lógicos Avro](http://avro.apache.org/docs/current/spec.html#Logical+Types)
@@ -1017,7 +1017,7 @@ Tipos de datos Avro no admitidos: `record` (no root), `map`
 
 Tipos de datos lógicos Avro no admitidos: `uuid`, `time-millis`, `time-micros`, `duration`
 
-### Insertar Datos {#inserting-data-1}
+### Insertar datos {#inserting-data-1}
 
 Para insertar datos de un archivo Avro en la tabla ClickHouse:
 
@@ -1030,9 +1030,9 @@ El esquema raíz del archivo Avro de entrada debe ser de `record` tipo.
 Para encontrar la correspondencia entre las columnas de la tabla y los campos de Avro esquema ClickHouse compara sus nombres. Esta comparación distingue entre mayúsculas y minúsculas.
 Los campos no utilizados se omiten.
 
-Los tipos de datos de las columnas de tabla ClickHouse pueden diferir de los campos correspondientes de los datos de Avro insertados. Al insertar datos, ClickHouse interpreta los tipos de datos de acuerdo con la tabla anterior y luego [elenco](../query_language/functions/type_conversion_functions/#type_conversion_function-cast) los datos al tipo de columna correspondiente.
+Los tipos de datos de las columnas de tabla ClickHouse pueden diferir de los campos correspondientes de los datos de Avro insertados. Al insertar datos, ClickHouse interpreta los tipos de datos de acuerdo con la tabla anterior y luego [elenco](../sql-reference/functions/type-conversion-functions.md#type_conversion_function-cast) los datos al tipo de columna correspondiente.
 
-### Selección De Datos {#selecting-data-1}
+### Selección de datos {#selecting-data-1}
 
 Para seleccionar datos de la tabla ClickHouse en un archivo Avro:
 
@@ -1057,13 +1057,13 @@ Los esquemas se almacenan en caché una vez resueltos.
 
 La URL del registro de esquemas se configura con [Todos los derechos reservados.](../operations/settings/settings.md#settings-format_avro_schema_registry_url)
 
-### Coincidencia De Tipos De Datos {#data_types-matching-1}
+### Coincidencia de tipos de datos {#data_types-matching-1}
 
 Lo mismo que [Avro](#data-format-avro)
 
 ### Uso {#usage}
 
-Para verificar rápidamente la resolución del esquema, puede usar [Método de codificación de datos:](https://github.com/edenhill/kafkacat) con [Sistema abierto.](../operations/utilities/clickhouse-local.md):
+Para verificar rápidamente la resolución del esquema, puede usar [Método de codificación de datos:](https://github.com/edenhill/kafkacat) con [Sistema abierto.](../operations/utilities/clickhouse-local.md#clickhouse-local):
 
 ``` bash
 $ kafkacat -b kafka-broker  -C -t topic1 -o beginning -f '%s' -c 3 | clickhouse-local   --input-format AvroConfluent --format_avro_schema_registry_url 'http://schema-registry' -S "field1 Int64, field2 String"  -q 'select *  from table'
@@ -1099,7 +1099,7 @@ SELECT * FROM topic1_stream;
 
 [Apache Parquet](http://parquet.apache.org/) es un formato de almacenamiento columnar generalizado en el ecosistema Hadoop. ClickHouse admite operaciones de lectura y escritura para este formato.
 
-### Coincidencia De Tipos De Datos {#data_types-matching-2}
+### Coincidencia de tipos de datos {#data_types-matching-2}
 
 La siguiente tabla muestra los tipos de datos admitidos y cómo coinciden con ClickHouse [tipos de datos](../sql-reference/data-types/index.md) en `INSERT` y `SELECT` consulta.
 
@@ -1127,7 +1127,7 @@ Tipos de datos de parquet no admitidos: `DATE32`, `TIME32`, `FIXED_SIZE_BINARY`,
 
 Los tipos de datos de las columnas de tabla ClickHouse pueden diferir de los campos correspondientes de los datos de Parquet insertados. Al insertar datos, ClickHouse interpreta los tipos de datos de acuerdo con la tabla anterior y luego [elenco](../query_language/functions/type_conversion_functions/#type_conversion_function-cast) los datos de ese tipo de datos que se establece para la columna de tabla ClickHouse.
 
-### Insertar y Seleccionar Datos {#inserting-and-selecting-data}
+### Insertar y seleccionar datos {#inserting-and-selecting-data}
 
 Puede insertar datos de Parquet desde un archivo en la tabla ClickHouse mediante el siguiente comando:
 
@@ -1147,7 +1147,7 @@ Para intercambiar datos con Hadoop, puede usar [Motor de mesa HDFS](../engines/t
 
 [Apache ORC](https://orc.apache.org/) es un formato de almacenamiento columnar generalizado en el ecosistema Hadoop. Solo puede insertar datos en este formato en ClickHouse.
 
-### Coincidencia De Tipos De Datos {#data_types-matching-3}
+### Coincidencia de tipos de datos {#data_types-matching-3}
 
 La siguiente tabla muestra los tipos de datos admitidos y cómo coinciden con ClickHouse [tipos de datos](../sql-reference/data-types/index.md) en `INSERT` consulta.
 
@@ -1172,9 +1172,9 @@ ClickHouse soporta la precisión configurable de la `Decimal` tipo. El `INSERT` 
 
 Tipos de datos ORC no admitidos: `DATE32`, `TIME32`, `FIXED_SIZE_BINARY`, `JSON`, `UUID`, `ENUM`.
 
-Los tipos de datos de las columnas de tabla ClickHouse no tienen que coincidir con los campos de datos ORC correspondientes. Al insertar datos, ClickHouse interpreta los tipos de datos de acuerdo con la tabla anterior y luego [elenco](../query_language/functions/type_conversion_functions/#type_conversion_function-cast) los datos al tipo de datos establecido para la columna de tabla ClickHouse.
+Los tipos de datos de las columnas de tabla ClickHouse no tienen que coincidir con los campos de datos ORC correspondientes. Al insertar datos, ClickHouse interpreta los tipos de datos de acuerdo con la tabla anterior y luego [elenco](../sql-reference/functions/type-conversion-functions.md#type_conversion_function-cast) los datos al tipo de datos establecido para la columna de tabla ClickHouse.
 
-### Insertar Datos {#inserting-data-2}
+### Insertar datos {#inserting-data-2}
 
 Puede insertar datos ORC de un archivo en la tabla ClickHouse mediante el siguiente comando:
 
@@ -1184,7 +1184,7 @@ $ cat filename.orc | clickhouse-client --query="INSERT INTO some_table FORMAT OR
 
 Para intercambiar datos con Hadoop, puede usar [Motor de mesa HDFS](../engines/table-engines/integrations/hdfs.md).
 
-## Esquema De Formato {#formatschema}
+## Esquema de formato {#formatschema}
 
 El valor establece el nombre de archivo que contiene el esquema de formato `format_schema`.
 Es necesario establecer esta configuración cuando se utiliza uno de los formatos `Cap'n Proto` y `Protobuf`.
@@ -1194,17 +1194,17 @@ Si el archivo tiene la extensión estándar para el formato (por ejemplo, `.prot
 se puede omitir y en este caso, el esquema de formato se ve así `schemafile:MessageType`.
 
 Si introduce o emite datos a través del [cliente](../interfaces/cli.md) en el [modo interactivo](../interfaces/cli.md#cli_usage), el nombre de archivo especificado en el esquema de formato
-puede contener una ruta de acceso absoluta o una ruta relativa al directorio actual en el cliente.
+puede contener una ruta absoluta o una ruta relativa al directorio actual en el cliente.
 Si utiliza el cliente en el [modo por lotes](../interfaces/cli.md#cli_usage), la ruta de acceso al esquema debe ser relativa por razones de seguridad.
 
 Si introduce o emite datos a través del [Interfaz HTTP](../interfaces/http.md) el nombre de archivo especificado en el esquema de formato
-debe estar ubicado en el directorio especificado en [format\_schema\_path](../operations/server-configuration-parameters/settings.md#server_configuration_parameters-format_schema_path)
+debe estar ubicado en el directorio especificado en [format_schema_path](../operations/server-configuration-parameters/settings.md#server_configuration_parameters-format_schema_path)
 en la configuración del servidor.
 
-## Salto De Errores {#skippingerrors}
+## Salto de errores {#skippingerrors}
 
-Algunos formatos como `CSV`, `TabSeparated`, `TSKV`, `JSONEachRow`, `Template`, `CustomSeparated` y `Protobuf` puede omitir la fila rota si se produjo un error de análisis y continuar el análisis desde el comienzo de la siguiente fila. Ver [Entrada\_format\_allow\_errors\_num](../operations/settings/settings.md#settings-input_format_allow_errors_num) y
-[Entrada\_format\_allow\_errors\_ratio](../operations/settings/settings.md#settings-input_format_allow_errors_ratio) configuración.
+Algunos formatos como `CSV`, `TabSeparated`, `TSKV`, `JSONEachRow`, `Template`, `CustomSeparated` y `Protobuf` puede omitir la fila rota si se produjo un error de análisis y continuar el análisis desde el comienzo de la siguiente fila. Ver [Entrada_format_allow_errors_num](../operations/settings/settings.md#settings-input_format_allow_errors_num) y
+[Entrada_format_allow_errors_ratio](../operations/settings/settings.md#settings-input_format_allow_errors_ratio) configuración.
 Limitacion:
 - En caso de error de análisis `JSONEachRow` omite todos los datos hasta la nueva línea (o EOF), por lo que las filas deben estar delimitadas por `\n` para contar los errores correctamente.
 - `Template` y `CustomSeparated` use el delimitador después de la última columna y el delimitador entre filas para encontrar el comienzo de la siguiente fila, por lo que omitir errores solo funciona si al menos uno de ellos no está vacío.

@@ -11,13 +11,19 @@ namespace ErrorCodes
     extern const int CANNOT_CREATE_IO_BUFFER;
 }
 
-KafkaBlockOutputStream::KafkaBlockOutputStream(StorageKafka & storage_, const Context & context_) : storage(storage_), context(context_)
+KafkaBlockOutputStream::KafkaBlockOutputStream(
+    StorageKafka & storage_,
+    const StorageMetadataPtr & metadata_snapshot_,
+    const std::shared_ptr<Context> & context_)
+    : storage(storage_)
+    , metadata_snapshot(metadata_snapshot_)
+    , context(context_)
 {
 }
 
 Block KafkaBlockOutputStream::getHeader() const
 {
-    return storage.getSampleBlockNonMaterialized();
+    return metadata_snapshot->getSampleBlockNonMaterialized();
 }
 
 void KafkaBlockOutputStream::writePrefix()
@@ -26,7 +32,13 @@ void KafkaBlockOutputStream::writePrefix()
     if (!buffer)
         throw Exception("Failed to create Kafka producer!", ErrorCodes::CANNOT_CREATE_IO_BUFFER);
 
-    child = FormatFactory::instance().getOutput(storage.getFormatName(), *buffer, getHeader(), context, [this](const Columns & columns, size_t row){ buffer->countRow(columns, row); });
+    child = FormatFactory::instance().getOutput(
+            storage.getFormatName(), *buffer, getHeader(), *context, [this](const Columns & columns, size_t row)
+            {
+                buffer->countRow(columns, row);
+            },
+            /* ignore_no_row_delimiter = */ true
+            );
 }
 
 void KafkaBlockOutputStream::write(const Block & block)
@@ -36,7 +48,8 @@ void KafkaBlockOutputStream::write(const Block & block)
 
 void KafkaBlockOutputStream::writeSuffix()
 {
-    child->writeSuffix();
+    if (child)
+        child->writeSuffix();
     flush();
 }
 

@@ -1,6 +1,6 @@
 ---
 machine_translated: true
-machine_translated_rev: 3e185d24c9fe772c7cf03d5475247fb829a21dfa
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 34
 toc_title: INSERT INTO
 ---
@@ -20,7 +20,7 @@ La consulta puede especificar una lista de columnas para insertar `[(c1, c2, c3)
 -   Los valores calculados a partir del `DEFAULT` expresiones especificadas en la definición de la tabla.
 -   Ceros y cadenas vacías, si `DEFAULT` expresiones no están definidas.
 
-Si [strict\_insert\_defaults=1](../../operations/settings/settings.md), columnas que no tienen `DEFAULT` definido debe figurar en la consulta.
+Si [strict_insert_defaults=1](../../operations/settings/settings.md), columnas que no tienen `DEFAULT` definido debe figurar en la consulta.
 
 Los datos se pueden pasar al INSERT en cualquier [formato](../../interfaces/formats.md#formats) con el apoyo de ClickHouse. El formato debe especificarse explícitamente en la consulta:
 
@@ -50,7 +50,7 @@ Puede insertar datos por separado de la consulta mediante el cliente de línea d
 
 Si la tabla tiene [limitación](create.md#constraints), their expressions will be checked for each row of inserted data. If any of those constraints is not satisfied — server will raise an exception containing constraint name and expression, the query will be stopped.
 
-### Insertar Los Resultados De `SELECT` {#insert_query_insert-select}
+### Insertar los resultados de `SELECT` {#insert_query_insert-select}
 
 ``` sql
 INSERT INTO [db.]table [(c1, c2, c3)] SELECT ...
@@ -65,7 +65,7 @@ Sin embargo, puede eliminar datos antiguos usando `ALTER TABLE ... DROP PARTITIO
 
 `FORMAT` cláusula debe especificarse al final de la consulta si `SELECT` cláusula contiene la función de tabla [entrada()](../table-functions/input.md).
 
-### Consideraciones De Rendimiento {#performance-considerations}
+### Consideraciones de rendimiento {#performance-considerations}
 
 `INSERT` ordena los datos de entrada por clave principal y los divide en particiones por una clave de partición. Si inserta datos en varias particiones a la vez, puede reducir significativamente el rendimiento del `INSERT` consulta. Para evitar esto:
 
@@ -74,7 +74,7 @@ Sin embargo, puede eliminar datos antiguos usando `ALTER TABLE ... DROP PARTITIO
 
 El rendimiento no disminuirá si:
 
--   Se agregan datos en tiempo real.
--   Cargar los datos que generalmente se ordenan por el tiempo.
+-   Los datos se agregan en tiempo real.
+-   Carga datos que normalmente están ordenados por tiempo.
 
 [Artículo Original](https://clickhouse.tech/docs/en/query_language/insert_into/) <!--hide-->

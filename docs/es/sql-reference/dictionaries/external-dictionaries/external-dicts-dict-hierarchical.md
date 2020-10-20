@@ -1,6 +1,6 @@
 ---
 machine_translated: true
-machine_translated_rev: 3e185d24c9fe772c7cf03d5475247fb829a21dfa
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 45
 toc_title: "Diccionarios jer\xE1rquicos"
 ---
@@ -27,7 +27,7 @@ Mira la siguiente estructura jerárquica:
 
 Esta jerarquía se puede expresar como la siguiente tabla de diccionario.
 
-| region\_id | parent\_region | nombre\_región |
+| region_id | parent_region | nombre_región |
 |------------|----------------|----------------|
 | 1          | 0              | Rusia          |
 | 2          | 1              | Moscu          |

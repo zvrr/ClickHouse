@@ -1,17 +1,17 @@
 ---
 machine_translated: true
-machine_translated_rev: e8cd92bba3269f47787db090899f7c242adf7818
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 26
 toc_title: "\u0130stemci Kitapl\u0131klar\u0131"
 ---
 
-# Üçüncü Taraf geliştiricilerin Istemci kitaplıkları {#client-libraries-from-third-party-developers}
+# Üçüncü taraf geliştiricilerin istemci kitaplıkları {#client-libraries-from-third-party-developers}
 
 !!! warning "Uyarı"
     Yandex yapar **değil** Aşağıda listelenen kütüphaneleri koruyun ve kalitelerini sağlamak için kapsamlı bir test yapmadınız.
 
 -   Piton
-    -   [ınfi.clickhouse\_orm](https://github.com/Infinidat/infi.clickhouse_orm)
+    -   [ınfi.clickhouse_orm](https://github.com/Infinidat/infi.clickhouse_orm)
     -   [clickhouse-sürücü](https://github.com/mymarilyn/clickhouse-driver)
     -   [clickhouse-müşteri](https://github.com/yurial/clickhouse-client)
     -   [aiochclient](https://github.com/maximdanilchenko/aiochclient)
@@ -47,12 +47,14 @@ toc_title: "\u0130stemci Kitapl\u0131klar\u0131"
     -   [clickhouse-Scala-istemci](https://github.com/crobox/clickhouse-scala-client)
 -   Kotlin
     -   [AORM](https://github.com/TanVD/AORM)
--   C\#
+-   C#
+    -   [Octonica.ClickHouseClient](https://github.com/Octonica/ClickHouseClient)   
     -   [ClickHouse.Gürültü](https://github.com/killwort/ClickHouse-Net)
     -   [ClickHouse.Müşteri](https://github.com/DarkWanderer/ClickHouse.Client)
     -   [ClickHouse.Net](https://github.com/ilyabreev/ClickHouse.Net)
 -   İksir
     -   [clickhousex](https://github.com/appodeal/clickhousex/)
+    -   [sütun](https://github.com/sofakingworld/pillar)
 -   Nim
     -   [nim-clickhouse](https://github.com/leonardoce/nim-clickhouse)
 

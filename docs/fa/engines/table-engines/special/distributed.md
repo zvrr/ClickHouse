@@ -1,6 +1,6 @@
 ---
 machine_translated: true
-machine_translated_rev: d734a8e46ddd7465886ba4133bff743c55190626
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 33
 toc_title: "\u062A\u0648\u0632\u06CC\u0639 \u0634\u062F\u0647"
 ---
@@ -39,7 +39,7 @@ Distributed(logs, default, hits[, sharding_key[, policy_name]])
 
 به جای نام پایگاه داده, شما می توانید یک عبارت ثابت است که یک رشته را برمی گرداند استفاده. در حال بارگذاری
 
-logs – The cluster name in the server’s config file.
+logs – The cluster name in the server's config file.
 
 خوشه ها مانند این تنظیم می شوند:
 
@@ -84,14 +84,14 @@ logs – The cluster name in the server’s config file.
 نام خوشه باید حاوی نقطه نیست.
 
 پارامترها `host`, `port` و در صورت تمایل `user`, `password`, `secure`, `compression` برای هر سرور مشخص شده است:
-- `host` – The address of the remote server. You can use either the domain or the IPv4 or IPv6 address. If you specify the domain, the server makes a DNS request when it starts, and the result is stored as long as the server is running. If the DNS request fails, the server doesn’t start. If you change the DNS record, restart the server.
-- `port` – The TCP port for messenger activity (‘tcp\_port’ در پیکربندی, معمولا به مجموعه 9000). نه اشتباه آن را با http\_port.
+- `host` – The address of the remote server. You can use either the domain or the IPv4 or IPv6 address. If you specify the domain, the server makes a DNS request when it starts, and the result is stored as long as the server is running. If the DNS request fails, the server doesn't start. If you change the DNS record, restart the server.
+- `port` – The TCP port for messenger activity (‘tcp_port’ در پیکربندی, معمولا به مجموعه 9000). نه اشتباه آن را با http_port.
 - `user` – Name of the user for connecting to a remote server. Default value: default. This user must have access to connect to the specified server. Access is configured in the users.xml file. For more information, see the section [حقوق دسترسی](../../../operations/access-rights.md).
 - `password` – The password for connecting to a remote server (not masked). Default value: empty string.
-- `secure` - استفاده از اس اس ال برای اتصال, معمولا شما همچنین باید تعریف `port` = 9440. سرور باید گوش کند <tcp_port_secure>9440</tcp_port_secure> و گواهی صحیح.
+- `secure` - استفاده از اس اس ال برای اتصال, معمولا شما همچنین باید تعریف `port` = 9440. سرور باید گوش کند `<tcp_port_secure>9440</tcp_port_secure>` و گواهی صحیح.
 - `compression` - استفاده از فشرده سازی داده ها. مقدار پیش فرض: درست.
 
-When specifying replicas, one of the available replicas will be selected for each of the shards when reading. You can configure the algorithm for load balancing (the preference for which replica to access) – see the [\_تبالسازی](../../../operations/settings/settings.md#settings-load_balancing) تنظیمات.
+When specifying replicas, one of the available replicas will be selected for each of the shards when reading. You can configure the algorithm for load balancing (the preference for which replica to access) – see the [_تبالسازی](../../../operations/settings/settings.md#settings-load_balancing) تنظیمات.
 اگر ارتباط با سرور ایجاد نشده است, وجود خواهد داشت تلاش برای ارتباط با یک ایست کوتاه. اگر اتصال شکست خورده, ماکت بعدی انتخاب خواهد شد, و به همین ترتیب برای همه کپی. اگر تلاش اتصال برای تمام کپی شکست خورده, تلاش تکرار خواهد شد به همان شیوه, چندین بار.
 این کار به نفع حالت ارتجاعی, اما تحمل گسل کامل را فراهم نمی کند: یک سرور از راه دور ممکن است اتصال قبول, اما ممکن است کار نمی کند, و یا کار ضعیف.
 
@@ -103,7 +103,7 @@ When specifying replicas, one of the available replicas will be selected for eac
 
 موتور توزیع اجازه می دهد تا کار با یک خوشه مانند یک سرور محلی. با این حال, خوشه غیر قابل اجتنابناپذیری است: شما باید پیکربندی خود را در فایل پیکربندی سرور ارسال (حتی بهتر, برای تمام سرورهای خوشه).
 
-The Distributed engine requires writing clusters to the config file. Clusters from the config file are updated on the fly, without restarting the server. If you need to send a query to an unknown set of shards and replicas each time, you don’t need to create a Distributed table – use the ‘remote’ تابع جدول به جای. بخش را ببینید [توابع جدول](../../../sql-reference/table-functions/index.md).
+The Distributed engine requires writing clusters to the config file. Clusters from the config file are updated on the fly, without restarting the server. If you need to send a query to an unknown set of shards and replicas each time, you don't need to create a Distributed table – use the ‘remote’ تابع جدول به جای. بخش را ببینید [توابع جدول](../../../sql-reference/table-functions/index.md).
 
 دو روش برای نوشتن داده ها به یک خوشه وجود دارد:
 
@@ -113,19 +113,19 @@ The Distributed engine requires writing clusters to the config file. Clusters fr
 
 هر سفال می تواند وزن تعریف شده در فایل پیکربندی داشته باشد. به طور پیش فرض, وزن به یک برابر است. داده ها در سراسر خرده ریز در مقدار متناسب با وزن سفال توزیع. مثلا, اگر دو خرده ریز وجود دارد و برای اولین بار دارای وزن 9 در حالی که دوم دارای وزن 10, برای اولین بار ارسال خواهد شد 9 / 19 بخش هایی از ردیف, و دوم ارسال خواهد شد 10 / 19.
 
-هر سفال می تواند داشته باشد ‘internal\_replication’ پارامتر تعریف شده در فایل پیکربندی.
+هر سفال می تواند داشته باشد ‘internal_replication’ پارامتر تعریف شده در فایل پیکربندی.
 
 اگر این پارامتر قرار است به ‘true’ عملیات نوشتن اولین ماکت سالم را انتخاب می کند و داده ها را می نویسد. با استفاده از این جایگزین اگر جدول توزیع شده “looks at” جداول تکرار. به عبارت دیگر اگر جدول ای که داده ها نوشته می شود خود را تکرار می کند.
 
 اگر قرار است ‘false’ (به طور پیش فرض), داده ها به تمام کپی نوشته شده. در اصل این بدان معنی است که توزیع جدول تکرار داده های خود را. این بدتر از استفاده از جداول تکرار شده است زیرا سازگاری کپی ها بررسی نشده است و در طول زمان حاوی اطلاعات کمی متفاوت خواهد بود.
 
-برای انتخاب سفال که یک ردیف از داده های فرستاده شده به sharding بیان تجزيه و تحليل است و آن باقی مانده است از تقسیم آن با وزن کلی خرده ریز. ردیف به سفال که مربوط به نیمه فاصله از باقی مانده از ارسال ‘prev\_weight’ به ‘prev\_weights + weight’ کجا ‘prev\_weights’ وزن کل خرده ریز با کمترین تعداد است, و ‘weight’ وزن این سفال است. مثلا, اگر دو خرده ریز وجود دارد, و برای اولین بار دارای یک وزن 9 در حالی که دوم دارای وزن 10, ردیف خواهد شد به سفال اول برای باقی مانده از محدوده ارسال \[0, 9), و دوم برای باقی مانده از محدوده \[9, 19).
+برای انتخاب سفال که یک ردیف از داده های فرستاده شده به sharding بیان تجزيه و تحليل است و آن باقی مانده است از تقسیم آن با وزن کلی خرده ریز. ردیف به سفال که مربوط به نیمه فاصله از باقی مانده از ارسال ‘prev_weight’ به ‘prev_weights + weight’ کجا ‘prev_weights’ وزن کل خرده ریز با کمترین تعداد است, و ‘weight’ وزن این سفال است. مثلا, اگر دو خرده ریز وجود دارد, و برای اولین بار دارای یک وزن 9 در حالی که دوم دارای وزن 10, ردیف خواهد شد به سفال اول برای باقی مانده از محدوده ارسال \[0, 9), و دوم برای باقی مانده از محدوده \[9, 19).
 
 بیان شاردینگ می تواند هر عبارت از ثابت ها و ستون های جدول که یک عدد صحیح را برمی گرداند. برای مثال شما می توانید با استفاده از بیان ‘rand()’ برای توزیع تصادفی داده ها یا ‘UserID’ برای توزیع توسط باقی مانده از تقسیم شناسه کاربر (سپس داده ها از یک کاربر تنها بر روی یک سفال تنها اقامت, که ساده در حال اجرا در و پیوستن به کاربران). اگر یکی از ستون ها به طور مساوی توزیع نشده باشد می توانید در یک تابع هش قرار دهید: اینتاش64 (شناسه).
 
 یک یادآوری ساده از این بخش محدود است راه حل برای sharding و نیست همیشه مناسب است. این برای حجم متوسط و زیادی از داده ها کار می کند (ده ها تن از سرور), اما نه برای حجم بسیار زیادی از داده ها (صدها سرور یا بیشتر). در مورد دوم با استفاده از sharding طرح های مورد نیاز منطقه موضوع را به جای استفاده از مطالب موجود در توزیع جداول.
 
-SELECT queries are sent to all the shards and work regardless of how data is distributed across the shards (they can be distributed completely randomly). When you add a new shard, you don’t have to transfer the old data to it. You can write new data with a heavier weight – the data will be distributed slightly unevenly, but queries will work correctly and efficiently.
+SELECT queries are sent to all the shards and work regardless of how data is distributed across the shards (they can be distributed completely randomly). When you add a new shard, you don't have to transfer the old data to it. You can write new data with a heavier weight – the data will be distributed slightly unevenly, but queries will work correctly and efficiently.
 
 شما باید نگران sharding طرح در موارد زیر:
 
@@ -136,7 +136,7 @@ SELECT queries are sent to all the shards and work regardless of how data is dis
 
 اگر سرور متوقف به وجود داشته باشد و یا راه اندازی مجدد خشن بود (مثلا, پس از یک شکست دستگاه) پس از قرار دادن به یک جدول توزیع, داده های درج شده ممکن است از دست داده. اگر بخشی از داده های خراب شده در دایرکتوری جدول شناسایی شود به ‘broken’ دایرکتوری فرعی و دیگر استفاده می شود.
 
-پردازش پرس و جو در سراسر تمام کپی در یک سفال واحد موازی است زمانی که گزینه حداکثر\_پرورالهراپیلاس فعال است. برای کسب اطلاعات بیشتر به بخش مراجعه کنید [بیشینه\_راپرال\_راپیکال](../../../operations/settings/settings.md#settings-max_parallel_replicas).
+پردازش پرس و جو در سراسر تمام کپی در یک سفال واحد موازی است زمانی که گزینه حداکثر_پرورالهراپیلاس فعال است. برای کسب اطلاعات بیشتر به بخش مراجعه کنید [بیشینه_راپرال_راپیکال](../../../operations/settings/settings.md#settings-max_parallel_replicas).
 
 ## ستونهای مجازی {#virtual-columns}
 
@@ -145,7 +145,7 @@ SELECT queries are sent to all the shards and work regardless of how data is dis
 !!! note "یادداشت"
     از [`remote`](../../../sql-reference/table-functions/remote.md)/`cluster` توابع جدول داخلی ایجاد نمونه موقت از همان توزیع موتور, `_shard_num` در دسترس وجود دارد بیش از حد.
 
-**همچنین نگاه کنید**
+**همچنین نگاه کنید به**
 
 -   [ستونهای مجازی](index.md#table_engines-virtual_columns)
 

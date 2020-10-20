@@ -1,6 +1,6 @@
 ---
 machine_translated: true
-machine_translated_rev: 3e185d24c9fe772c7cf03d5475247fb829a21dfa
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 37
 toc_title: file
 ---
@@ -15,7 +15,7 @@ file(path, format, structure)
 
 **Parámetros de entrada**
 
--   `path` — The relative path to the file from [user\_files\_path](../../operations/server-configuration-parameters/settings.md#server_configuration_parameters-user_files_path). Soporte de ruta a archivo siguiendo globs en modo de solo lectura: `*`, `?`, `{abc,def}` y `{N..M}` donde `N`, `M` — numbers, \``'abc', 'def'` — strings.
+-   `path` — The relative path to the file from [user_files_path](../../operations/server-configuration-parameters/settings.md#server_configuration_parameters-user_files_path). Soporte de ruta a archivo siguiendo globs en modo de solo lectura: `*`, `?`, `{abc,def}` y `{N..M}` donde `N`, `M` — numbers, \``'abc', 'def'` — strings.
 -   `format` — The [formato](../../interfaces/formats.md#formats) del archivo.
 -   `structure` — Structure of the table. Format `'column1_name column1_type, column2_name column2_type, ...'`.
 
@@ -72,12 +72,12 @@ Construcciones con `{}` son similares a la [función de tabla remota](../../sql-
 
 1.  Supongamos que tenemos varios archivos con las siguientes rutas relativas:
 
--   ‘some\_dir/some\_file\_1’
--   ‘some\_dir/some\_file\_2’
--   ‘some\_dir/some\_file\_3’
--   ‘another\_dir/some\_file\_1’
--   ‘another\_dir/some\_file\_2’
--   ‘another\_dir/some\_file\_3’
+-   ‘some_dir/some_file_1’
+-   ‘some_dir/some_file_2’
+-   ‘some_dir/some_file_3’
+-   ‘another_dir/some_file_1’
+-   ‘another_dir/some_file_2’
+-   ‘another_dir/some_file_3’
 
 1.  Consulta la cantidad de filas en estos archivos:
 

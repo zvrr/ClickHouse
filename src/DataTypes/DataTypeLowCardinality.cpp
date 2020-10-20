@@ -54,7 +54,7 @@ void DataTypeLowCardinality::enumerateStreams(const StreamCallback & callback, S
     path.push_back(Substream::DictionaryKeys);
     dictionary_type->enumerateStreams(callback, path);
     path.back() = Substream::DictionaryIndexes;
-    callback(path);
+    callback(path, *this);
     path.pop_back();
 }
 
@@ -672,7 +672,7 @@ void DataTypeLowCardinality::deserializeBinaryBulkWithMultipleStreams(
             ColumnLowCardinality::Index(indexes_column->getPtr()).check(
                     maps.dictionary_map->size() + maps.additional_keys_map->size());
 
-            auto used_keys = (*std::move(global_dictionary->getNestedColumn()->index(*maps.dictionary_map, 0))).mutate();
+            auto used_keys = IColumn::mutate(global_dictionary->getNestedColumn()->index(*maps.dictionary_map, 0));
 
             if (!maps.additional_keys_map->empty())
             {
@@ -774,7 +774,7 @@ void DataTypeLowCardinality::deserializeTextQuoted(IColumn & column, ReadBuffer 
 
 void DataTypeLowCardinality::deserializeWholeText(IColumn & column, ReadBuffer & istr, const FormatSettings & settings) const
 {
-    deserializeImpl(column, &IDataType::deserializeAsTextEscaped, istr, settings);
+    deserializeImpl(column, &IDataType::deserializeAsWholeText, istr, settings);
 }
 
 void DataTypeLowCardinality::serializeTextCSV(const IColumn & column, size_t row_num, WriteBuffer & ostr, const FormatSettings & settings) const

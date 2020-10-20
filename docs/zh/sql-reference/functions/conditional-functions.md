@@ -9,7 +9,7 @@
 
 ## 多 {#multiif}
 
-允许您在查询中更紧凑地编写[CASE](../operators.md#operator_case)运算符。
+允许您在查询中更紧凑地编写[CASE](../operators/index.md#operator_case)运算符。
 
     multiIf(cond_1, then_1, cond_2, then_2...else)
 
@@ -23,7 +23,7 @@
 
 **返回值**
 
-该函数返回值«then\_N»或«else»之一，具体取决于条件`cond_N`。
+该函数返回值«then_N»或«else»之一，具体取决于条件`cond_N`。
 
 **示例**
 
@@ -34,7 +34,7 @@
     │ 2 │    3 │
     └───┴──────┘
 
-执行查询 `SELECT multiIf(isNull(y) x, y < 3, y, NULL) FROM t_null`。结果：
+执行查询 `SELECT multiIf(isNull(y), x, y < 3, y, NULL) FROM t_null`。结果：
 
     ┌─multiIf(isNull(y), x, less(y, 3), y, NULL)─┐
     │                                          1 │

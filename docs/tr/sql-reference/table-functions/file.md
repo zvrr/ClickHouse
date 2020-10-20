@@ -1,13 +1,13 @@
 ---
 machine_translated: true
-machine_translated_rev: e8cd92bba3269f47787db090899f7c242adf7818
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 37
 toc_title: Dosya
 ---
 
 # Dosya {#file}
 
-Bir dosyadan bir tablo oluşturur. Bu tablo işlevi benzer [url](url.md) ve [hdf’ler](hdfs.md) biri.
+Bir dosyadan bir tablo oluşturur. Bu tablo işlevi benzer [url](url.md) ve [hdf'ler](hdfs.md) biri.
 
 ``` sql
 file(path, format, structure)
@@ -15,7 +15,7 @@ file(path, format, structure)
 
 **Giriş parametreleri**
 
--   `path` — The relative path to the file from [user\_files\_path](../../operations/server-configuration-parameters/settings.md#server_configuration_parameters-user_files_path). Readonly modunda glob’ları takip eden dosya desteğine giden yol: `*`, `?`, `{abc,def}` ve `{N..M}` nerede `N`, `M` — numbers, \``'abc', 'def'` — strings.
+-   `path` — The relative path to the file from [user_files_path](../../operations/server-configuration-parameters/settings.md#server_configuration_parameters-user_files_path). Readonly modunda glob'ları takip eden dosya desteğine giden yol: `*`, `?`, `{abc,def}` ve `{N..M}` nerede `N`, `M` — numbers, \``'abc', 'def'` — strings.
 -   `format` — The [biçimli](../../interfaces/formats.md#formats) dosya.
 -   `structure` — Structure of the table. Format `'column1_name column1_type, column2_name column2_type, ...'`.
 
@@ -72,12 +72,12 @@ Birden çok yol bileşenleri globs olabilir. İşlenmek için dosya var olmalı 
 
 1.  Aşağıdaki göreli yollara sahip birkaç dosyamız olduğunu varsayalım:
 
--   ‘some\_dir/some\_file\_1’
--   ‘some\_dir/some\_file\_2’
--   ‘some\_dir/some\_file\_3’
--   ‘another\_dir/some\_file\_1’
--   ‘another\_dir/some\_file\_2’
--   ‘another\_dir/some\_file\_3’
+-   ‘some_dir/some_file_1’
+-   ‘some_dir/some_file_2’
+-   ‘some_dir/some_file_3’
+-   ‘another_dir/some_file_1’
+-   ‘another_dir/some_file_2’
+-   ‘another_dir/some_file_3’
 
 1.  Bu dosyalardaki satır miktarını sorgula:
 

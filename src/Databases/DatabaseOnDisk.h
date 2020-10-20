@@ -3,13 +3,14 @@
 #include <Common/escapeForFileName.h>
 #include <Common/quoteString.h>
 #include <Databases/DatabasesCommon.h>
-#include <Interpreters/Context.h>
 #include <Parsers/ASTCreateQuery.h>
 #include <Storages/IStorage.h>
 
 
 namespace DB
 {
+
+class Context;
 
 std::pair<String, StoragePtr> createTableFromAST(
     ASTCreateQuery ast_create_query,
@@ -30,7 +31,7 @@ String getObjectDefinitionFromCreateQuery(const ASTPtr & query);
 class DatabaseOnDisk : public DatabaseWithOwnTablesBase
 {
 public:
-    DatabaseOnDisk(const String & name, const String & metadata_path_, const String & data_path_, const String & logger, Context & context);
+    DatabaseOnDisk(const String & name, const String & metadata_path_, const String & data_path_, const String & logger, const Context & context);
 
     void createTable(
         const Context & context,
@@ -48,7 +49,8 @@ public:
         const String & table_name,
         IDatabase & to_database,
         const String & to_table_name,
-        bool exchange) override;
+        bool exchange,
+        bool dictionary) override;
 
     ASTPtr getCreateDatabaseQuery() const override;
 
@@ -75,6 +77,7 @@ protected:
 
     ASTPtr getCreateTableQueryImpl(
         const String & table_name,
+        const Context & context,
         bool throw_on_error) const override;
 
     ASTPtr getCreateQueryFromMetadata(const String & metadata_path, bool throw_on_error) const;
@@ -84,7 +87,6 @@ protected:
 
     const String metadata_path;
     const String data_path;
-    Context & global_context;
 };
 
 }

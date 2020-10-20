@@ -2,9 +2,9 @@
 
 ## 系统要求 {#xi-tong-yao-qiu}
 
-ClickHouse可以在任何具有x86\_64，AArch64或PowerPC64LE CPU架构的Linux，FreeBSD或Mac OS X上运行。
+ClickHouse可以在任何具有x86_64，AArch64或PowerPC64LE CPU架构的Linux，FreeBSD或Mac OS X上运行。
 
-虽然预构建的二进制文件通常是为x86  \_64编译并利用SSE 4.2指令集，但除非另有说明，否则使用支持它的CPU将成为额外的系统要求。这是检查当前CPU是否支持SSE 4.2的命令：
+虽然预构建的二进制文件通常是为x86  _64编译并利用SSE 4.2指令集，但除非另有说明，否则使用支持它的CPU将成为额外的系统要求。这是检查当前CPU是否支持SSE 4.2的命令：
 
 ``` bash
 $ grep -q sse4_2 /proc/cpuinfo && echo "SSE 4.2 supported" || echo "SSE 4.2 not supported"
@@ -12,7 +12,7 @@ $ grep -q sse4_2 /proc/cpuinfo && echo "SSE 4.2 supported" || echo "SSE 4.2 not 
 
 要在不支持SSE 4.2或具有AArch64或PowerPC64LE体系结构的处理器上运行ClickHouse，您应该[通过源构建ClickHouse](#from-sources)进行适当的配置调整。
 
-## 可用的安装选项 {#ke-yong-de-an-zhuang-xuan-xiang}
+## 可用的安装选项 {#install-from-deb-packages}
 
 建议为Debian或Ubuntu使用官方的预编译`deb`软件包。 运行以下命令以安装软件包：
 
@@ -34,8 +34,8 @@ Yandex ClickHouse团队建议使用官方预编译的`rpm`软件包，用于Cent
 
 ``` bash
 sudo yum install yum-utils
-sudo rpm --import https://repo.yandex.ru/clickhouse/CLICKHOUSE-KEY.GPG
-sudo yum-config-manager --add-repo https://repo.yandex.ru/clickhouse/rpm/stable/x86_64
+sudo rpm --import https://repo.clickhouse.tech/CLICKHOUSE-KEY.GPG
+sudo yum-config-manager --add-repo https://repo.clickhouse.tech/rpm/stable/x86_64
 ```
 
 如果您想使用最新版本，请将`stable`替换为`testing`（建议您在测试环境中使用）。
@@ -46,7 +46,7 @@ sudo yum-config-manager --add-repo https://repo.yandex.ru/clickhouse/rpm/stable/
 sudo yum install clickhouse-server clickhouse-client
 ```
 
-您也可以从此处手动下载和安装软件包：https://repo.yandex.ru/clickhouse/rpm/stable/x86\_64。
+您也可以从此处手动下载和安装软件包：https://repo.clickhouse.tech/rpm/stable/x86_64。
 
 ### 来自Docker {#from-docker-image}
 

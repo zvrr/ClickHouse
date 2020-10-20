@@ -1,7 +1,7 @@
 ---
 machine_translated: true
-machine_translated_rev: b111334d6614a02564cf32f379679e9ff970d9b1
-toc_priority: 39
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
+toc_priority: 41
 toc_title: "\u5176\u4ED6"
 ---
 
@@ -57,7 +57,7 @@ CHECK TABLE [db.]name
 如果表已损坏，则可以将未损坏的数据复制到另一个表。 要做到这一点:
 
 1.  创建具有与损坏的表相同结构的新表。 要执行此操作，请执行查询 `CREATE TABLE <new_table_name> AS <damaged_table_name>`.
-2.  设置 [max\_threads](../../operations/settings/settings.md#settings-max_threads) 值为1以在单个线程中处理下一个查询。 要执行此操作，请运行查询 `SET max_threads = 1`.
+2.  设置 [max_threads](../../operations/settings/settings.md#settings-max_threads) 值为1以在单个线程中处理下一个查询。 要执行此操作，请运行查询 `SET max_threads = 1`.
 3.  执行查询 `INSERT INTO <new_table_name> SELECT * FROM <damaged_table_name>`. 此请求将未损坏的数据从损坏的表复制到另一个表。 只有损坏部分之前的数据才会被复制。
 4.  重新启动 `clickhouse-client` 要重置 `max_threads` 价值。
 
@@ -113,7 +113,65 @@ DROP [TEMPORARY] TABLE [IF EXISTS] [db.]name [ON CLUSTER cluster]
 删除字典。
 如果 `IF EXISTS` 如果表不存在或数据库不存在，则不会返回错误。
 
-## EXISTS {#exists}
+## DROP USER {#drop-user-statement}
+
+删除用户。
+
+### 语法 {#drop-user-syntax}
+
+``` sql
+DROP USER [IF EXISTS] name [,...] [ON CLUSTER cluster_name]
+```
+
+## DROP ROLE {#drop-role-statement}
+
+删除角色。
+
+已删除的角色将从授予该角色的所有实体撤销。
+
+### 语法 {#drop-role-syntax}
+
+``` sql
+DROP ROLE [IF EXISTS] name [,...] [ON CLUSTER cluster_name]
+```
+
+## DROP ROW POLICY {#drop-row-policy-statement}
+
+删除行策略。
+
+已删除行策略将从分配该策略的所有实体撤销。
+
+### 语法 {#drop-row-policy-syntax}
+
+``` sql
+DROP [ROW] POLICY [IF EXISTS] name [,...] ON [database.]table [,...] [ON CLUSTER cluster_name]
+```
+
+## DROP QUOTA {#drop-quota-statement}
+
+删除配额。
+
+已删除的配额将从分配配额的所有实体撤销。
+
+### 语法 {#drop-quota-syntax}
+
+``` sql
+DROP QUOTA [IF EXISTS] name [,...] [ON CLUSTER cluster_name]
+```
+
+## DROP SETTINGS PROFILE {#drop-settings-profile-statement}
+
+删除配额。
+
+已删除的配额将从分配配额的所有实体撤销。
+
+### 语法 {#drop-settings-profile-syntax}
+
+``` sql
+DROP [SETTINGS] PROFILE [IF EXISTS] name [,...] [ON CLUSTER cluster_name]
+```
+
+## EXISTS {#exists-statement}
 
 ``` sql
 EXISTS [TEMPORARY] [TABLE|DICTIONARY] [db.]name [INTO OUTFILE filename] [FORMAT format]
@@ -121,7 +179,7 @@ EXISTS [TEMPORARY] [TABLE|DICTIONARY] [db.]name [INTO OUTFILE filename] [FORMAT 
 
 返回单 `UInt8`-type column，其中包含单个值 `0` 如果表或数据库不存在，或 `1` 如果该表存在于指定的数据库中。
 
-## KILL QUERY {#kill-query}
+## KILL QUERY {#kill-query-statement}
 
 ``` sql
 KILL QUERY [ON CLUSTER cluster]
@@ -152,7 +210,7 @@ KILL QUERY WHERE user='username' SYNC
 
 1.  ‘finished’ – The query was terminated successfully.
 2.  ‘waiting’ – Waiting for the query to end after sending it a signal to terminate.
-3.  The other values ​​explain why the query can’t be stopped.
+3.  The other values ​​explain why the query can't be stopped.
 
 测试查询 (`TEST`）仅检查用户的权限并显示要停止的查询列表。
 
@@ -165,7 +223,7 @@ KILL MUTATION [ON CLUSTER cluster]
   [FORMAT format]
 ```
 
-尝试取消和删除 [突变](alter.md#alter-mutations) 当前正在执行。 要取消的突变选自 [`system.mutations`](../../operations/system-tables.md#system_tables-mutations) 表使用由指定的过滤器 `WHERE` 《公约》条款 `KILL` 查询。
+尝试取消和删除 [突变](alter.md#alter-mutations) 当前正在执行。 要取消的突变选自 [`system.mutations`](../../operations/system-tables/mutations.md#system_tables-mutations) 表使用由指定的过滤器 `WHERE` 《公约》条款 `KILL` 查询。
 
 测试查询 (`TEST`）仅检查用户的权限并显示要停止的查询列表。
 
@@ -195,7 +253,7 @@ OPTIMIZE TABLE [db.]name [ON CLUSTER cluster] [PARTITION partition | PARTITION I
 
 当 `OPTIMIZE` 与使用 [ReplicatedMergeTree](../../engines/table-engines/mergetree-family/replication.md) 表引擎的家族，ClickHouse创建合并任务，并等待在所有节点上执行（如果 `replication_alter_partitions_sync` 设置已启用）。
 
--   如果 `OPTIMIZE` 出于任何原因不执行合并，它不通知客户端。 要启用通知，请使用 [optimize\_throw\_if\_noop](../../operations/settings/settings.md#setting-optimize_throw_if_noop) 设置。
+-   如果 `OPTIMIZE` 出于任何原因不执行合并，它不通知客户端。 要启用通知，请使用 [optimize_throw_if_noop](../../operations/settings/settings.md#setting-optimize_throw_if_noop) 设置。
 -   如果您指定 `PARTITION`，仅优化指定的分区。 [如何设置分区表达式](alter.md#alter-how-to-specify-part-expr).
 -   如果您指定 `FINAL`，即使所有数据已经在一个部分中，也会执行优化。
 -   如果您指定 `DEDUPLICATE`，然后完全相同的行将被重复数据删除（所有列进行比较），这仅适用于MergeTree引擎。
@@ -229,7 +287,55 @@ SET profile = 'profile-name-from-the-settings-file'
 
 有关详细信息，请参阅 [设置](../../operations/settings/settings.md).
 
-## TRUNCATE {#truncate}
+## SET ROLE {#set-role-statement}
+
+激活当前用户的角色。
+
+### 语法 {#set-role-syntax}
+
+``` sql
+SET ROLE {DEFAULT | NONE | role [,...] | ALL | ALL EXCEPT role [,...]}
+```
+
+## SET DEFAULT ROLE {#set-default-role-statement}
+
+将默认角色设置为用户。
+
+默认角色在用户登录时自动激活。 您只能将以前授予的角色设置为默认值。 如果未向用户授予角色，ClickHouse将引发异常。
+
+### 语法 {#set-default-role-syntax}
+
+``` sql
+SET DEFAULT ROLE {NONE | role [,...] | ALL | ALL EXCEPT role [,...]} TO {user|CURRENT_USER} [,...]
+```
+
+### 例 {#set-default-role-examples}
+
+为用户设置多个默认角色:
+
+``` sql
+SET DEFAULT ROLE role1, role2, ... TO user
+```
+
+将所有授予的角色设置为用户的默认值:
+
+``` sql
+SET DEFAULT ROLE ALL TO user
+```
+
+从用户清除默认角色:
+
+``` sql
+SET DEFAULT ROLE NONE TO user
+```
+
+将所有授予的角色设置为默认角色，其中一些角色除外:
+
+``` sql
+SET DEFAULT ROLE ALL EXCEPT role1, role2 TO user
+```
+
+## TRUNCATE {#truncate-statement}
 
 ``` sql
 TRUNCATE TABLE [IF EXISTS] [db.]name [ON CLUSTER cluster]

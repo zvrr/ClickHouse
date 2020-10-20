@@ -1,11 +1,11 @@
 ---
 machine_translated: true
-machine_translated_rev: 3e185d24c9fe772c7cf03d5475247fb829a21dfa
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 49
 toc_title: Bits
 ---
 
-# Funciones De Mapa De Bits {#bitmap-functions}
+# Funciones de mapa de bits {#bitmap-functions}
 
 Las funciones de mapa de bits funcionan para dos mapas de bits Cálculo del valor del objeto, es devolver un nuevo mapa de bits o cardinalidad mientras se usa el cálculo de la fórmula, como y, o, xor, y no, etc.
 
@@ -65,7 +65,7 @@ SELECT bitmapToArray(bitmapBuild([1, 2, 3, 4, 5])) AS res
 
 ## bitmapSubsetInRange {#bitmap-functions-bitmapsubsetinrange}
 
-Devuelve el subconjunto en el rango especificado (no incluye range\_end).
+Devuelve el subconjunto en el rango especificado (no incluye range_end).
 
 ``` sql
 bitmapSubsetInRange(bitmap, range_start, range_end)
@@ -241,7 +241,7 @@ SELECT bitmapCardinality(bitmapBuild([1, 2, 3, 4, 5])) AS res
 
 ## bitmapMin {#bitmapmin}
 
-Vuelva a ejecutar el valor más pequeño de tipo UInt64 en el conjunto, UINT32\_MAX si el conjunto está vacío.
+Vuelva a ejecutar el valor más pequeño de tipo UInt64 en el conjunto, UINT32_MAX si el conjunto está vacío.
 
     bitmapMin(bitmap)
 
@@ -288,8 +288,8 @@ Transformar una matriz de valores en un mapa de bits a otra matriz de valores, e
 **Parámetros**
 
 -   `bitmap` – bitmap object.
--   `from_array` – UInt32 array. For idx in range \[0, from\_array.size()), if bitmap contains from\_array\[idx\], then replace it with to\_array\[idx\]. Note that the result depends on array ordering if there are common elements between from\_array and to\_array.
--   `to_array` – UInt32 array, its size shall be the same to from\_array.
+-   `from_array` – UInt32 array. For idx in range \[0, from_array.size()), if bitmap contains from_array\[idx\], then replace it with to_array\[idx\]. Note that the result depends on array ordering if there are common elements between from_array and to_array.
+-   `to_array` – UInt32 array, its size shall be the same to from_array.
 
 **Ejemplo**
 
@@ -469,7 +469,7 @@ SELECT bitmapXorCardinality(bitmapBuild([1,2,3]),bitmapBuild([3,4,5])) AS res;
 └─────┘
 ```
 
-## Por Favor, Introduzca Su dirección De Correo electrónico {#bitmapandnotcardinality}
+## Por favor, introduzca su dirección de correo electrónico {#bitmapandnotcardinality}
 
 Dos mapas de bits yno cálculo, devuelve cardinalidad de tipo UInt64.
 

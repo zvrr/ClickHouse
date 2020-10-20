@@ -1,6 +1,6 @@
 ---
 machine_translated: true
-machine_translated_rev: d734a8e46ddd7465886ba4133bff743c55190626
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 17
 toc_title: "\u0645\u0639\u06CC\u0627\u0631 \u0628\u0632\u0631\u06AF \u062F\u0627\u062F\
   \u0647 \u0647\u0627\u06CC \u062A\u0642\u0648\u06CC\u062A \u06A9\u0646\u0646\u062F\
@@ -11,7 +11,7 @@ toc_title: "\u0645\u0639\u06CC\u0627\u0631 \u0628\u0632\u0631\u06AF \u062F\u0627
 
 ببینید https://amplab.cs.berkeley.edu/benchmark/
 
-ثبت نام برای یک حساب کاربری رایگان در https://aws.amazon.com. این نیاز به یک کارت اعتباری, پست الکترونیک, و شماره تلفن. یک کلید دسترسی جدید در https://console.aws.amazon.com/iam/home?nc2=h\_m\_sc\#security\_credential
+ثبت نام برای یک حساب کاربری رایگان در https://aws.amazon.com. این نیاز به یک کارت اعتباری, پست الکترونیک, و شماره تلفن. یک کلید دسترسی جدید در https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential
 
 زیر را در کنسول اجرا کنید:
 

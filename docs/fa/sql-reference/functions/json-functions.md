@@ -1,13 +1,13 @@
 ---
 machine_translated: true
-machine_translated_rev: d734a8e46ddd7465886ba4133bff743c55190626
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 56
-toc_title: "\u06A9\u0627\u0631 \u0628\u0627 \u062C\u0627\u0646\u0633\u0648\u0646."
+toc_title: "\u06A9\u0627\u0631 \u0628\u0627 \u062C\u0627\u0646\u0633\u0648\u0646"
 ---
 
 # توابع برای کار با جانسون {#functions-for-working-with-json}
 
-در یاندکسمتریکا جیسون توسط کاربران به عنوان پارامترهای جلسه منتقل می شود. برخی از توابع خاص برای کار با این جانسون وجود دارد. (اگر چه در بسیاری از موارد jsons هستند علاوه بر این قبل از پردازش و در نتیجه ارزش ها قرار داده و در ستون جداگانه در خود پردازش فرمت.) همه این توابع در فرضیات قوی در مورد چه جانسون می تواند بر اساس, اما سعی می کنند به عنوان کوچک که ممکن است به کار انجام می شود.
+در یاندکسمتریکا جیسون توسط کاربران به عنوان پارامترهای جلسه منتقل می شود. برخی از توابع خاص برای کار با این جانسون وجود دارد. (اگر چه در بسیاری از موارد JSONs هستند علاوه بر این قبل از پردازش و در نتیجه ارزش ها قرار داده و در ستون جداگانه در خود پردازش فرمت.) همه این توابع در فرضیات قوی در مورد چه جانسون می تواند بر اساس, اما سعی می کنند به عنوان کوچک که ممکن است به کار انجام می شود.
 
 مفروضات زیر ساخته شده است:
 
@@ -26,7 +26,7 @@ toc_title: "\u06A9\u0627\u0631 \u0628\u0627 \u062C\u0627\u0646\u0633\u0648\u0646
 
 ## ویزیتپرامستراکتینت (پارامز, نام) {#visitparamextractintparams-name}
 
-همان int64.
+همان Int64.
 
 ## اطلاعات دقیق) {#visitparamextractfloatparams-name}
 
@@ -34,7 +34,7 @@ toc_title: "\u06A9\u0627\u0631 \u0628\u0627 \u062C\u0627\u0646\u0633\u0648\u0646
 
 ## ویسیتپرامسترکتبولبولول (پارامز, نام) {#visitparamextractboolparams-name}
 
-تجزیه واقعی / ارزش کاذب. نتیجه این است uint8.
+تجزیه واقعی / ارزش کاذب. نتیجه این است UInt8.
 
 ## ویسیتپرمککتراو (پارامز, نام) {#visitparamextractrawparams-name}
 
@@ -75,11 +75,11 @@ SELECT isValidJSON('{"a": "hello", "b": [-100, 200.0, 300]}') = 1
 SELECT isValidJSON('not a json') = 0
 ```
 
-## JSONHas(json\[, indices\_or\_keys\]…) {#jsonhasjson-indices-or-keys}
+## JSONHas(json\[, indices_or_keys\]…) {#jsonhasjson-indices-or-keys}
 
 اگر مقدار در سند جسون وجود داشته باشد, `1` برگردانده خواهد شد.
 
-اگر این مقدار وجود ندارد, `0` برگردانده خواهد شد.
+اگر مقدار وجود ندارد, `0` برگردانده خواهد شد.
 
 مثالها:
 
@@ -108,7 +108,7 @@ SELECT JSONExtractKey('{"a": "hello", "b": [-100, 200.0, 300]}', -2) = 'a'
 SELECT JSONExtractString('{"a": "hello", "b": [-100, 200.0, 300]}', 1) = 'hello'
 ```
 
-## JSONLength(json\[, indices\_or\_keys\]…) {#jsonlengthjson-indices-or-keys}
+## JSONLength(json\[, indices_or_keys\]…) {#jsonlengthjson-indices-or-keys}
 
 بازگشت طول یک مجموعه جانسون یا یک شی جانسون.
 
@@ -121,11 +121,11 @@ SELECT JSONLength('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') = 3
 SELECT JSONLength('{"a": "hello", "b": [-100, 200.0, 300]}') = 2
 ```
 
-## JSONType(json\[, indices\_or\_keys\]…) {#jsontypejson-indices-or-keys}
+## JSONType(json\[, indices_or_keys\]…) {#jsontypejson-indices-or-keys}
 
 بازگشت به نوع یک مقدار جانسون.
 
-اگر این مقدار وجود ندارد, `Null` برگردانده خواهد شد.
+اگر مقدار وجود ندارد, `Null` برگردانده خواهد شد.
 
 مثالها:
 
@@ -135,13 +135,13 @@ SELECT JSONType('{"a": "hello", "b": [-100, 200.0, 300]}', 'a') = 'String'
 SELECT JSONType('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') = 'Array'
 ```
 
-## JSONExtractUInt(json\[, indices\_or\_keys\]…) {#jsonextractuintjson-indices-or-keys}
+## JSONExtractUInt(json\[, indices_or_keys\]…) {#jsonextractuintjson-indices-or-keys}
 
-## JSONExtractInt(json\[, indices\_or\_keys\]…) {#jsonextractintjson-indices-or-keys}
+## JSONExtractInt(json\[, indices_or_keys\]…) {#jsonextractintjson-indices-or-keys}
 
-## JSONExtractFloat(json\[, indices\_or\_keys\]…) {#jsonextractfloatjson-indices-or-keys}
+## JSONExtractFloat(json\[, indices_or_keys\]…) {#jsonextractfloatjson-indices-or-keys}
 
-## JSONExtractBool(json\[, indices\_or\_keys\]…) {#jsonextractbooljson-indices-or-keys}
+## JSONExtractBool(json\[, indices_or_keys\]…) {#jsonextractbooljson-indices-or-keys}
 
 تجزیه جانسون و استخراج ارزش. این توابع شبیه به `visitParam` توابع.
 
@@ -155,7 +155,7 @@ SELECT JSONExtractFloat('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 2) = 200
 SELECT JSONExtractUInt('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', -1) = 300
 ```
 
-## JSONExtractString(json\[, indices\_or\_keys\]…) {#jsonextractstringjson-indices-or-keys}
+## JSONExtractString(json\[, indices_or_keys\]…) {#jsonextractstringjson-indices-or-keys}
 
 تجزیه جانسون و استخراج یک رشته. این تابع شبیه به `visitParamExtractString` توابع.
 
@@ -173,7 +173,7 @@ SELECT JSONExtractString('{"abc":"\\u263"}', 'abc') = ''
 SELECT JSONExtractString('{"abc":"hello}', 'abc') = ''
 ```
 
-## JSONExtract(json\[, indices\_or\_keys…\], Return\_type) {#jsonextractjson-indices-or-keys-return-type}
+## JSONExtract(json\[, indices_or_keys…\], Return_type) {#jsonextractjson-indices-or-keys-return-type}
 
 تجزیه یک جسون و استخراج یک مقدار از نوع داده داده داده کلیک.
 
@@ -194,19 +194,19 @@ SELECT JSONExtract('{"day": "Thursday"}', 'day', 'Enum8(\'Sunday\' = 0, \'Monday
 SELECT JSONExtract('{"day": 5}', 'day', 'Enum8(\'Sunday\' = 0, \'Monday\' = 1, \'Tuesday\' = 2, \'Wednesday\' = 3, \'Thursday\' = 4, \'Friday\' = 5, \'Saturday\' = 6)') = 'Friday'
 ```
 
-## JSONExtractKeysAndValues(json\[, indices\_or\_keys…\], Value\_type) {#jsonextractkeysandvaluesjson-indices-or-keys-value-type}
+## JSONExtractKeysAndValues(json\[, indices_or_keys…\], Value_type) {#jsonextractkeysandvaluesjson-indices-or-keys-value-type}
 
-پارسه جفت کلید ارزش از یک جانسون که ارزش از نوع داده داده خانه رعیتی هستند.
+تجزیه جفت کلید ارزش از یک جانسون که ارزش از نوع داده داده داده خانه عروسکی هستند.
 
 مثال:
 
 ``` sql
-SELECT JSONExtractKeysAndValues('{"x": {"a": 5, "b": 7, "c": 11}}', 'x', 'Int8') = [('a',5),('b',7),('c',11)];
+SELECT JSONExtractKeysAndValues('{"x": {"a": 5, "b": 7, "c": 11}}', 'x', 'Int8') = [('a',5),('b',7),('c',11)]
 ```
 
-## JSONExtractRaw(json\[, indices\_or\_keys\]…) {#jsonextractrawjson-indices-or-keys}
+## JSONExtractRaw(json\[, indices_or_keys\]…) {#jsonextractrawjson-indices-or-keys}
 
-بازگرداندن بخشی از جانسون.
+بازگرداندن بخشی از جانسون به عنوان رشته نامحدود.
 
 اگر بخش وجود ندارد و یا دارای یک نوع اشتباه, یک رشته خالی بازگردانده خواهد شد.
 
@@ -216,7 +216,7 @@ SELECT JSONExtractKeysAndValues('{"x": {"a": 5, "b": 7, "c": 11}}', 'x', 'Int8')
 SELECT JSONExtractRaw('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') = '[-100, 200.0, 300]'
 ```
 
-## JSONExtractArrayRaw(json\[, indices\_or\_keys\]…) {#jsonextractarrayrawjson-indices-or-keys}
+## JSONExtractArrayRaw(json\[, indices_or_keys…\]) {#jsonextractarrayrawjson-indices-or-keys}
 
 بازگرداندن مجموعه ای با عناصر از مجموعه جانسون,هر یک به عنوان رشته نامحدود نشان.
 
@@ -226,6 +226,72 @@ SELECT JSONExtractRaw('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') = '[-100, 
 
 ``` sql
 SELECT JSONExtractArrayRaw('{"a": "hello", "b": [-100, 200.0, "hello"]}', 'b') = ['-100', '200.0', '"hello"']'
+```
+
+## در حال بارگذاری {#json-extract-keys-and-values-raw}
+
+عصاره داده های خام از یک شی جانسون.
+
+**نحو**
+
+``` sql
+JSONExtractKeysAndValuesRaw(json[, p, a, t, h])
+```
+
+**پارامترها**
+
+-   `json` — [رشته](../data-types/string.md) با جانسون معتبر.
+-   `p, a, t, h` — Comma-separated indices or keys that specify the path to the inner field in a nested JSON object. Each argument can be either a [رشته](../data-types/string.md) برای دریافت این زمینه توسط کلید یا یک [عدد صحیح](../data-types/int-uint.md) برای دریافت میدان ازت هفتم (نمایه شده از 1 عدد صحیح منفی از پایان تعداد). اگر تنظیم نشده, طیف جانسون به عنوان شی سطح بالا تجزیه. پارامتر اختیاری.
+
+**مقادیر بازگشتی**
+
+-   & حذف با `('key', 'value')` توپلس هر دو عضو تاپل رشته ها.
+-   مجموعه خالی اگر جسم درخواست شده وجود ندارد, یا جانسون ورودی نامعتبر است.
+
+نوع: [& حذف](../data-types/array.md)([تاپل](../data-types/tuple.md)([رشته](../data-types/string.md), [رشته](../data-types/string.md)).
+
+**مثالها**
+
+پرسوجو:
+
+``` sql
+SELECT JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b":{"c": {"d": "hello", "f": "world"}}}')
+```
+
+نتیجه:
+
+``` text
+┌─JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b":{"c": {"d": "hello", "f": "world"}}}')─┐
+│ [('a','[-100,200]'),('b','{"c":{"d":"hello","f":"world"}}')]                                 │
+└──────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+پرسوجو:
+
+``` sql
+SELECT JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b":{"c": {"d": "hello", "f": "world"}}}', 'b')
+```
+
+نتیجه:
+
+``` text
+┌─JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b":{"c": {"d": "hello", "f": "world"}}}', 'b')─┐
+│ [('c','{"d":"hello","f":"world"}')]                                                               │
+└───────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+پرسوجو:
+
+``` sql
+SELECT JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b":{"c": {"d": "hello", "f": "world"}}}', -1, 'c')
+```
+
+نتیجه:
+
+``` text
+┌─JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b":{"c": {"d": "hello", "f": "world"}}}', -1, 'c')─┐
+│ [('d','"hello"'),('f','"world"')]                                                                     │
+└───────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 [مقاله اصلی](https://clickhouse.tech/docs/en/query_language/functions/json_functions/) <!--hide-->

@@ -1,6 +1,6 @@
 ---
 machine_translated: true
-machine_translated_rev: d734a8e46ddd7465886ba4133bff743c55190626
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 26
 toc_title: "\u06A9\u062A\u0627\u0628\u062E\u0627\u0646\u0647 \u0647\u0627\u06CC \u0645\
   \u0634\u062A\u0631\u06CC"
@@ -12,7 +12,7 @@ toc_title: "\u06A9\u062A\u0627\u0628\u062E\u0627\u0646\u0647 \u0647\u0627\u06CC 
     یاندکس می کند **نه** حفظ کتابخانه های ذکر شده در زیر و هر تست گسترده برای اطمینان از کیفیت خود را انجام نداده اند.
 
 -   پایتون
-    -   [اطالعات.کلیک \_شورم](https://github.com/Infinidat/infi.clickhouse_orm)
+    -   [اطالعات.کلیک _شورم](https://github.com/Infinidat/infi.clickhouse_orm)
     -   [کلیک راننده](https://github.com/mymarilyn/clickhouse-driver)
     -   [کلیک مشتری](https://github.com/yurial/clickhouse-client)
     -   [اطلاعات دقیق](https://github.com/maximdanilchenko/aiochclient)
@@ -40,7 +40,7 @@ toc_title: "\u06A9\u062A\u0627\u0628\u062E\u0627\u0646\u0647 \u0647\u0627\u06CC 
     -   [clickhouse-activerecord](https://github.com/PNixx/clickhouse-activerecord)
 -   R
     -   [کلیک تحقیق](https://github.com/hannesmuehleisen/clickhouse-r)
-    -   [خانه روستایی](https://github.com/IMSMWU/RClickhouse)
+    -   [خانه روستایی](https://github.com/IMSMWU/RClickHouse)
 -   جاوا
     -   [فاحشه خانه-مشتری-جاوا](https://github.com/VirtusAI/clickhouse-client-java)
     -   [کلیک مشتری](https://github.com/Ecwid/clickhouse-client)
@@ -48,12 +48,14 @@ toc_title: "\u06A9\u062A\u0627\u0628\u062E\u0627\u0646\u0647 \u0647\u0627\u06CC 
     -   [تاتر-اسکالا-کارفرما](https://github.com/crobox/clickhouse-scala-client)
 -   کوتلین
     -   [AORM](https://github.com/TanVD/AORM)
--   C\#
+-   C#
+    -   [Octonica.ClickHouseClient](https://github.com/Octonica/ClickHouseClient)
     -   [فاحشه خانه.ادو](https://github.com/killwort/ClickHouse-Net)
     -   [فاحشه خانه.کارگیر](https://github.com/DarkWanderer/ClickHouse.Client)
     -   [ClickHouse.Net](https://github.com/ilyabreev/ClickHouse.Net)
 -   اکسیر
     -   [کلیک](https://github.com/appodeal/clickhousex/)
+    -   [ستون](https://github.com/sofakingworld/pillar)
 -   نیم
     -   [نیم کلیک خانه](https://github.com/leonardoce/nim-clickhouse)
 

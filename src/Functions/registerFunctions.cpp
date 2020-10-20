@@ -3,7 +3,6 @@
 
 namespace DB
 {
-
 void registerFunctionsArithmetic(FunctionFactory &);
 void registerFunctionsArray(FunctionFactory &);
 void registerFunctionsTuple(FunctionFactory &);
@@ -27,7 +26,7 @@ void registerFunctionsRound(FunctionFactory &);
 void registerFunctionsString(FunctionFactory &);
 void registerFunctionsStringArray(FunctionFactory &);
 void registerFunctionsStringSearch(FunctionFactory &);
-void registerFunctionsStringRegex(FunctionFactory &);
+void registerFunctionsStringRegexp(FunctionFactory &);
 void registerFunctionsStringSimilarity(FunctionFactory &);
 void registerFunctionsURL(FunctionFactory &);
 void registerFunctionsVisitParam(FunctionFactory &);
@@ -37,6 +36,12 @@ void registerFunctionsIntrospection(FunctionFactory &);
 void registerFunctionsNull(FunctionFactory &);
 void registerFunctionsJSON(FunctionFactory &);
 void registerFunctionsConsistentHashing(FunctionFactory & factory);
+void registerFunctionsUnixTimestamp64(FunctionFactory & factory);
+#if !defined(ARCADIA_BUILD)
+void registerFunctionBayesAB(FunctionFactory &);
+#endif
+void registerFunctionTid(FunctionFactory & factory);
+void registerFunctionLogTrace(FunctionFactory & factory);
 
 
 void registerFunctions()
@@ -68,7 +73,7 @@ void registerFunctions()
     registerFunctionsString(factory);
     registerFunctionsStringArray(factory);
     registerFunctionsStringSearch(factory);
-    registerFunctionsStringRegex(factory);
+    registerFunctionsStringRegexp(factory);
     registerFunctionsStringSimilarity(factory);
     registerFunctionsURL(factory);
     registerFunctionsVisitParam(factory);
@@ -78,6 +83,12 @@ void registerFunctions()
     registerFunctionsJSON(factory);
     registerFunctionsIntrospection(factory);
     registerFunctionsConsistentHashing(factory);
+    registerFunctionsUnixTimestamp64(factory);
+#if !defined(ARCADIA_BUILD)
+    registerFunctionBayesAB(factory);
+#endif
+    registerFunctionTid(factory);
+    registerFunctionLogTrace(factory);
 }
 
 }

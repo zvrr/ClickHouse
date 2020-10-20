@@ -1,6 +1,6 @@
 ---
 machine_translated: true
-machine_translated_rev: d734a8e46ddd7465886ba4133bff743c55190626
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 34
 toc_title: INSERT INTO
 ---
@@ -20,7 +20,7 @@ INSERT INTO [db.]table [(c1, c2, c3)] VALUES (v11, v12, v13), (v21, v22, v23), .
 -   مقادیر محاسبه شده از `DEFAULT` عبارات مشخص شده در تعریف جدول.
 -   صفر و رشته خالی, اگر `DEFAULT` عبارات تعریف نشده.
 
-اگر [\_مرحلهای دقیق = 1](../../operations/settings/settings.md) ستون هایی که ندارند `DEFAULT` تعریف شده باید در پرس و جو ذکر شده است.
+اگر [_مرحلهای دقیق = 1](../../operations/settings/settings.md) ستون هایی که ندارند `DEFAULT` تعریف شده باید در پرس و جو ذکر شده است.
 
 داده ها را می توان به درج در هر گذشت [قالب](../../interfaces/formats.md#formats) پشتیبانی شده توسط فاحشه خانه. قالب باید به صراحت در پرس و جو مشخص شود:
 

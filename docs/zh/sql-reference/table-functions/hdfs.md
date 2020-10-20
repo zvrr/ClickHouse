@@ -1,6 +1,6 @@
 ---
 machine_translated: true
-machine_translated_rev: b111334d6614a02564cf32f379679e9ff970d9b1
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 45
 toc_title: hdfs
 ---
@@ -55,12 +55,12 @@ LIMIT 2
 
 1.  假设我们在HDFS上有几个具有以下Uri的文件:
 
--   ‘hdfs://hdfs1:9000/some\_dir/some\_file\_1’
--   ‘hdfs://hdfs1:9000/some\_dir/some\_file\_2’
--   ‘hdfs://hdfs1:9000/some\_dir/some\_file\_3’
--   ‘hdfs://hdfs1:9000/another\_dir/some\_file\_1’
--   ‘hdfs://hdfs1:9000/another\_dir/some\_file\_2’
--   ‘hdfs://hdfs1:9000/another\_dir/some\_file\_3’
+-   ‘hdfs://hdfs1:9000/some_dir/some_file_1’
+-   ‘hdfs://hdfs1:9000/some_dir/some_file_2’
+-   ‘hdfs://hdfs1:9000/some_dir/some_file_3’
+-   ‘hdfs://hdfs1:9000/another_dir/some_file_1’
+-   ‘hdfs://hdfs1:9000/another_dir/some_file_2’
+-   ‘hdfs://hdfs1:9000/another_dir/some_file_3’
 
 1.  查询这些文件中的行数:
 

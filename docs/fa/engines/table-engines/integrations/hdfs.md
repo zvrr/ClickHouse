@@ -1,6 +1,6 @@
 ---
 machine_translated: true
-machine_translated_rev: d734a8e46ddd7465886ba4133bff743c55190626
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 36
 toc_title: HDFS
 ---
@@ -8,7 +8,7 @@ toc_title: HDFS
 # HDFS {#table_engines-hdfs}
 
 این موتور ادغام با فراهم می کند [Apache Hadoop](https://en.wikipedia.org/wiki/Apache_Hadoop) اکوسیستم با اجازه دادن به مدیریت داده ها در [HDFS](https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html)از طریق کلیکهاوس. این موتور مشابه است
-به [پرونده](../special/file.md) و [URL](../special/url.md) موتورهای, اما فراهم می کند ویژگی های هادوپ خاص.
+به [پرونده](../special/file.md#table_engines-file) و [URL](../special/url.md#table_engines-url) موتورهای, اما فراهم می کند ویژگی های هادوپ خاص.
 
 ## استفاده {#usage}
 
@@ -73,12 +73,12 @@ SELECT * FROM hdfs_engine_table LIMIT 2
 
 1.  فرض کنید ما چندین فایل را در قالب فیلم با اوریس زیر در اچ دی ها داریم:
 
--   ‘hdfs://hdfs1:9000/some\_dir/some\_file\_1’
--   ‘hdfs://hdfs1:9000/some\_dir/some\_file\_2’
--   ‘hdfs://hdfs1:9000/some\_dir/some\_file\_3’
--   ‘hdfs://hdfs1:9000/another\_dir/some\_file\_1’
--   ‘hdfs://hdfs1:9000/another\_dir/some\_file\_2’
--   ‘hdfs://hdfs1:9000/another\_dir/some\_file\_3’
+-   ‘hdfs://hdfs1:9000/some_dir/some_file_1’
+-   ‘hdfs://hdfs1:9000/some_dir/some_file_2’
+-   ‘hdfs://hdfs1:9000/some_dir/some_file_3’
+-   ‘hdfs://hdfs1:9000/another_dir/some_file_1’
+-   ‘hdfs://hdfs1:9000/another_dir/some_file_2’
+-   ‘hdfs://hdfs1:9000/another_dir/some_file_3’
 
 1.  راه های مختلفی برای ایجاد یک جدول متشکل از تمام شش فایل وجود دارد:
 

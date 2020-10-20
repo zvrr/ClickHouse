@@ -24,7 +24,7 @@
 假定字符串以UTF-8编码组成的文本，返回此字符串的Unicode字符长度。如果传入的字符串不是UTF-8编码，则函数可能返回一个预期外的值（不会抛出异常）。
 结果类型是UInt64。
 
-## char\_length,CHAR\_LENGTH {#char-length-char-length}
+## char_length,CHAR_LENGTH {#char-length-char-length}
 
 假定字符串以UTF-8编码组成的文本，返回此字符串的Unicode字符长度。如果传入的字符串不是UTF-8编码，则函数可能返回一个预期外的值（不会抛出异常）。
 结果类型是UInt64。
@@ -68,7 +68,7 @@
 
 参数：
 
--   input\_string — 任何一个[字符串](../../sql-reference/functions/string-functions.md)类型的对象。
+-   input_string — 任何一个[字符串](../../sql-reference/functions/string-functions.md)类型的对象。
 
 返回值： 有效的UTF-8字符串。
 
@@ -110,13 +110,13 @@ SELECT format('{} {}', 'Hello', 'World')
 └───────────────────────────────────┘
 ```
 
-## concat(s1, s2, …) {#concats1-s2}
+## concat(s1, s2, …) {#concat-s1-s2}
 
 将参数中的多个字符串拼接，不带分隔符。
 
 ## concatAssumeInjective(s1, s2, …) {#concatassumeinjectives1-s2}
 
-与[concat](./string-functions.md#concat-s1-s2)相同，区别在于，你需要保证concat(s1, s2, s3) -\> s4是单射的，它将用于GROUP BY的优化。
+与[concat](#concat-s1-s2)相同，区别在于，你需要保证concat(s1, s2, s3) -\> s4是单射的，它将用于GROUP BY的优化。
 
 ## 子串(s,offset,length),mid(s,offset,length),substr(s,offset,length) {#substrings-offset-length-mids-offset-length-substrs-offset-length}
 

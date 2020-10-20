@@ -1,11 +1,11 @@
 ---
 machine_translated: true
-machine_translated_rev: d734a8e46ddd7465886ba4133bff743c55190626
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 40
 toc_title: "\u062F\u0648\u0631"
 ---
 
-# از راه دور remoteSecure {#remote-remotesecure}
+# دور افتاده {#remote-remotesecure}
 
 اجازه می دهد تا شما را به دسترسی به سرور از راه دور بدون ایجاد یک `Distributed` جدول
 
@@ -14,6 +14,8 @@ toc_title: "\u062F\u0648\u0631"
 ``` sql
 remote('addresses_expr', db, table[, 'user'[, 'password']])
 remote('addresses_expr', db.table[, 'user'[, 'password']])
+remoteSecure('addresses_expr', db, table[, 'user'[, 'password']])
+remoteSecure('addresses_expr', db.table[, 'user'[, 'password']])
 ```
 
 `addresses_expr` – An expression that generates addresses of remote servers. This may be just one server address. The server address is `host:port` یا فقط `host`. میزبان را می توان به عنوان نام سرور مشخص, و یا به عنوان ایپو4 یا ایپو6 نشانی. نشانی اینترنتی6 در براکت مربع مشخص شده است. پورت پورت تی سی پی بر روی سرور از راه دور است. اگر پورت حذف شده است, با استفاده از `tcp_port` از فایل پیکربندی سرور (به طور پیش فرض, 9000).
@@ -54,7 +56,7 @@ example01-{01..02}-1
 
 اگر شما جفت های متعدد از براکت در اشکال مختلف, این تولید محصول مستقیم از مجموعه مربوطه.
 
-نشانی ها و بخش هایی از نشانی در براکت فرفری را می توان با نماد لوله جدا (\|). در این مورد, مجموعه مربوطه را از نشانی ها به عنوان کپی تفسیر, و پرس و جو خواهد شد به اولین ماکت سالم ارسال. با این حال, کپی در نظم در حال حاضر در مجموعه تکرار [\_تبالسازی](../../operations/settings/settings.md) تنظیمات.
+نشانی ها و بخش هایی از نشانی در براکت فرفری را می توان با نماد لوله جدا (\|). در این مورد, مجموعه مربوطه را از نشانی ها به عنوان کپی تفسیر, و پرس و جو خواهد شد به اولین ماکت سالم ارسال. با این حال, کپی در نظم در حال حاضر در مجموعه تکرار [_تبالسازی](../../operations/settings/settings.md) تنظیمات.
 
 مثال:
 
@@ -64,7 +66,7 @@ example01-{01..02}-{1|2}
 
 این مثال دو تکه که هر کدام دو کپی مشخص.
 
-تعدادی از آدرس های تولید شده محدود است توسط یک ثابت است. در حال حاضر این 1000 نشانی است.
+تعداد نشانیهای تولید شده توسط یک ثابت محدود شده است. در حال حاضر این 1000 نشانی است.
 
 با استفاده از `remote` تابع جدول کمتر مطلوب تر از ایجاد یک است `Distributed` جدول, چرا که در این مورد, اتصال سرور دوباره تاسیس برای هر درخواست. علاوه بر این, اگر نام میزبان قرار است, نام حل و فصل, و خطا شمارش نیست در هنگام کار با کپی های مختلف. هنگامی که پردازش تعداد زیادی از نمایش داده شد, همیشه ایجاد `Distributed` جدول جلوتر از زمان, و استفاده نکنید `remote` تابع جدول.
 
@@ -78,6 +80,6 @@ example01-{01..02}-{1|2}
 اگر کاربر مشخص نشده است, `default` استفاده شده است.
 اگر رمز عبور مشخص نشده است, رمز عبور خالی استفاده شده است.
 
-`remoteSecure` - مثل `remote` but with secured connection. Default port — [\_شروع مجدد](../../operations/server-configuration-parameters/settings.md#server_configuration_parameters-tcp_port_secure) از پیکربندی و یا 9440.
+`remoteSecure` - مثل `remote` but with secured connection. Default port — [_شروع مجدد](../../operations/server-configuration-parameters/settings.md#server_configuration_parameters-tcp_port_secure) از پیکربندی و یا 9440.
 
 [مقاله اصلی](https://clickhouse.tech/docs/en/query_language/table_functions/remote/) <!--hide-->

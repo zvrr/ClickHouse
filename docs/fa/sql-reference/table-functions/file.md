@@ -1,6 +1,6 @@
 ---
 machine_translated: true
-machine_translated_rev: d734a8e46ddd7465886ba4133bff743c55190626
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 37
 toc_title: "\u067E\u0631\u0648\u0646\u062F\u0647"
 ---
@@ -15,7 +15,7 @@ file(path, format, structure)
 
 **پارامترهای ورودی**
 
--   `path` — The relative path to the file from [\_مخفی کردن \_صفحه](../../operations/server-configuration-parameters/settings.md#server_configuration_parameters-user_files_path). مسیر به فایل پشتیبانی پس از دل تنگی در حالت فقط خواندنی: `*`, `?`, `{abc,def}` و `{N..M}` کجا `N`, `M` — numbers, \``'abc', 'def'` — strings.
+-   `path` — The relative path to the file from [_مخفی کردن _صفحه](../../operations/server-configuration-parameters/settings.md#server_configuration_parameters-user_files_path). مسیر به فایل پشتیبانی پس از دل تنگی در حالت فقط خواندنی: `*`, `?`, `{abc,def}` و `{N..M}` کجا `N`, `M` — numbers, \``'abc', 'def'` — strings.
 -   `format` — The [قالب](../../interfaces/formats.md#formats) پرونده
 -   `structure` — Structure of the table. Format `'column1_name column1_type, column2_name column2_type, ...'`.
 
@@ -72,12 +72,12 @@ SELECT * FROM file('test.csv', 'CSV', 'column1 UInt32, column2 UInt32, column3 U
 
 1.  فرض کنید ما چندین فایل با مسیرهای نسبی زیر داریم:
 
--   ‘some\_dir/some\_file\_1’
--   ‘some\_dir/some\_file\_2’
--   ‘some\_dir/some\_file\_3’
--   ‘another\_dir/some\_file\_1’
--   ‘another\_dir/some\_file\_2’
--   ‘another\_dir/some\_file\_3’
+-   ‘some_dir/some_file_1’
+-   ‘some_dir/some_file_2’
+-   ‘some_dir/some_file_3’
+-   ‘another_dir/some_file_1’
+-   ‘another_dir/some_file_2’
+-   ‘another_dir/some_file_3’
 
 1.  پرس و جو مقدار ردیف در این فایل ها:
 
@@ -116,6 +116,6 @@ FROM file('big_dir/file{0..9}{0..9}{0..9}', 'CSV', 'name String, value UInt32')
 
 **همچنین نگاه کنید به**
 
--   [مجازی ستون](https://clickhouse.tech/docs/en/operations/table_engines/#table_engines-virtual_columns)
+-   [ستونهای مجازی](https://clickhouse.tech/docs/en/operations/table_engines/#table_engines-virtual_columns)
 
 [مقاله اصلی](https://clickhouse.tech/docs/en/query_language/table_functions/file/) <!--hide-->

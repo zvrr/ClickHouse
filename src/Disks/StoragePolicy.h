@@ -4,6 +4,8 @@
 #include <Disks/IDisk.h>
 #include <Disks/IVolume.h>
 #include <Disks/VolumeJBOD.h>
+#include <Disks/VolumeRAID1.h>
+#include <Disks/SingleDiskVolume.h>
 #include <IO/WriteHelpers.h>
 #include <Common/CurrentMetrics.h>
 #include <Common/Exception.h>
@@ -32,7 +34,7 @@ class StoragePolicy
 public:
     StoragePolicy(String name_, const Poco::Util::AbstractConfiguration & config, const String & config_prefix, DiskSelectorPtr disks);
 
-    StoragePolicy(String name_, VolumesJBOD volumes_, double move_factor_);
+    StoragePolicy(String name_, Volumes volumes_, double move_factor_);
 
     bool isDefaultPolicy() const;
 
@@ -64,16 +66,16 @@ public:
     /// Do not use this function when it is possible to predict size.
     ReservationPtr makeEmptyReservationOnLargestDisk() const;
 
-    const VolumesJBOD & getVolumes() const { return volumes; }
+    const Volumes & getVolumes() const { return volumes; }
 
     /// Returns number [0., 1.] -- fraction of free space on disk
     /// which should be kept with help of background moves
     double getMoveFactor() const { return move_factor; }
 
     /// Get volume by index from storage_policy
-    VolumeJBODPtr getVolume(size_t i) const { return (i < volumes_names.size() ? volumes[i] : VolumeJBODPtr()); }
+    VolumePtr getVolume(size_t i) const { return (i < volumes_names.size() ? volumes[i] : VolumePtr()); }
 
-    VolumeJBODPtr getVolumeByName(const String & volume_name) const
+    VolumePtr getVolumeByName(const String & volume_name) const
     {
         auto it = volumes_names.find(volume_name);
         if (it == volumes_names.end())
@@ -85,7 +87,7 @@ public:
     void checkCompatibleWith(const StoragePolicyPtr & new_storage_policy) const;
 
 private:
-    VolumesJBOD volumes;
+    Volumes volumes;
     const String name;
     std::map<String, size_t> volumes_names;
 
@@ -98,6 +100,7 @@ private:
 
 class StoragePolicySelector;
 using StoragePolicySelectorPtr = std::shared_ptr<const StoragePolicySelector>;
+using StoragePoliciesMap = std::map<String, StoragePolicyPtr>;
 
 /// Parse .xml configuration and store information about policies
 /// Mostly used for introspection.
@@ -112,10 +115,10 @@ public:
     StoragePolicyPtr get(const String & name) const;
 
     /// All policies
-    const std::map<String, StoragePolicyPtr> & getPoliciesMap() const { return policies; }
+    const StoragePoliciesMap & getPoliciesMap() const { return policies; }
 
 private:
-    std::map<String, StoragePolicyPtr> policies;
+    StoragePoliciesMap policies;
 };
 
 }

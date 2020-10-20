@@ -1,6 +1,6 @@
 ---
 machine_translated: true
-machine_translated_rev: d734a8e46ddd7465886ba4133bff743c55190626
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 41
 toc_title: "\u0630\u062E\u06CC\u0631\u0647 \u0648\u0627\u0698\u0647\u0646\u0627\u0645\
   \u0647\u0647\u0627 \u062F\u0631 \u062D\u0627\u0641\u0638\u0647"
@@ -10,7 +10,7 @@ toc_title: "\u0630\u062E\u06CC\u0631\u0647 \u0648\u0627\u0698\u0647\u0646\u0627\
 
 راه های مختلفی برای ذخیره لغت نامه ها در حافظه وجود دارد.
 
-ما توصیه می کنیم [تخت](#flat), [درهم](#dicts-external_dicts_dict_layout-hashed) و [\_ساخت مجتمع](#complex-key-hashed). که سرعت پردازش بهینه را فراهم می کند.
+ما توصیه می کنیم [تخت](#flat), [درهم](#dicts-external_dicts_dict_layout-hashed) و [_ساخت مجتمع](#complex-key-hashed). که سرعت پردازش بهینه را فراهم می کند.
 
 ذخیره سازی به دلیل عملکرد بالقوه ضعیف و مشکلات در انتخاب پارامترهای مطلوب توصیه نمی شود. ادامه مطلب در بخش “[نهانگاه](#cache)”.
 
@@ -57,9 +57,10 @@ LAYOUT(LAYOUT_TYPE(param value)) -- layout settings
 -   [درهم](#dicts-external_dicts_dict_layout-hashed)
 -   [فشردهسازی](#dicts-external_dicts_dict_layout-sparse_hashed)
 -   [نهانگاه](#cache)
+-   [مستقیم](#direct)
 -   [رنگها](#range-hashed)
--   [\_ساخت مجتمع](#complex-key-hashed)
--   [\_پیچید\_چهای پیچیده](#complex-key-cache)
+-   [_ساخت مجتمع](#complex-key-hashed)
+-   [_پیچید_چهای پیچیده](#complex-key-cache)
 -   [شمال اروپا](#ip-trie)
 
 ### تخت {#flat}
@@ -122,7 +123,7 @@ LAYOUT(HASHED())
 LAYOUT(SPARSE_HASHED())
 ```
 
-### \_ساخت مجتمع {#complex-key-hashed}
+### _ساخت مجتمع {#complex-key-hashed}
 
 این نوع ذخیره سازی برای استفاده با کامپوزیت است [کلید](external-dicts-dict-structure.md). مشابه به `hashed`.
 
@@ -293,9 +294,31 @@ LAYOUT(CACHE(SIZE_IN_CELLS 1000000000))
 !!! warning "اخطار"
     هنوز تاتر به عنوان یک منبع استفاده نمی, چرا که کند است برای پردازش نمایش داده شد با تصادفی می خواند.
 
-### \_پیچید\_چهای پیچیده {#complex-key-cache}
+### _پیچید_چهای پیچیده {#complex-key-cache}
 
 این نوع ذخیره سازی برای استفاده با کامپوزیت است [کلید](external-dicts-dict-structure.md). مشابه به `cache`.
+
+### مستقیم {#direct}
+
+فرهنگ لغت در حافظه ذخیره نمی شود و به طور مستقیم به منبع می رود در طول پردازش یک درخواست.
+
+کلید فرهنگ لغت است `UInt64` نوع.
+
+همه انواع [منابع](external-dicts-dict-sources.md), به جز فایل های محلی, پشتیبانی می شوند.
+
+مثال پیکربندی:
+
+``` xml
+<layout>
+  <direct />
+</layout>
+```
+
+یا
+
+``` sql
+LAYOUT(DIRECT())
+```
 
 ### شمال اروپا {#ip-trie}
 
@@ -355,7 +378,7 @@ PRIMARY KEY prefix
 
 کلید باید تنها یک ویژگی نوع رشته ای داشته باشد که شامل یک پیشوند مجاز است. انواع دیگر هنوز پشتیبانی نمی شوند.
 
-برای نمایش داده شد, شما باید توابع مشابه استفاده کنید (`dictGetT` با یک تاپل) به لغت نامه ها با کلید های ترکیبی:
+برای نمایش داده شد, شما باید توابع مشابه استفاده کنید (`dictGetT` با یک تاپل) به عنوان لغت نامه با کلید های کامپوزیت:
 
 ``` sql
 dictGetT('dict_name', 'attr_name', tuple(ip))

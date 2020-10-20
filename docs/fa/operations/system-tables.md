@@ -1,6 +1,6 @@
 ---
 machine_translated: true
-machine_translated_rev: d734a8e46ddd7465886ba4133bff743c55190626
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 52
 toc_title: "\u062C\u062F\u0627\u0648\u0644 \u0633\u06CC\u0633\u062A\u0645"
 ---
@@ -11,9 +11,9 @@ toc_title: "\u062C\u062F\u0627\u0648\u0644 \u0633\u06CC\u0633\u062A\u0645"
 شما می توانید یک جدول سیستم را حذف کنید (اما شما می توانید جدا انجام).
 جداول سیستم فایل های با داده ها بر روی دیسک و یا فایل های با ابرداده ندارد. سرور ایجاد تمام جداول سیستم زمانی که شروع می شود.
 جداول سیستم فقط خواندنی.
-این در واقع ‘system’ پایگاه داده است.
+این در واقع ‘system’ بانک اطلاعات.
 
-## سیستم.\_نامهنویسی ناهمزمان {#system_tables-asynchronous_metrics}
+## سیستم._نامهنویسی ناهمزمان {#system_tables-asynchronous_metrics}
 
 شامل معیارهای که به صورت دوره ای در پس زمینه محاسبه می شود. مثلا, مقدار رم در حال استفاده.
 
@@ -48,7 +48,7 @@ SELECT * FROM system.asynchronous_metrics LIMIT 10
 -   [نظارت](monitoring.md) — Base concepts of ClickHouse monitoring.
 -   [سیستم.متریک](#system_tables-metrics) — Contains instantly calculated metrics.
 -   [سیستم.رویدادها](#system_tables-events) — Contains a number of events that have occurred.
--   [سیستم.\_اشکالزدایی](#system_tables-metric_log) — Contains a history of metrics values from tables `system.metrics` и `system.events`.
+-   [سیستم._اشکالزدایی](#system_tables-metric_log) — Contains a history of metrics values from tables `system.metrics` и `system.events`.
 
 ## سیستم.خوشه {#system-clusters}
 
@@ -72,14 +72,14 @@ SELECT * FROM system.asynchronous_metrics LIMIT 10
 **همچنین نگاه کنید به**
 
 -   [موتور جدول توزیع شده است](../engines/table-engines/special/distributed.md)
--   [تنظیمات \_فرهنگ توزیع میشود](settings/settings.md#settings-distributed_replica_error_cap)
--   [پخش \_راپیشا\_را\_را\_را\_حالف\_لایف تنظیم](settings/settings.md#settings-distributed_replica_error_half_life)
+-   [تنظیمات _فرهنگ توزیع میشود](settings/settings.md#settings-distributed_replica_error_cap)
+-   [پخش _راپیشا_را_را_را_حالف_لایف تنظیم](settings/settings.md#settings-distributed_replica_error_half_life)
 
 ## سیستم.ستونها {#system-columns}
 
 حاوی اطلاعات در مورد ستون در تمام جداول.
 
-شما می توانید با استفاده از این جدول برای دریافت اطلاعات مشابه به [DESCRIBE TABLE](../sql-reference/statements/misc.md#misc-describe-table) پرس و جو, اما برای جداول متعدد در یک بار.
+شما می توانید از این جدول برای دریافت اطلاعات شبیه به [DESCRIBE TABLE](../sql-reference/statements/misc.md#misc-describe-table) پرس و جو, اما برای جداول متعدد در یک بار.
 
 این `system.columns` جدول شامل ستون های زیر (نوع ستون در براکت نشان داده شده است):
 
@@ -147,29 +147,69 @@ SELECT * FROM system.contributors WHERE name='Olga Khvostikova'
 
 ## سیستم.قطعات مجزا {#system_tables-detached_parts}
 
-حاوی اطلاعات در مورد قطعات جدا شده از [ادغام](../engines/table-engines/mergetree-family/mergetree.md) میز این `reason` ستون مشخص می کند که چرا بخش جدا شد. برای قطعات کاربر جدا, دلیل خالی است. چنین قطعات را می توان با [ALTER TABLE ATTACH PARTITION\|PART](../query_language/query_language/alter/#alter_attach-partition) فرمان. برای توضیحات ستون های دیگر را ببینید [سیستم.قطعات](#system_tables-parts). اگر نام قسمت نامعتبر است, ارزش برخی از ستون ممکن است `NULL`. این قطعات را می توان با حذف [ALTER TABLE DROP DETACHED PART](../query_language/query_language/alter/#alter_drop-detached).
+حاوی اطلاعات در مورد قطعات جدا شده از [ادغام](../engines/table-engines/mergetree-family/mergetree.md) میز این `reason` ستون مشخص می کند که چرا بخش جدا شد. برای قطعات کاربر جدا, دلیل خالی است. چنین قطعات را می توان با [ALTER TABLE ATTACH PARTITION\|PART](../sql-reference/statements/alter.md#alter_attach-partition) فرمان. برای توضیحات ستون های دیگر را ببینید [سیستم.قطعات](#system_tables-parts). اگر نام قسمت نامعتبر است, ارزش برخی از ستون ممکن است `NULL`. این قطعات را می توان با حذف [ALTER TABLE DROP DETACHED PART](../sql-reference/statements/alter.md#alter_drop-detached).
 
-## سیستم.واژهنامهها {#system-dictionaries}
+## سیستم.واژهنامهها {#system_tables-dictionaries}
 
-شامل اطلاعات در مورد لغت نامه های خارجی.
+حاوی اطلاعات در مورد [واژهنامهها خارجی](../sql-reference/dictionaries/external-dictionaries/external-dicts.md).
 
 ستونها:
 
--   `name` (String) — Dictionary name.
--   `type` (String) — Dictionary type: Flat, Hashed, Cache.
--   `origin` (String) — Path to the configuration file that describes the dictionary.
--   `attribute.names` (Array(String)) — Array of attribute names provided by the dictionary.
--   `attribute.types` (Array(String)) — Corresponding array of attribute types that are provided by the dictionary.
--   `has_hierarchy` (UInt8) — Whether the dictionary is hierarchical.
--   `bytes_allocated` (UInt64) — The amount of RAM the dictionary uses.
--   `hit_rate` (Float64) — For cache dictionaries, the percentage of uses for which the value was in the cache.
--   `element_count` (UInt64) — The number of items stored in the dictionary.
--   `load_factor` (Float64) — The percentage filled in the dictionary (for a hashed dictionary, the percentage filled in the hash table).
--   `creation_time` (DateTime) — The time when the dictionary was created or last successfully reloaded.
--   `last_exception` (String) — Text of the error that occurs when creating or reloading the dictionary if the dictionary couldn’t be created.
--   `source` (String) — Text describing the data source for the dictionary.
+-   `database` ([رشته](../sql-reference/data-types/string.md)) — Name of the database containing the dictionary created by DDL query. Empty string for other dictionaries.
+-   `name` ([رشته](../sql-reference/data-types/string.md)) — [نام واژهنامه](../sql-reference/dictionaries/external-dictionaries/external-dicts-dict.md).
+-   `status` ([شمار8](../sql-reference/data-types/enum.md)) — Dictionary status. Possible values:
+    -   `NOT_LOADED` — Dictionary was not loaded because it was not used.
+    -   `LOADED` — Dictionary loaded successfully.
+    -   `FAILED` — Unable to load the dictionary as a result of an error.
+    -   `LOADING` — Dictionary is loading now.
+    -   `LOADED_AND_RELOADING` — Dictionary is loaded successfully, and is being reloaded right now (frequent reasons: [SYSTEM RELOAD DICTIONARY](../sql-reference/statements/system.md#query_language-system-reload-dictionary) پرس و جو, ایست, پیکربندی فرهنگ لغت تغییر کرده است).
+    -   `FAILED_AND_RELOADING` — Could not load the dictionary as a result of an error and is loading now.
+-   `origin` ([رشته](../sql-reference/data-types/string.md)) — Path to the configuration file that describes the dictionary.
+-   `type` ([رشته](../sql-reference/data-types/string.md)) — Type of a dictionary allocation. [ذخیره واژهنامهها در حافظه](../sql-reference/dictionaries/external-dictionaries/external-dicts-dict-layout.md).
+-   `key` — [نوع کلید](../sql-reference/dictionaries/external-dictionaries/external-dicts-dict-structure.md#ext_dict_structure-key): کلید عددی ([UInt64](../sql-reference/data-types/int-uint.md#uint-ranges)) or Сomposite key ([رشته](../sql-reference/data-types/string.md)) — form “(type 1, type 2, …, type n)”.
+-   `attribute.names` ([& حذف](../sql-reference/data-types/array.md)([رشته](../sql-reference/data-types/string.md))) — Array of [نام خصیصه](../sql-reference/dictionaries/external-dictionaries/external-dicts-dict-structure.md#ext_dict_structure-attributes) فراهم شده توسط فرهنگ لغت.
+-   `attribute.types` ([& حذف](../sql-reference/data-types/array.md)([رشته](../sql-reference/data-types/string.md))) — Corresponding array of [انواع خصیصه](../sql-reference/dictionaries/external-dictionaries/external-dicts-dict-structure.md#ext_dict_structure-attributes) که توسط فرهنگ لغت فراهم شده است.
+-   `bytes_allocated` ([UInt64](../sql-reference/data-types/int-uint.md#uint-ranges)) — Amount of RAM allocated for the dictionary.
+-   `query_count` ([UInt64](../sql-reference/data-types/int-uint.md#uint-ranges)) — Number of queries since the dictionary was loaded or since the last successful reboot.
+-   `hit_rate` ([جسم شناور64](../sql-reference/data-types/float.md)) — For cache dictionaries, the percentage of uses for which the value was in the cache.
+-   `element_count` ([UInt64](../sql-reference/data-types/int-uint.md#uint-ranges)) — Number of items stored in the dictionary.
+-   `load_factor` ([جسم شناور64](../sql-reference/data-types/float.md)) — Percentage filled in the dictionary (for a hashed dictionary, the percentage filled in the hash table).
+-   `source` ([رشته](../sql-reference/data-types/string.md)) — Text describing the [منبع داده](../sql-reference/dictionaries/external-dictionaries/external-dicts-dict-sources.md) برای فرهنگ لغت.
+-   `lifetime_min` ([UInt64](../sql-reference/data-types/int-uint.md#uint-ranges)) — Minimum [طول عمر](../sql-reference/dictionaries/external-dictionaries/external-dicts-dict-lifetime.md) از فرهنگ لغت در حافظه, پس از کلیک که تلاش می کند به بازنگری فرهنگ لغت (اگر `invalidate_query` قرار است, سپس تنها در صورتی که تغییر کرده است). تنظیم در ثانیه.
+-   `lifetime_max` ([UInt64](../sql-reference/data-types/int-uint.md#uint-ranges)) — Maximum [طول عمر](../sql-reference/dictionaries/external-dictionaries/external-dicts-dict-lifetime.md) از فرهنگ لغت در حافظه, پس از کلیک که تلاش می کند به بازنگری فرهنگ لغت (اگر `invalidate_query` قرار است, سپس تنها در صورتی که تغییر کرده است). تنظیم در ثانیه.
+-   `loading_start_time` ([DateTime](../sql-reference/data-types/datetime.md)) — Start time for loading the dictionary.
+-   `last_successful_update_time` ([DateTime](../sql-reference/data-types/datetime.md)) — End time for loading or updating the dictionary. Helps to monitor some troubles with external sources and investigate causes.
+-   `loading_duration` ([Float32](../sql-reference/data-types/float.md)) — Duration of a dictionary loading.
+-   `last_exception` ([رشته](../sql-reference/data-types/string.md)) — Text of the error that occurs when creating or reloading the dictionary if the dictionary couldn't be created.
 
-توجه داشته باشید که مقدار حافظه مورد استفاده توسط فرهنگ لغت متناسب با تعداد اقلام ذخیره شده در این نیست. بنابراین برای لغت نامه تخت و کش, تمام سلول های حافظه از پیش تعیین شده, صرف نظر از چگونه کامل فرهنگ لغت در واقع.
+**مثال**
+
+پیکربندی فرهنگ لغت.
+
+``` sql
+CREATE DICTIONARY dictdb.dict
+(
+    `key` Int64 DEFAULT -1,
+    `value_default` String DEFAULT 'world',
+    `value_expression` String DEFAULT 'xxx' EXPRESSION 'toString(127 * 172)'
+)
+PRIMARY KEY key
+SOURCE(CLICKHOUSE(HOST 'localhost' PORT 9000 USER 'default' TABLE 'dicttbl' DB 'dictdb'))
+LIFETIME(MIN 0 MAX 1)
+LAYOUT(FLAT())
+```
+
+اطمینان حاصل کنید که فرهنگ لغت لود شده است.
+
+``` sql
+SELECT * FROM system.dictionaries
+```
+
+``` text
+┌─database─┬─name─┬─status─┬─origin──────┬─type─┬─key────┬─attribute.names──────────────────────┬─attribute.types─────┬─bytes_allocated─┬─query_count─┬─hit_rate─┬─element_count─┬───────────load_factor─┬─source─────────────────────┬─lifetime_min─┬─lifetime_max─┬──loading_start_time─┌──last_successful_update_time─┬──────loading_duration─┬─last_exception─┐
+│ dictdb   │ dict │ LOADED │ dictdb.dict │ Flat │ UInt64 │ ['value_default','value_expression'] │ ['String','String'] │           74032 │           0 │        1 │             1 │ 0.0004887585532746823 │ ClickHouse: dictdb.dicttbl │            0 │            1 │ 2020-03-04 04:17:34 │   2020-03-04 04:30:34        │                 0.002 │                │
+└──────────┴──────┴────────┴─────────────┴──────┴────────┴──────────────────────────────────────┴─────────────────────┴─────────────────┴─────────────┴──────────┴───────────────┴───────────────────────┴────────────────────────────┴──────────────┴──────────────┴─────────────────────┴──────────────────────────────┘───────────────────────┴────────────────┘
+```
 
 ## سیستم.رویدادها {#system_tables-events}
 
@@ -199,9 +239,9 @@ SELECT * FROM system.events LIMIT 5
 
 **همچنین نگاه کنید به**
 
--   [سیستم.\_نامهنویسی ناهمزمان](#system_tables-asynchronous_metrics) — Contains periodically calculated metrics.
+-   [سیستم._نامهنویسی ناهمزمان](#system_tables-asynchronous_metrics) — Contains periodically calculated metrics.
 -   [سیستم.متریک](#system_tables-metrics) — Contains instantly calculated metrics.
--   [سیستم.\_اشکالزدایی](#system_tables-metric_log) — Contains a history of metrics values from tables `system.metrics` и `system.events`.
+-   [سیستم._اشکالزدایی](#system_tables-metric_log) — Contains a history of metrics values from tables `system.metrics` и `system.events`.
 -   [نظارت](monitoring.md) — Base concepts of ClickHouse monitoring.
 
 ## سیستم.توابع {#system-functions}
@@ -215,7 +255,7 @@ SELECT * FROM system.events LIMIT 5
 
 ## سیستم.بازداشت گرافیت {#system-graphite-retentions}
 
-حاوی اطلاعات در مورد پارامترها [لغزش \_ نمودار](server-configuration-parameters/settings.md#server_configuration_parameters-graphite_rollup) که در جداول با استفاده [اطلاعات دقیق](../engines/table-engines/mergetree-family/graphitemergetree.md) موتورها.
+حاوی اطلاعات در مورد پارامترها [لغزش _ نمودار](server-configuration-parameters/settings.md#server_configuration_parameters-graphite) که در جداول با استفاده [اطلاعات دقیق](../engines/table-engines/mergetree-family/graphitemergetree.md) موتورها.
 
 ستونها:
 
@@ -259,7 +299,7 @@ SELECT * FROM system.events LIMIT 5
 -   `value` ([Int64](../sql-reference/data-types/int-uint.md)) — Metric value.
 -   `description` ([رشته](../sql-reference/data-types/string.md)) — Metric description.
 
-لیستی از معیارهای پشتیبانی شده شما می توانید در [افراد زیر در این افزونه مشارکت کردهاندپردازنده](https://github.com/ClickHouse/ClickHouse/blob/master/dbms/Common/CurrentMetrics.cpp) فایل منبع از خانه کلیک.
+لیستی از معیارهای پشتیبانی شده شما می توانید در [همایش های بین المللیپردازنده](https://github.com/ClickHouse/ClickHouse/blob/master/src/Common/CurrentMetrics.cpp) فایل منبع از خانه کلیک.
 
 **مثال**
 
@@ -284,12 +324,12 @@ SELECT * FROM system.metrics LIMIT 10
 
 **همچنین نگاه کنید به**
 
--   [سیستم.\_نامهنویسی ناهمزمان](#system_tables-asynchronous_metrics) — Contains periodically calculated metrics.
+-   [سیستم._نامهنویسی ناهمزمان](#system_tables-asynchronous_metrics) — Contains periodically calculated metrics.
 -   [سیستم.رویدادها](#system_tables-events) — Contains a number of events that occurred.
--   [سیستم.\_اشکالزدایی](#system_tables-metric_log) — Contains a history of metrics values from tables `system.metrics` и `system.events`.
+-   [سیستم._اشکالزدایی](#system_tables-metric_log) — Contains a history of metrics values from tables `system.metrics` и `system.events`.
 -   [نظارت](monitoring.md) — Base concepts of ClickHouse monitoring.
 
-## سیستم.\_اشکالزدایی {#system_tables-metric_log}
+## سیستم._اشکالزدایی {#system_tables-metric_log}
 
 دارای تاریخچه معیارهای ارزش از جداول `system.metrics` و `system.events`, دوره ای به دیسک سرخ.
 برای روشن کردن مجموعه تاریخچه معیارهای در `system.metric_log` ایجاد `/etc/clickhouse-server/config.d/metric_log.xml` با محتوای زیر:
@@ -340,18 +380,18 @@ CurrentMetric_ReplicatedChecks:                             0
 
 **همچنین نگاه کنید به**
 
--   [سیستم.\_نامهنویسی ناهمزمان](#system_tables-asynchronous_metrics) — Contains periodically calculated metrics.
+-   [سیستم._نامهنویسی ناهمزمان](#system_tables-asynchronous_metrics) — Contains periodically calculated metrics.
 -   [سیستم.رویدادها](#system_tables-events) — Contains a number of events that occurred.
 -   [سیستم.متریک](#system_tables-metrics) — Contains instantly calculated metrics.
 -   [نظارت](monitoring.md) — Base concepts of ClickHouse monitoring.
 
 ## سیستم.اعداد {#system-numbers}
 
-این جدول شامل یک uint64 ستون به نام ‘number’ که شامل تقریبا تمام اعداد طبیعی با شروع از صفر.
+این جدول شامل یک UInt64 ستون به نام ‘number’ که شامل تقریبا تمام اعداد طبیعی با شروع از صفر.
 شما می توانید این جدول برای تست استفاده, و یا اگر شما نیاز به انجام یک جستجو نیروی بی رحم.
 بار خوانده شده از این جدول موازی نیست.
 
-## سیستم.\_شماره حساب {#system-numbers-mt}
+## سیستم._شماره حساب {#system-numbers-mt}
 
 همان ‘system.numbers’ اما بار خوانده شده موازی هستند. اعداد را می توان در هر سفارش بازگشت.
 مورد استفاده برای تست.
@@ -379,7 +419,7 @@ CurrentMetric_ReplicatedChecks:                             0
 
 -   `name` (`String`) – Name of the data part.
 
--   `active` (`UInt8`) – Flag that indicates whether the data part is active. If a data part is active, it’s used in a table. Otherwise, it’s deleted. Inactive data parts remain after merging.
+-   `active` (`UInt8`) – Flag that indicates whether the data part is active. If a data part is active, it's used in a table. Otherwise, it's deleted. Inactive data parts remain after merging.
 
 -   `marks` (`UInt64`) – The number of marks. To get the approximate number of rows in a data part, multiply `marks` با دانه دانه دانه شاخص (معمولا 8192) (این اشاره برای دانه دانه تطبیقی کار نمی کند).
 
@@ -421,7 +461,7 @@ CurrentMetric_ReplicatedChecks:                             0
 
 -   `primary_key_bytes_in_memory_allocated` (`UInt64`) – The amount of memory (in bytes) reserved for primary key values.
 
--   `is_frozen` (`UInt8`) – Flag that shows that a partition data backup exists. 1, the backup exists. 0, the backup doesn’t exist. For more details, see [FREEZE PARTITION](../sql-reference/statements/alter.md#alter_freeze-partition)
+-   `is_frozen` (`UInt8`) – Flag that shows that a partition data backup exists. 1, the backup exists. 0, the backup doesn't exist. For more details, see [FREEZE PARTITION](../sql-reference/statements/alter.md#alter_freeze-partition)
 
 -   `database` (`String`) – Name of the database.
 
@@ -443,9 +483,9 @@ CurrentMetric_ReplicatedChecks:                             0
 
 -   `marks_size` (`UInt64`) – Alias for `marks_bytes`.
 
-## سیستم.\_خروج {#system_tables-part-log}
+## سیستم._خروج {#system_tables-part-log}
 
-این `system.part_log` جدول تنها در صورتی ایجاد می شود [\_خروج](server-configuration-parameters/settings.md#server_configuration_parameters-part-log) تنظیم سرور مشخص شده است.
+این `system.part_log` جدول تنها در صورتی ایجاد می شود [_خروج](server-configuration-parameters/settings.md#server_configuration_parameters-part-log) تنظیم سرور مشخص شده است.
 
 این جدول حاوی اطلاعات در مورد اتفاقاتی که با رخ داده است [قطعات داده](../engines/table-engines/mergetree-family/custom-partitioning-key.md) در [ادغام](../engines/table-engines/mergetree-family/mergetree.md) جداول خانواده, مانند اضافه کردن و یا ادغام داده ها.
 
@@ -488,11 +528,11 @@ CurrentMetric_ReplicatedChecks:                             0
 -   `rows_read` (UInt64) – The number of rows read from the table. For distributed processing, on the requestor server, this is the total for all remote servers.
 -   `bytes_read` (UInt64) – The number of uncompressed bytes read from the table. For distributed processing, on the requestor server, this is the total for all remote servers.
 -   `total_rows_approx` (UInt64) – The approximation of the total number of rows that should be read. For distributed processing, on the requestor server, this is the total for all remote servers. It can be updated during request processing, when new sources to process become known.
--   `memory_usage` (UInt64) – Amount of RAM the request uses. It might not include some types of dedicated memory. See the [\_کاساژ بیشینه](../operations/settings/query-complexity.md#settings_max_memory_usage) تنظیمات.
+-   `memory_usage` (UInt64) – Amount of RAM the request uses. It might not include some types of dedicated memory. See the [_کاساژ بیشینه](../operations/settings/query-complexity.md#settings_max_memory_usage) تنظیمات.
 -   `query` (String) – The query text. For `INSERT` این شامل داده ها برای وارد کردن نیست.
 -   `query_id` (String) – Query ID, if defined.
 
-## سیستم.\_خروج {#system-tables-text-log}
+## سیستم._خروج {#system_tables-text_log}
 
 شامل ورودی ورود به سیستم. سطح ورود به سیستم که می رود به این جدول را می توان با محدود `text_log.level` تنظیم سرور.
 
@@ -519,16 +559,16 @@ CurrentMetric_ReplicatedChecks:                             0
 -   `source_file` (`LowCardinality(String)`)- فایل منبع که از ورود به سیستم انجام شد .
 -   `source_line` (`UInt64`)- خط منبع که از ورود به سیستم انجام شد.
 
-## سیستم.\_خروج {#system_tables-query_log}
+## سیستم._خروج {#system_tables-query_log}
 
 حاوی اطلاعات در مورد اجرای نمایش داده شد. برای هر پرس و جو, شما می توانید زمان شروع پردازش را ببینید, مدت زمان پردازش, پیام های خطا و اطلاعات دیگر.
 
 !!! note "یادداشت"
     جدول حاوی اطلاعات ورودی برای `INSERT` نمایش داده شد.
 
-تاتر این جدول را فقط در صورتی ایجاد می کند [\_خروج](server-configuration-parameters/settings.md#server_configuration_parameters-query-log) پارامتر سرور مشخص شده است. این پارامتر مجموعه قوانین ورود به سیستم, مانند فاصله ورود به سیستم و یا نام جدول نمایش داده شد خواهد شد وارد سایت شوید.
+تاتر این جدول را فقط در صورتی ایجاد می کند [_خروج](server-configuration-parameters/settings.md#server_configuration_parameters-query-log) پارامتر سرور مشخص شده است. این پارامتر مجموعه قوانین ورود به سیستم, مانند فاصله ورود به سیستم و یا نام جدول نمایش داده شد خواهد شد وارد سایت شوید.
 
-برای فعال کردن ورود به سیستم پرس و جو, تنظیم [\_خروج](settings/settings.md#settings-log-queries) پارامتر به 1. برای اطلاعات بیشتر [تنظیمات](settings/settings.md) بخش.
+برای فعال کردن ورود به سیستم پرس و جو, تنظیم [_خروج](settings/settings.md#settings-log-queries) پارامتر به 1. برای اطلاعات بیشتر [تنظیمات](settings/settings.md) بخش.
 
 این `system.query_log` جدول ثبت دو نوع نمایش داده شد:
 
@@ -570,7 +610,7 @@ CurrentMetric_ReplicatedChecks:                             0
 -   `interface` (UInt8) — Interface that the query was initiated from. Possible values:
     -   1 — TCP.
     -   2 — HTTP.
--   `os_user` (String) — OS’s username who runs [کلیک مشتری](../interfaces/cli.md).
+-   `os_user` (String) — OS's username who runs [کلیک مشتری](../interfaces/cli.md).
 -   `client_hostname` (String) — Hostname of the client machine where the [کلیک مشتری](../interfaces/cli.md) یا یکی دیگر از مشتری تی پی اجرا می شود.
 -   `client_name` (String) — The [کلیک مشتری](../interfaces/cli.md) یا یکی دیگر از نام مشتری تی پی.
 -   `client_revision` (UInt32) — Revision of the [کلیک مشتری](../interfaces/cli.md) یا یکی دیگر از مشتری تی پی.
@@ -596,20 +636,20 @@ CurrentMetric_ReplicatedChecks:                             0
 2.  اگر یک خطا در طول پردازش پرس و جو رخ داده است, دو رویداد با انواع 1 و 4 ایجاد می شوند.
 3.  اگر یک خطا قبل از راه اندازی پرس و جو رخ داده است, یک رویداد واحد با نوع 3 ایجاد شده است.
 
-به طور پیش فرض, سیاهههای مربوط به جدول در فواصل 7.5 ثانیه اضافه. شما می توانید این فاصله در مجموعه [\_خروج](server-configuration-parameters/settings.md#server_configuration_parameters-query-log) تنظیم سرور (نگاه کنید به `flush_interval_milliseconds` پارامتر). به خیط و پیت کردن سیاهههای مربوط به زور از بافر حافظه را به جدول, استفاده از `SYSTEM FLUSH LOGS` پرس و جو.
+به طور پیش فرض, سیاهههای مربوط به جدول در فواصل 7.5 ثانیه اضافه. شما می توانید این فاصله در مجموعه [_خروج](server-configuration-parameters/settings.md#server_configuration_parameters-query-log) تنظیم سرور (نگاه کنید به `flush_interval_milliseconds` پارامتر). به خیط و پیت کردن سیاهههای مربوط به زور از بافر حافظه را به جدول, استفاده از `SYSTEM FLUSH LOGS` پرس و جو.
 
 هنگامی که جدول به صورت دستی حذف, به طور خودکار در پرواز ایجاد. توجه داشته باشید که تمام سیاهههای مربوط قبلی حذف خواهد شد.
 
 !!! note "یادداشت"
     دوره ذخیره سازی برای سیاهههای مربوط نامحدود است. سیاهههای مربوط به طور خودکار از جدول حذف نمی شود. شما نیاز به سازماندهی حذف سیاهههای مربوط منسوخ شده خود را.
 
-شما می توانید یک کلید پارتیشن بندی دلخواه برای مشخص `system.query_log` جدول در [\_خروج](server-configuration-parameters/settings.md#server_configuration_parameters-query-log) تنظیم سرور (نگاه کنید به `partition_by` پارامتر).
+شما می توانید یک کلید پارتیشن بندی دلخواه برای مشخص `system.query_log` جدول در [_خروج](server-configuration-parameters/settings.md#server_configuration_parameters-query-log) تنظیم سرور (نگاه کنید به `partition_by` پارامتر).
 
-## سیستم.\_ر\_خروج {#system_tables-query-thread-log}
+## سیستم._ر_خروج {#system_tables-query-thread-log}
 
 جدول شامل اطلاعات در مورد هر موضوع اجرای پرس و جو.
 
-تاتر این جدول را فقط در صورتی ایجاد می کند [\_ر\_خروج](server-configuration-parameters/settings.md#server_configuration_parameters-query-thread-log) پارامتر سرور مشخص شده است. این پارامتر مجموعه قوانین ورود به سیستم, مانند فاصله ورود به سیستم و یا نام جدول نمایش داده شد خواهد شد وارد سایت شوید.
+تاتر این جدول را فقط در صورتی ایجاد می کند [_ر_خروج](server-configuration-parameters/settings.md#server_configuration_parameters-query-thread-log) پارامتر سرور مشخص شده است. این پارامتر مجموعه قوانین ورود به سیستم, مانند فاصله ورود به سیستم و یا نام جدول نمایش داده شد خواهد شد وارد سایت شوید.
 
 برای فعال کردن ورود به سیستم پرس و جو, تنظیم [باز کردن](settings/settings.md#settings-log-query-threads) پارامتر به 1. برای اطلاعات بیشتر [تنظیمات](settings/settings.md) بخش.
 
@@ -644,7 +684,7 @@ CurrentMetric_ReplicatedChecks:                             0
 -   `interface` (UInt8) — Interface that the query was initiated from. Possible values:
     -   1 — TCP.
     -   2 — HTTP.
--   `os_user` (String) — OS’s username who runs [کلیک مشتری](../interfaces/cli.md).
+-   `os_user` (String) — OS's username who runs [کلیک مشتری](../interfaces/cli.md).
 -   `client_hostname` (String) — Hostname of the client machine where the [کلیک مشتری](../interfaces/cli.md) یا یکی دیگر از مشتری تی پی اجرا می شود.
 -   `client_name` (String) — The [کلیک مشتری](../interfaces/cli.md) یا یکی دیگر از نام مشتری تی پی.
 -   `client_revision` (UInt32) — Revision of the [کلیک مشتری](../interfaces/cli.md) یا یکی دیگر از مشتری تی پی.
@@ -661,43 +701,45 @@ CurrentMetric_ReplicatedChecks:                             0
 -   `ProfileEvents.Names` (Array(String)) — Counters that measure different metrics for this thread. The description of them could be found in the table [سیستم.رویدادها](#system_tables-events)
 -   `ProfileEvents.Values` (Array(UInt64)) — Values of metrics for this thread that are listed in the `ProfileEvents.Names` ستون.
 
-به طور پیش فرض, سیاهههای مربوط به جدول در فواصل 7.5 ثانیه اضافه. شما می توانید این فاصله در مجموعه [\_ر\_خروج](server-configuration-parameters/settings.md#server_configuration_parameters-query-thread-log) تنظیم سرور (نگاه کنید به `flush_interval_milliseconds` پارامتر). به خیط و پیت کردن سیاهههای مربوط به زور از بافر حافظه را به جدول, استفاده از `SYSTEM FLUSH LOGS` پرس و جو.
+به طور پیش فرض, سیاهههای مربوط به جدول در فواصل 7.5 ثانیه اضافه. شما می توانید این فاصله در مجموعه [_ر_خروج](server-configuration-parameters/settings.md#server_configuration_parameters-query-thread-log) تنظیم سرور (نگاه کنید به `flush_interval_milliseconds` پارامتر). به خیط و پیت کردن سیاهههای مربوط به زور از بافر حافظه را به جدول, استفاده از `SYSTEM FLUSH LOGS` پرس و جو.
 
 هنگامی که جدول به صورت دستی حذف, به طور خودکار در پرواز ایجاد. توجه داشته باشید که تمام سیاهههای مربوط قبلی حذف خواهد شد.
 
 !!! note "یادداشت"
     دوره ذخیره سازی برای سیاهههای مربوط نامحدود است. سیاهههای مربوط به طور خودکار از جدول حذف نمی شود. شما نیاز به سازماندهی حذف سیاهههای مربوط منسوخ شده خود را.
 
-شما می توانید یک کلید پارتیشن بندی دلخواه برای مشخص `system.query_thread_log` جدول در [\_ر\_خروج](server-configuration-parameters/settings.md#server_configuration_parameters-query-thread-log) تنظیم سرور (نگاه کنید به `partition_by` پارامتر).
+شما می توانید یک کلید پارتیشن بندی دلخواه برای مشخص `system.query_thread_log` جدول در [_ر_خروج](server-configuration-parameters/settings.md#server_configuration_parameters-query-thread-log) تنظیم سرور (نگاه کنید به `partition_by` پارامتر).
 
-## سیستم.\_قطع {#system_tables-trace_log}
+## سیستم._قطع {#system_tables-trace_log}
 
 حاوی ردیاب های پشته ای است که توسط پروفایل پرس و جو نمونه گیری می شود.
 
-تاتر این جدول زمانی ایجاد می کند [\_قطع](server-configuration-parameters/settings.md#server_configuration_parameters-trace_log) بخش پیکربندی سرور تنظیم شده است. همچنین [جستجو](settings/settings.md#query_profiler_real_time_period_ns) و [ایران در تهران](settings/settings.md#query_profiler_cpu_time_period_ns) تنظیمات باید تنظیم شود.
+تاتر این جدول زمانی ایجاد می کند [_قطع](server-configuration-parameters/settings.md#server_configuration_parameters-trace_log) بخش پیکربندی سرور تنظیم شده است. همچنین [جستجو](settings/settings.md#query_profiler_real_time_period_ns) و [ایران در تهران](settings/settings.md#query_profiler_cpu_time_period_ns) تنظیمات باید تنظیم شود.
 
 برای تجزیه و تحلیل سیاهههای مربوط, استفاده از `addressToLine`, `addressToSymbol` و `demangle` توابع درون گرایی.
 
 ستونها:
 
--   `event_date`([تاریخ](../sql-reference/data-types/date.md)) — Date of sampling moment.
+-   `event_date` ([تاریخ](../sql-reference/data-types/date.md)) — Date of sampling moment.
 
--   `event_time`([DateTime](../sql-reference/data-types/datetime.md)) — Timestamp of sampling moment.
+-   `event_time` ([DateTime](../sql-reference/data-types/datetime.md)) — Timestamp of the sampling moment.
 
--   `revision`([UInt32](../sql-reference/data-types/int-uint.md)) — ClickHouse server build revision.
+-   `timestamp_ns` ([UInt64](../sql-reference/data-types/int-uint.md)) — Timestamp of the sampling moment in nanoseconds.
+
+-   `revision` ([UInt32](../sql-reference/data-types/int-uint.md)) — ClickHouse server build revision.
 
     هنگام اتصال به سرور توسط `clickhouse-client`, شما رشته شبیه به دیدن `Connected to ClickHouse server version 19.18.1 revision 54429.`. این فیلد شامل `revision` اما نه `version` از یک سرور.
 
--   `timer_type`([شمار8](../sql-reference/data-types/enum.md)) — Timer type:
+-   `timer_type` ([شمار8](../sql-reference/data-types/enum.md)) — Timer type:
 
     -   `Real` نشان دهنده زمان دیوار ساعت.
     -   `CPU` نشان دهنده زمان پردازنده.
 
--   `thread_number`([UInt32](../sql-reference/data-types/int-uint.md)) — Thread identifier.
+-   `thread_number` ([UInt32](../sql-reference/data-types/int-uint.md)) — Thread identifier.
 
--   `query_id`([رشته](../sql-reference/data-types/string.md)) — Query identifier that can be used to get details about a query that was running from the [\_خروج](#system_tables-query_log) جدول سیستم.
+-   `query_id` ([رشته](../sql-reference/data-types/string.md)) — Query identifier that can be used to get details about a query that was running from the [_خروج](#system_tables-query_log) جدول سیستم.
 
--   `trace`([Array(UInt64)](../sql-reference/data-types/array.md)) — Stack trace at the moment of sampling. Each element is a virtual memory address inside ClickHouse server process.
+-   `trace` ([Array(UInt64)](../sql-reference/data-types/array.md)) — Stack trace at the moment of sampling. Each element is a virtual memory address inside ClickHouse server process.
 
 **مثال**
 
@@ -752,9 +794,9 @@ inserts_in_queue:           0
 merges_in_queue:            1
 part_mutations_in_queue:    0
 queue_oldest_time:          2020-02-20 08:34:30
-inserts_oldest_time:        0000-00-00 00:00:00
+inserts_oldest_time:        1970-01-01 00:00:00
 merges_oldest_time:         2020-02-20 08:34:30
-part_mutations_oldest_time: 0000-00-00 00:00:00
+part_mutations_oldest_time: 1970-01-01 00:00:00
 oldest_part_to_get:
 oldest_part_to_merge_to:    20200220_20284_20840_7
 oldest_part_to_mutate_to:
@@ -782,7 +824,7 @@ active_replicas:            2
 -   `parts_to_check` (`UInt32`)- تعداد قطعات داده در صف برای تایید. اگر شک وجود دارد که ممکن است صدمه دیده است بخشی در صف تایید قرار داده است.
 -   `zookeeper_path` (`String`)- مسیر به داده های جدول در باغ وحش.
 -   `replica_name` (`String`)- نام ماکت در باغ وحش. کپی های مختلف از همان جدول نام های مختلف.
--   `replica_path` (`String`)- مسیر به داده های ماکت در باغ وحش. همان الحاق ‘zookeeper\_path/replicas/replica\_path’.
+-   `replica_path` (`String`)- مسیر به داده های ماکت در باغ وحش. همان الحاق ‘zookeeper_path/replicas/replica_path’.
 -   `columns_version` (`Int32`)- تعداد نسخه از ساختار جدول . نشان می دهد که چند بار تغییر انجام شد. اگر کپی نسخه های مختلف, به این معنی برخی از کپی ساخته شده است همه از تغییر نکرده است.
 -   `queue_size` (`UInt32`)- اندازه صف برای عملیات در حال انتظار برای انجام شود . عملیات شامل قرار دادن بلوک های داده ادغام و برخی اقدامات دیگر. معمولا همزمان با `future_parts`.
 -   `inserts_in_queue` (`UInt32`)- تعداد درج بلوک از داده ها که نیاز به ساخته شده است . درج معمولا نسبتا به سرعت تکرار. اگر این تعداد بزرگ است, به این معنی چیزی اشتباه است.
@@ -803,7 +845,7 @@ active_replicas:            2
 -   `active_replicas` (`UInt8`)- تعداد کپی از این جدول که یک جلسه در باغ وحش (یعنی تعداد تکرار عملکرد).
 
 اگر شما درخواست تمام ستون, جدول ممکن است کمی کند کار, از چند بار خوانده شده از باغ وحش برای هر سطر ساخته شده.
-اگر شما درخواست آخرین 4 ستون (log\_max\_index, log\_pointer, total\_replicas, active\_replicas) جدول با این نسخهها کار به سرعت.
+اگر شما درخواست آخرین 4 ستون (log_max_index, log_pointer, total_replicas, active_replicas) جدول با این نسخهها کار به سرعت.
 
 مثلا, شما می توانید بررسی کنید که همه چیز به درستی کار مثل این:
 
@@ -839,29 +881,58 @@ WHERE
 
 اگر این پرس و جو چیزی نمی گرداند, به این معنی که همه چیز خوب است.
 
-## سیستم.تنظیمات {#system-settings}
+## سیستم.تنظیمات {#system-tables-system-settings}
 
-حاوی اطلاعات در مورد تنظیمات که در حال حاضر در حال استفاده.
-به عنوان مثال مورد استفاده برای اجرای پرس و جو شما با استفاده از به خواندن از سیستم. جدول تنظیمات.
+شامل اطلاعات در مورد تنظیمات جلسه برای کاربر فعلی.
 
 ستونها:
 
--   `name` (String) — Setting name.
--   `value` (String) — Setting value.
--   `description` (String) — Setting description.
--   `type` (String) — Setting type (implementation specific string value).
--   `changed` (UInt8) — Whether the setting was explicitly defined in the config or explicitly changed.
--   `min` (Nullable(String)) — Get minimum allowed value (if any is set via [قیدها](settings/constraints-on-settings.md#constraints-on-settings)).
--   `max` (Nullable(String)) — Get maximum allowed value (if any is set via [قیدها](settings/constraints-on-settings.md#constraints-on-settings)).
--   `readonly` (UInt8) — Can user change this setting (for more info, look into [قیدها](settings/constraints-on-settings.md#constraints-on-settings)).
+-   `name` ([رشته](../sql-reference/data-types/string.md)) — Setting name.
+-   `value` ([رشته](../sql-reference/data-types/string.md)) — Setting value.
+-   `changed` ([UInt8](../sql-reference/data-types/int-uint.md#uint-ranges)) — Shows whether a setting is changed from its default value.
+-   `description` ([رشته](../sql-reference/data-types/string.md)) — Short setting description.
+-   `min` ([Nullable](../sql-reference/data-types/nullable.md)([رشته](../sql-reference/data-types/string.md))) — Minimum value of the setting, if any is set via [قیدها](settings/constraints-on-settings.md#constraints-on-settings). اگر تنظیمات دارای حداقل مقدار, شامل [NULL](../sql-reference/syntax.md#null-literal).
+-   `max` ([Nullable](../sql-reference/data-types/nullable.md)([رشته](../sql-reference/data-types/string.md))) — Maximum value of the setting, if any is set via [قیدها](settings/constraints-on-settings.md#constraints-on-settings). اگر تنظیمات دارای حداکثر مقدار, شامل [NULL](../sql-reference/syntax.md#null-literal).
+-   `readonly` ([UInt8](../sql-reference/data-types/int-uint.md#uint-ranges)) — Shows whether the current user can change the setting:
+    -   `0` — Current user can change the setting.
+    -   `1` — Current user can't change the setting.
 
-مثال:
+**مثال**
+
+مثال زیر نشان می دهد که چگونه برای دریافت اطلاعات در مورد تنظیمات که شامل نام `min_i`.
 
 ``` sql
-SELECT name, value
+SELECT *
 FROM system.settings
-WHERE changed
+WHERE name LIKE '%min_i%'
 ```
+
+``` text
+┌─name────────────────────────────────────────┬─value─────┬─changed─┬─description───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─min──┬─max──┬─readonly─┐
+│ min_insert_block_size_rows                  │ 1048576   │       0 │ Squash blocks passed to INSERT query to specified size in rows, if blocks are not big enough.                                                                         │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │        0 │
+│ min_insert_block_size_bytes                 │ 268435456 │       0 │ Squash blocks passed to INSERT query to specified size in bytes, if blocks are not big enough.                                                                        │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │        0 │
+│ read_backoff_min_interval_between_events_ms │ 1000      │       0 │ Settings to reduce the number of threads in case of slow reads. Do not pay attention to the event, if the previous one has passed less than a certain amount of time. │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │        0 │
+└─────────────────────────────────────────────┴───────────┴─────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────┴──────┴──────────┘
+```
+
+استفاده از `WHERE changed` می تواند مفید باشد, مثلا, زمانی که شما می خواهید برای بررسی:
+
+-   اینکه تنظیمات در پروندههای پیکربندی به درستی بارگذاری شوند یا در حال استفاده باشند.
+-   تنظیماتی که در جلسه فعلی تغییر کرده است.
+
+<!-- -->
+
+``` sql
+SELECT * FROM system.settings WHERE changed AND name='load_balancing'
+```
+
+**همچنین نگاه کنید به**
+
+-   [تنظیمات](settings/index.md#session-settings-intro)
+-   [مجوز برای نمایش داده شد](settings/permissions-for-queries.md#settings_readonly)
+-   [محدودیت در تنظیمات](settings/constraints-on-settings.md)
+
+## سیستم._زبانهها {#system.table_engines}
 
 ``` text
 ┌─name───────────────────┬─value───────┐
@@ -884,7 +955,7 @@ WHERE changed
 -   `type` (String) — Setting type (implementation specific string value).
 -   `changed` (UInt8) — Whether the setting was explicitly defined in the config or explicitly changed.
 
-## سیستم.\_زبانهها {#system-table-engines}
+## سیستم._زبانهها {#system-table-engines}
 
 شامل شرح موتورهای جدول پشتیبانی شده توسط سرور و اطلاعات پشتیبانی از ویژگی های خود را.
 
@@ -1051,21 +1122,21 @@ path:           /clickhouse/tables/01-08/visits/replicas
 
 **فرمان** - رشته فرمان جهش (بخشی از پرس و جو پس از `ALTER TABLE [db.]table`).
 
-**\_بروزرسانی** - هنگامی که این دستور جهش برای اجرای ارسال شد .
+**_بروزرسانی** - هنگامی که این دستور جهش برای اجرای ارسال شد .
 
-**\_شمارهی بلوک.ا\_ضافه کردن**, **\_شمارهی بلوک.شماره** - ستون تو در تو . برای جهش از جداول تکرار, این شامل یک رکورد برای هر پارتیشن: شناسه پارتیشن و شماره بلوک که توسط جهش خریداری شد (در هر پارتیشن, تنها بخش هایی که حاوی بلوک با اعداد کمتر از تعداد بلوک های خریداری شده توسط جهش در پارتیشن که جهش خواهد شد). در جداول غیر تکرار, تعداد بلوک در تمام پارتیشن به صورت یک توالی واحد. این به این معنی است که برای جهش از جداول غیر تکرار, ستون یک رکورد با یک عدد بلوک واحد خریداری شده توسط جهش شامل.
+**_شمارهی بلوک.ا_ضافه کردن**, **_شمارهی بلوک.شماره** - ستون تو در تو . برای جهش از جداول تکرار, این شامل یک رکورد برای هر پارتیشن: شناسه پارتیشن و شماره بلوک که توسط جهش خریداری شد (در هر پارتیشن, تنها بخش هایی که حاوی بلوک با اعداد کمتر از تعداد بلوک های خریداری شده توسط جهش در پارتیشن که جهش خواهد شد). در جداول غیر تکرار, تعداد بلوک در تمام پارتیشن به صورت یک توالی واحد. این به این معنی است که برای جهش از جداول غیر تکرار, ستون یک رکورد با یک عدد بلوک واحد خریداری شده توسط جهش شامل.
 
-**\_کوچکنمایی** - تعدادی از قطعات داده است که نیاز به جهش را به پایان برساند جهش یافته است .
+**_کوچکنمایی** - تعدادی از قطعات داده است که نیاز به جهش را به پایان برساند جهش یافته است .
 
-**\_مخفی کردن** - توجه داشته باشید که حتی اگر `parts_to_do = 0` ممکن است که جهش جدول تکرار هنوز به دلیل درج طولانی در حال اجرا است که ایجاد بخش داده های جدید است که نیاز به جهش انجام می شود است.
+**_مخفی کردن** - توجه داشته باشید که حتی اگر `parts_to_do = 0` ممکن است که جهش جدول تکرار هنوز به دلیل درج طولانی در حال اجرا است که ایجاد بخش داده های جدید است که نیاز به جهش انجام می شود است.
 
 اگر مشکلی با جهش برخی از قطعات وجود دارد, ستون های زیر حاوی اطلاعات اضافی:
 
-**\_شروع مجدد** - نام جدید ترین بخش است که نمی تواند جهش یافته است.
+**_شروع مجدد** - نام جدید ترین بخش است که نمی تواند جهش یافته است.
 
-**زمان \_رشته** - زمان جدید ترین شکست جهش بخشی .
+**زمان _رشته** - زمان جدید ترین شکست جهش بخشی .
 
-**\_شروع مجدد** - پیام استثنا که باعث شکست جهش بخشی اخیر.
+**_شروع مجدد** - پیام استثنا که باعث شکست جهش بخشی اخیر.
 
 ## سیستم.دیسکها {#system_tables-disks}
 
@@ -1079,7 +1150,7 @@ path:           /clickhouse/tables/01-08/visits/replicas
 -   `total_space` ([UInt64](../sql-reference/data-types/int-uint.md)) — Disk volume in bytes.
 -   `keep_free_space` ([UInt64](../sql-reference/data-types/int-uint.md)) — Amount of disk space that should stay free on disk in bytes. Defined in the `keep_free_space_bytes` پارامتر پیکربندی دیسک.
 
-## سیستم.داستان\_یابی {#system_tables-storage_policies}
+## سیستم.داستان_یابی {#system_tables-storage_policies}
 
 حاوی اطلاعات در مورد سیاست های ذخیره سازی و حجم تعریف شده در [پیکربندی کارساز](../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-multiple-volumes_configure).
 

@@ -1,13 +1,13 @@
 ---
 machine_translated: true
-machine_translated_rev: b111334d6614a02564cf32f379679e9ff970d9b1
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 20
 toc_title: "MySQL\u63A5\u53E3"
 ---
 
 # MySQL接口 {#mysql-interface}
 
-ClickHouse支持MySQL线协议。 它可以通过启用 [mysql\_port](../operations/server-configuration-parameters/settings.md#server_configuration_parameters-mysql_port) 在配置文件中设置:
+ClickHouse支持MySQL线协议。 它可以通过启用 [mysql_port](../operations/server-configuration-parameters/settings.md#server_configuration_parameters-mysql_port) 在配置文件中设置:
 
 ``` xml
 <mysql_port>9004</mysql_port>

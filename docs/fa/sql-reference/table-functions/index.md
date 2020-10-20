@@ -1,7 +1,7 @@
 ---
 machine_translated: true
-machine_translated_rev: d734a8e46ddd7465886ba4133bff743c55190626
-toc_folder_title: Table Functions
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
+toc_folder_title: "\u062A\u0648\u0627\u0628\u0639 \u062C\u062F\u0648\u0644"
 toc_priority: 34
 toc_title: "\u0645\u0639\u0631\u0641\u06CC \u0634\u0631\u06A9\u062A"
 ---
@@ -12,16 +12,16 @@ toc_title: "\u0645\u0639\u0631\u0641\u06CC \u0634\u0631\u06A9\u062A"
 
 شما می توانید توابع جدول در استفاده:
 
--   [FROM](../statements/select.md#select-from) بند از `SELECT` پرس و جو.
+-   [FROM](../statements/select/from.md) بند از `SELECT` پرس و جو.
 
         The method for creating a temporary table that is available only in the current query. The table is deleted when the query finishes.
 
--   [ایجاد جدول به عنوان \<table\_function()\>](../statements/create.md#create-table-query) پرس و جو.
+-   [ایجاد جدول به عنوان \<table_function()\>](../statements/create.md#create-table-query) پرس و جو.
 
         It's one of the methods of creating a table.
 
 !!! warning "اخطار"
-    شما می توانید توابع جدول اگر استفاده نمی [اجازه دادن به \_نشانی](../../operations/settings/permissions-for-queries.md#settings_allow_ddl) تنظیم غیر فعال است.
+    شما می توانید توابع جدول اگر استفاده نمی [اجازه دادن به _نشانی](../../operations/settings/permissions-for-queries.md#settings_allow_ddl) تنظیم غیر فعال است.
 
 | تابع                  | توصیف                                                                                                                                          |
 |-----------------------|------------------------------------------------------------------------------------------------------------------------------------------------|

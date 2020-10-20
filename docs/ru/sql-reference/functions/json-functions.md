@@ -68,7 +68,7 @@ SELECT isValidJSON('{"a": "hello", "b": [-100, 200.0, 300]}') = 1
 SELECT isValidJSON('not a json') = 0
 ```
 
-## JSONHas(json\[, indices\_or\_keys\]…) {#jsonhasjson-indices-or-keys}
+## JSONHas(json\[, indices_or_keys\]…) {#jsonhasjson-indices-or-keys}
 
 Если значение существует в документе JSON, то возвращается `1`.
 
@@ -101,7 +101,7 @@ SELECT JSONExtractKey('{"a": "hello", "b": [-100, 200.0, 300]}', -2) = 'a'
 SELECT JSONExtractString('{"a": "hello", "b": [-100, 200.0, 300]}', 1) = 'hello'
 ```
 
-## JSONLength(json\[, indices\_or\_keys\]…) {#jsonlengthjson-indices-or-keys}
+## JSONLength(json\[, indices_or_keys\]…) {#jsonlengthjson-indices-or-keys}
 
 Возвращает длину массива JSON или объекта JSON.
 
@@ -114,7 +114,7 @@ SELECT JSONLength('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') = 3
 SELECT JSONLength('{"a": "hello", "b": [-100, 200.0, 300]}') = 2
 ```
 
-## JSONType(json\[, indices\_or\_keys\]…) {#jsontypejson-indices-or-keys}
+## JSONType(json\[, indices_or_keys\]…) {#jsontypejson-indices-or-keys}
 
 Возвращает тип значения JSON.
 
@@ -128,13 +128,13 @@ SELECT JSONType('{"a": "hello", "b": [-100, 200.0, 300]}', 'a') = 'String'
 SELECT JSONType('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') = 'Array'
 ```
 
-## JSONExtractUInt(json\[, indices\_or\_keys\]…) {#jsonextractuintjson-indices-or-keys}
+## JSONExtractUInt(json\[, indices_or_keys\]…) {#jsonextractuintjson-indices-or-keys}
 
-## JSONExtractInt(json\[, indices\_or\_keys\]…) {#jsonextractintjson-indices-or-keys}
+## JSONExtractInt(json\[, indices_or_keys\]…) {#jsonextractintjson-indices-or-keys}
 
-## JSONExtractFloat(json\[, indices\_or\_keys\]…) {#jsonextractfloatjson-indices-or-keys}
+## JSONExtractFloat(json\[, indices_or_keys\]…) {#jsonextractfloatjson-indices-or-keys}
 
-## JSONExtractBool(json\[, indices\_or\_keys\]…) {#jsonextractbooljson-indices-or-keys}
+## JSONExtractBool(json\[, indices_or_keys\]…) {#jsonextractbooljson-indices-or-keys}
 
 Парсит JSON и извлекает значение. Эти функции аналогичны функциям `visitParam`.
 
@@ -148,7 +148,7 @@ SELECT JSONExtractFloat('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 2) = 200
 SELECT JSONExtractUInt('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', -1) = 300
 ```
 
-## JSONExtractString(json\[, indices\_or\_keys\]…) {#jsonextractstringjson-indices-or-keys}
+## JSONExtractString(json\[, indices_or_keys\]…) {#jsonextractstringjson-indices-or-keys}
 
 Парсит JSON и извлекает строку. Эта функция аналогична функции `visitParamExtractString`.
 
@@ -166,7 +166,7 @@ SELECT JSONExtractString('{"abc":"\\u263"}', 'abc') = ''
 SELECT JSONExtractString('{"abc":"hello}', 'abc') = ''
 ```
 
-## JSONExtract(json\[, indices\_or\_keys…\], Return\_type) {#jsonextractjson-indices-or-keys-return-type}
+## JSONExtract(json\[, indices_or_keys…\], Return_type) {#jsonextractjson-indices-or-keys-return-type}
 
 Парсит JSON и извлекает значение с заданным типом данных.
 
@@ -187,7 +187,7 @@ SELECT JSONExtract('{"day": "Thursday"}', 'day', 'Enum8(\'Sunday\' = 0, \'Monday
 SELECT JSONExtract('{"day": 5}', 'day', 'Enum8(\'Sunday\' = 0, \'Monday\' = 1, \'Tuesday\' = 2, \'Wednesday\' = 3, \'Thursday\' = 4, \'Friday\' = 5, \'Saturday\' = 6)') = 'Friday'
 ```
 
-## JSONExtractKeysAndValues(json\[, indices\_or\_keys…\], Value\_type) {#jsonextractkeysandvaluesjson-indices-or-keys-value-type}
+## JSONExtractKeysAndValues(json\[, indices_or_keys…\], Value_type) {#jsonextractkeysandvaluesjson-indices-or-keys-value-type}
 
 Разбор пар ключ-значение из JSON, где значение имеет тип данных ClickHouse.
 
@@ -197,7 +197,7 @@ SELECT JSONExtract('{"day": 5}', 'day', 'Enum8(\'Sunday\' = 0, \'Monday\' = 1, \
 SELECT JSONExtractKeysAndValues('{"x": {"a": 5, "b": 7, "c": 11}}', 'x', 'Int8') = [('a',5),('b',7),('c',11)];
 ```
 
-## JSONExtractRaw(json\[, indices\_or\_keys\]…) {#jsonextractrawjson-indices-or-keys}
+## JSONExtractRaw(json\[, indices_or_keys\]…) {#jsonextractrawjson-indices-or-keys}
 
 Возвращает часть JSON в виде строки, содержащей неразобранную подстроку.
 
@@ -209,7 +209,7 @@ SELECT JSONExtractKeysAndValues('{"x": {"a": 5, "b": 7, "c": 11}}', 'x', 'Int8')
 SELECT JSONExtractRaw('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') = '[-100, 200.0, 300]'
 ```
 
-## JSONExtractArrayRaw(json\[, indices\_or\_keys\]…) {#jsonextractarrayrawjson-indices-or-keys}
+## JSONExtractArrayRaw(json\[, indices_or_keys\]…) {#jsonextractarrayrawjson-indices-or-keys}
 
 Возвращает массив из элементов JSON массива, каждый из которых представлен в виде строки с неразобранными подстроками из JSON.
 
@@ -219,6 +219,74 @@ SELECT JSONExtractRaw('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') = '[-100, 
 
 ``` sql
 SELECT JSONExtractArrayRaw('{"a": "hello", "b": [-100, 200.0, "hello"]}', 'b') = ['-100', '200.0', '"hello"']'
+```
+
+## JSONExtractKeysAndValuesRaw {#json-extract-keys-and-values-raw}
+
+Извлекает необработанные данные из объекта JSON.
+
+**Синтаксис**
+
+``` sql
+JSONExtractKeysAndValuesRaw(json[, p, a, t, h])
+```
+
+**Параметры**
+
+- `json` — [Строка](../data-types/string.md), содержащая валидный JSON.
+- `p, a, t, h` — Индексы или ключи, разделенные запятыми, которые указывают путь к внутреннему полю во вложенном объекте JSON. Каждый аргумент может быть либо [строкой](../data-types/string.md) для получения поля по ключу, либо [целым числом](../data-types/int-uint.md) для получения N-го поля (индексирование начинается с 1, отрицательные числа используются для отсчета с конца). Если параметр не задан, весь JSON парсится как объект верхнего уровня. Необязательный параметр.
+
+**Возвращаемые значения**
+
+- Массив с кортежами `('key', 'value')`. Члены кортежа — строки.
+
+- Пустой массив, если заданный объект не существует или входные данные не валидный JSON.
+
+Тип: Type: [Array](../data-types/array.md)([Tuple](../data-types/tuple.md)([String](../data-types/string.md), [String](../data-types/string.md)).
+.
+
+**Примеры**
+
+Запрос:
+
+``` sql
+SELECT JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b":{"c": {"d": "hello", "f": "world"}}}')
+```
+
+Ответ:
+
+``` text
+┌─JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b":{"c": {"d": "hello", "f": "world"}}}')─┐
+│ [('a','[-100,200]'),('b','{"c":{"d":"hello","f":"world"}}')]                                 │
+└──────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+Запрос:
+
+``` sql
+SELECT JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b":{"c": {"d": "hello", "f": "world"}}}', 'b')
+```
+
+Ответ:
+
+``` text
+┌─JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b":{"c": {"d": "hello", "f": "world"}}}', 'b')─┐
+│ [('c','{"d":"hello","f":"world"}')]                                                               │
+└───────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+Запрос:
+
+``` sql
+SELECT JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b":{"c": {"d": "hello", "f": "world"}}}', -1, 'c')
+```
+
+Ответ:
+
+``` text
+┌─JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b":{"c": {"d": "hello", "f": "world"}}}', -1, 'c')─┐
+│ [('d','"hello"'),('f','"world"')]                                                                     │
+└───────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 [Оригинальная статья](https://clickhouse.tech/docs/ru/query_language/functions/json_functions/) <!--hide-->

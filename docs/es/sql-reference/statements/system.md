@@ -1,11 +1,11 @@
 ---
 machine_translated: true
-machine_translated_rev: 3e185d24c9fe772c7cf03d5475247fb829a21dfa
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 37
 toc_title: SYSTEM
 ---
 
-# Consultas Del Sistema {#query-language-system}
+# Consultas del sistema {#query-language-system}
 
 -   [RELOAD DICTIONARIES](#query_language-system-reload-dictionaries)
 -   [RELOAD DICTIONARY](#query_language-system-reload-dictionary)
@@ -24,12 +24,12 @@ toc_title: SYSTEM
 ## RELOAD DICTIONARIES {#query_language-system-reload-dictionaries}
 
 Vuelve a cargar todos los diccionarios que se han cargado correctamente antes.
-De forma predeterminada, los diccionarios se cargan perezosamente (ver [Diccionarios\_lazy\_load](../../operations/server-configuration-parameters/settings.md#server_configuration_parameters-dictionaries_lazy_load)), por lo que en lugar de cargarse automáticamente al inicio, se inicializan en el primer acceso a través de la función dictGet o SELECT desde tablas con ENGINE = Dictionary . El `SYSTEM RELOAD DICTIONARIES` consulta vuelve a cargar dichos diccionarios (LOADED).
+De forma predeterminada, los diccionarios se cargan perezosamente (ver [Diccionarios_lazy_load](../../operations/server-configuration-parameters/settings.md#server_configuration_parameters-dictionaries_lazy_load)), por lo que en lugar de cargarse automáticamente al inicio, se inicializan en el primer acceso a través de la función dictGet o SELECT desde tablas con ENGINE = Dictionary . El `SYSTEM RELOAD DICTIONARIES` consulta vuelve a cargar dichos diccionarios (LOADED).
 Siempre vuelve `Ok.` independientemente del resultado de la actualización del diccionario.
 
-## RELOAD DICTIONARY Dictionary\_name {#query_language-system-reload-dictionary}
+## RELOAD DICTIONARY Dictionary_name {#query_language-system-reload-dictionary}
 
-Recarga completamente un diccionario `dictionary_name`, independientemente del estado del diccionario (LOADED / NOT\_LOADED / FAILED).
+Recarga completamente un diccionario `dictionary_name`, independientemente del estado del diccionario (LOADED / NOT_LOADED / FAILED).
 Siempre vuelve `Ok.` independientemente del resultado de la actualización del diccionario.
 El estado del diccionario se puede comprobar consultando el `system.dictionaries` tabla.
 
@@ -41,7 +41,7 @@ SELECT name, status FROM system.dictionaries;
 
 Restablece la caché DNS interna de ClickHouse. A veces (para versiones anteriores de ClickHouse) es necesario usar este comando al cambiar la infraestructura (cambiar la dirección IP de otro servidor de ClickHouse o el servidor utilizado por los diccionarios).
 
-Para obtener una administración de caché más conveniente (automática), consulte disable\_internal\_dns\_cache, dns\_cache\_update\_period parameters.
+Para obtener una administración de caché más conveniente (automática), consulte disable_internal_dns_cache, dns_cache_update_period parameters.
 
 ## DROP MARK CACHE {#query_language-system-drop-mark-cache}
 
@@ -49,7 +49,7 @@ Restablece la caché de marcas. Utilizado en el desarrollo de ClickHouse y prueb
 
 ## FLUSH LOGS {#query_language-system-flush_logs}
 
-Flushes buffers of log messages to system tables (e.g. system.query\_log). Allows you to not wait 7.5 seconds when debugging.
+Flushes buffers of log messages to system tables (e.g. system.query_log). Allows you to not wait 7.5 seconds when debugging.
 
 ## RELOAD CONFIG {#query_language-system-reload-config}
 
@@ -63,7 +63,7 @@ Normalmente se apaga ClickHouse (como `service clickhouse-server stop` / `kill {
 
 Anula el proceso de ClickHouse (como `kill -9 {$ pid_clickhouse-server}`)
 
-## Administración De Tablas Distribuidas {#query-language-system-distributed}
+## Administración de tablas distribuidas {#query-language-system-distributed}
 
 ClickHouse puede administrar [distribuido](../../engines/table-engines/special/distributed.md) tabla. Cuando un usuario inserta datos en estas tablas, ClickHouse primero crea una cola de los datos que se deben enviar a los nodos del clúster y, a continuación, los envía de forma asincrónica. Puede administrar el procesamiento de colas con el [STOP DISTRIBUTED SENDS](#query_language-system-stop-distributed-sends), [FLUSH DISTRIBUTED](#query_language-system-flush-distributed), y [START DISTRIBUTED SENDS](#query_language-system-start-distributed-sends) consulta. También puede insertar sincrónicamente datos distribuidos con el `insert_distributed_sync` configuración.
 

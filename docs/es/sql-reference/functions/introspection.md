@@ -1,11 +1,11 @@
 ---
 machine_translated: true
-machine_translated_rev: 3e185d24c9fe772c7cf03d5475247fb829a21dfa
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 65
 toc_title: "Introspecci\xF3n"
 ---
 
-# Funciones De introspección {#introspection-functions}
+# Funciones de introspección {#introspection-functions}
 
 Puede utilizar las funciones descritas en este capítulo para [ELF](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) y [DWARF](https://en.wikipedia.org/wiki/DWARF) para la creación de perfiles de consultas.
 
@@ -16,11 +16,11 @@ Para el correcto funcionamiento de las funciones de introspección:
 
 -   Instale el `clickhouse-common-static-dbg` paquete.
 
--   Establezca el [allow\_introspection\_functions](../../operations/settings/settings.md#settings-allow_introspection_functions) a 1.
+-   Establezca el [allow_introspection_functions](../../operations/settings/settings.md#settings-allow_introspection_functions) a 1.
 
         For security reasons introspection functions are disabled by default.
 
-ClickHouse guarda los informes del generador de perfiles [trace\_log](../../operations/system-tables.md#system_tables-trace_log) tabla del sistema. Asegúrese de que la tabla y el generador de perfiles estén configurados correctamente.
+ClickHouse guarda los informes del generador de perfiles [trace_log](../../operations/system-tables.md#system_tables-trace_log) tabla del sistema. Asegúrese de que la tabla y el generador de perfiles estén configurados correctamente.
 
 ## addressToLine {#addresstoline}
 

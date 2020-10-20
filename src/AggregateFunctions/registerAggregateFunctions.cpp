@@ -45,6 +45,7 @@ void registerAggregateFunctions()
         registerAggregateFunctionMoving(factory);
         registerAggregateFunctionCategoricalIV(factory);
         registerAggregateFunctionAggThrow(factory);
+        registerAggregateFunctionRankCorrelation(factory);
     }
 
     {
@@ -58,6 +59,7 @@ void registerAggregateFunctions()
         registerAggregateFunctionCombinatorNull(factory);
         registerAggregateFunctionCombinatorOrFill(factory);
         registerAggregateFunctionCombinatorResample(factory);
+        registerAggregateFunctionCombinatorDistinct(factory);
     }
 }
 

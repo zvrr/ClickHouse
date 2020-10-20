@@ -1,6 +1,6 @@
 ---
 machine_translated: true
-machine_translated_rev: e8cd92bba3269f47787db090899f7c242adf7818
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 36
 toc_title: "Birle\u015Ftirmek"
 ---
@@ -31,7 +31,7 @@ Kullanmak için tipik bir yol `Merge` motor çok sayıda çalışma içindir `Ti
 
 Örnek 2:
 
-Diyelim ki eski bir tablonuz (WatchLog\_old) var ve verileri yeni bir tabloya (WatchLog\_new) taşımadan bölümlemeyi değiştirmeye karar verdiniz ve her iki tablodaki verileri görmeniz gerekiyor.
+Diyelim ki eski bir tablonuz (WatchLog_old) var ve verileri yeni bir tabloya (WatchLog_new) taşımadan bölümlemeyi değiştirmeye karar verdiniz ve her iki tablodaki verileri görmeniz gerekiyor.
 
 ``` sql
 CREATE TABLE WatchLog_old(date Date, UserId Int64, EventType String, Cnt UInt64)

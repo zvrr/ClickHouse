@@ -1,13 +1,13 @@
 ---
 machine_translated: true
-machine_translated_rev: d734a8e46ddd7465886ba4133bff743c55190626
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 45
 toc_title: hdfs
 ---
 
 # hdfs {#hdfs}
 
-ایجاد یک جدول از فایل ها در اچ دی. این جدول عملکرد شبیه به [نشانی وب](url.md) و [پرونده](file.md) یکی
+ایجاد یک جدول از فایل ها در اچ دی. این تابع جدول شبیه به [نشانی وب](url.md) و [پرونده](file.md) یکی
 
 ``` sql
 hdfs(URI, format, structure)
@@ -55,12 +55,12 @@ LIMIT 2
 
 1.  فرض کنید که ما چندین فایل با اوریس زیر در اچ دی ها داریم:
 
--   ‘hdfs://hdfs1:9000/some\_dir/some\_file\_1’
--   ‘hdfs://hdfs1:9000/some\_dir/some\_file\_2’
--   ‘hdfs://hdfs1:9000/some\_dir/some\_file\_3’
--   ‘hdfs://hdfs1:9000/another\_dir/some\_file\_1’
--   ‘hdfs://hdfs1:9000/another\_dir/some\_file\_2’
--   ‘hdfs://hdfs1:9000/another\_dir/some\_file\_3’
+-   ‘hdfs://hdfs1:9000/some_dir/some_file_1’
+-   ‘hdfs://hdfs1:9000/some_dir/some_file_2’
+-   ‘hdfs://hdfs1:9000/some_dir/some_file_3’
+-   ‘hdfs://hdfs1:9000/another_dir/some_file_1’
+-   ‘hdfs://hdfs1:9000/another_dir/some_file_2’
+-   ‘hdfs://hdfs1:9000/another_dir/some_file_3’
 
 1.  پرس و جو مقدار ردیف در این فایل ها:
 

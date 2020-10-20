@@ -1,6 +1,6 @@
 ---
 machine_translated: true
-machine_translated_rev: e8cd92bba3269f47787db090899f7c242adf7818
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 31
 toc_title: "S\xF6zdizimi"
 ---
@@ -15,9 +15,9 @@ Bu `INSERT` sorgu her iki ayrıştırıcıyı da kullanır:
 INSERT INTO t VALUES (1, 'Hello, world'), (2, 'abc'), (3, 'def')
 ```
 
-Bu `INSERT INTO t VALUES` parça tam ayrıştırıcı tarafından ayrıştırılır ve veriler `(1, 'Hello, world'), (2, 'abc'), (3, 'def')` hızlı akış ayrıştırıcısı tarafından ayrıştırılır. Ayrıca kullanarak veriler için tam ayrıştırıcı açabilirsiniz [ınput\_format\_values\_interpret\_expressions](../operations/settings/settings.md#settings-input_format_values_interpret_expressions) ayar. Ne zaman `input_format_values_interpret_expressions = 1`, ClickHouse önce hızlı akış ayrıştırıcısı ile değerleri ayrıştırmaya çalışır. Başarısız olursa, ClickHouse veriler için tam ayrıştırıcıyı kullanmaya çalışır ve bir SQL gibi davranır [ifade](#syntax-expressions).
+Bu `INSERT INTO t VALUES` parça tam ayrıştırıcı tarafından ayrıştırılır ve veriler `(1, 'Hello, world'), (2, 'abc'), (3, 'def')` hızlı akış ayrıştırıcısı tarafından ayrıştırılır. Ayrıca kullanarak veriler için tam ayrıştırıcı açabilirsiniz [ınput_format_values_interpret_expressions](../operations/settings/settings.md#settings-input_format_values_interpret_expressions) ayar. Ne zaman `input_format_values_interpret_expressions = 1`, ClickHouse önce hızlı akış ayrıştırıcısı ile değerleri ayrıştırmaya çalışır. Başarısız olursa, ClickHouse veriler için tam ayrıştırıcıyı kullanmaya çalışır ve bir SQL gibi davranır [ifade](#syntax-expressions).
 
-Veri herhangi bir biçime sahip olabilir. Bir sorgu alındığında, sunucu daha fazla hesaplar [max\_query\_size](../operations/settings/settings.md#settings-max_query_size) istek bayt RAM (varsayılan olarak, 1 MB) ve geri kalanı akış ayrıştırılır.
+Veri herhangi bir biçime sahip olabilir. Bir sorgu alındığında, sunucu daha fazla hesaplar [max_query_size](../operations/settings/settings.md#settings-max_query_size) istek bayt RAM (varsayılan olarak, 1 MB) ve geri kalanı akış ayrıştırılır.
 Bu büyük sorunları önlemek için izin verir `INSERT` sorgular.
 
 Kullanırken `Values` biçim içinde bir `INSERT` sorgu, verilerin bir ifadedeki ifadelerle aynı şekilde ayrıştırıldığı görünebilir `SELECT` sorgu, ancak bu doğru değil. Bu `Values` biçim çok daha sınırlıdır.
@@ -39,11 +39,11 @@ C-style dan `/*` -e doğru `*/`ve çok satırlı olabilir, boşluklar da gerekli
 Anahtar kelimeler karşılık geldiğinde büyük / küçük harf duyarsızdır:
 
 -   SQL standardı. Mesela, `SELECT`, `select` ve `SeLeCt` hepsi geçerlidir.
--   Bazı popüler DBMS’DE (MySQL veya Postgres) uygulama. Mesela, `DateTime` ile aynıdır `datetime`.
+-   Bazı popüler DBMS'DE (MySQL veya Postgres) uygulama. Mesela, `DateTime` ile aynıdır `datetime`.
 
 Veri türü adı büyük / küçük harf duyarlı olup olmadığını denetlenebilir `system.data_type_families` Tablo.
 
-Standart SQL’İN aksine, diğer tüm anahtar kelimeler (işlev adları dahil) şunlardır **büyük küçük harf duyarlı**.
+Standart SQL'İN aksine, diğer tüm anahtar kelimeler (işlev adları dahil) şunlardır **büyük küçük harf duyarlı**.
 
 Anahtar kelimeler ayrılmış değildir; sadece karşılık gelen bağlamda bu şekilde ele alınır. Kullanıyorsanız [tanıtıcılar](#syntax-identifiers) anahtar kelimelerle aynı ada sahip olarak, bunları çift tırnak veya backticks içine alın. Örneğin, sorgu `SELECT "FROM" FROM table_name` tablo geçerli ise `table_name` adı ile sütun vardır `"FROM"`.
 
@@ -70,9 +70,9 @@ Sayısal, dize, bileşik ve `NULL` harfler.
 
 Sayısal literal ayrıştırılmaya çalışılıyor:
 
--   İlk olarak, 64-bit imzalı bir sayı olarak, [strtoull](https://en.cppreference.com/w/cpp/string/byte/strtoul) işlev.
--   Başarısız olursa, 64-bit imzasız bir sayı olarak, [strtoll](https://en.cppreference.com/w/cpp/string/byte/strtol) işlev.
--   Başarısız olursa, kayan noktalı sayı olarak [strtod](https://en.cppreference.com/w/cpp/string/byte/strtof) işlev.
+-   İlk olarak, 64-bit imzalı bir sayı olarak, [strtoull](https://en.cppreference.com/w/cpp/string/byte/strtoul) İşlev.
+-   Başarısız olursa, 64-bit imzasız bir sayı olarak, [strtoll](https://en.cppreference.com/w/cpp/string/byte/strtol) İşlev.
+-   Başarısız olursa, kayan noktalı sayı olarak [strtod](https://en.cppreference.com/w/cpp/string/byte/strtof) İşlev.
 -   Aksi takdirde, bir hata döndürür.
 
 Hazır bilgi değeri, değerin sığdığı en küçük türe sahiptir.
@@ -91,7 +91,7 @@ Dize değişmezlerinde, en azından kaçmanız gerekir `'` ve `\`. Tek tırnak t
 Diziler köşeli parantez ile inşa edilmiştir `[1, 2, 3]`. Nuples yuvarlak parantez ile inşa edilmiştir `(1, 'Hello, world!', 2)`.
 Teknik olarak bunlar değişmezler değil, sırasıyla dizi oluşturma işleci ve tuple oluşturma işleci ile ifadeler.
 Bir dizi en az bir öğeden oluşmalı ve bir tuple en az iki öğeye sahip olmalıdır.
-İçinde tuples göründüğünde ayrı bir durum var `IN` CLA ause of a `SELECT` sorgu. Sorgu sonuçları tuples içerebilir, ancak tuples bir veritabanına kaydedilemez (tablolar hariç [Bellek](../engines/table-engines/special/memory.md) motor).
+İçinde tuples göründüğünde ayrı bir durum var `IN` CLA ause of a `SELECT` sorgu. Sorgu sonuçları tuples içerebilir, ancak tuples bir veritabanına kaydedilemez (tablolar hariç [Hafıza](../engines/table-engines/special/memory.md) motor).
 
 ### NULL {#null-literal}
 
@@ -103,11 +103,11 @@ Veri formatına bağlı olarak (giriş veya çıkış), `NULL` farklı bir temsi
 
 İşleme için birçok nüans var `NULL`. Örneğin, bir karşılaştırma işleminin argümanlarından en az biri ise `NULL`, bu işlemin sonucu da `NULL`. Aynı şey çarpma, toplama ve diğer işlemler için de geçerlidir. Daha fazla bilgi için her işlem için belgeleri okuyun.
 
-Sorgularda, kontrol edebilirsiniz `NULL` kullanarak [IS NULL](operators.md#operator-is-null) ve [IS NOT NULL](operators.md) operatörler ve ilgili fonksiyonlar `isNull` ve `isNotNull`.
+Sorgularda, kontrol edebilirsiniz `NULL` kullanarak [IS NULL](operators/index.md#operator-is-null) ve [IS NOT NULL](operators/index.md) operatörler ve ilgili fonksiyonlar `isNull` ve `isNotNull`.
 
 ## İşlevler {#functions}
 
-İşlev çağrıları, yuvarlak parantez içinde bir argüman listesi (muhtemelen boş) olan bir tanımlayıcı gibi yazılır. Standart SQL’İN aksine, boş bir argüman listesi için bile parantezler gereklidir. Örnek: `now()`.
+İşlev çağrıları, yuvarlak parantez içinde bir argüman listesi (muhtemelen boş) olan bir tanımlayıcı gibi yazılır. Standart SQL'İN aksine, boş bir argüman listesi için bile parantezler gereklidir. Örnek: `now()`.
 Düzenli ve agrega işlevleri vardır (bkz. “Aggregate functions”). Bazı toplama işlevleri parantez içinde iki bağımsız değişken listesi içerebilir. Örnek: `quantile (0.9) (x)`. Bu toplama fonksiyonları denir “parametric” fonksiyonlar ve ilk listedeki argümanlar çağrılır “parameters”. Parametresiz toplama işlevlerinin sözdizimi, normal işlevlerle aynıdır.
 
 ## Operatörler {#operators}
@@ -115,7 +115,7 @@ Düzenli ve agrega işlevleri vardır (bkz. “Aggregate functions”). Bazı to
 Operatörler, sorgu ayrıştırma sırasında önceliklerini ve ilişkilendirmelerini dikkate alarak karşılık gelen işlevlerine dönüştürülür.
 Örneğin, ifade `1 + 2 * 3 + 4` dönüştür toülür `plus(plus(1, multiply(2, 3)), 4)`.
 
-## Veri türleri Ve veritabanı Tablosu motorları {#data_types-and-database-table-engines}
+## Veri türleri ve veritabanı tablosu motorları {#data_types-and-database-table-engines}
 
 Veri türleri ve tablo motorları `CREATE` sorgu tanımlayıcıları veya işlevleri aynı şekilde yazılır. Başka bir deyişle, parantez içinde bir argüman listesi içerebilir veya içermeyebilir. Daha fazla bilgi için bölümlere bakın “Data types,” “Table engines,” ve “CREATE”.
 
@@ -141,7 +141,7 @@ expr AS alias
 
         For example, `SELECT "table t".column_name FROM table_name AS "table t"`.
 
-### Kullanımı Ile Ilgili Notlar {#notes-on-usage}
+### Kullanımı ile ilgili notlar {#notes-on-usage}
 
 Diğer adlar bir sorgu veya alt sorgu için geneldir ve herhangi bir ifade için sorgunun herhangi bir bölümünde bir diğer ad tanımlayabilirsiniz. Mesela, `SELECT (1 AS n) + 2, n`.
 

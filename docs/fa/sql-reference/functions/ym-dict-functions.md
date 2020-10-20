@@ -1,6 +1,6 @@
 ---
 machine_translated: true
-machine_translated_rev: d734a8e46ddd7465886ba4133bff743c55190626
+machine_translated_rev: 72537a2d527c63c07aa5d2361a8829f3895cf2bd
 toc_priority: 59
 toc_title: "\u06A9\u0627\u0631 \u0628\u0627 \u06CC\u0627\u0646\u062F\u06A9\u0633.\u0648\
   \u0627\u0698\u0647\u0646\u0627\u0645\u0647\u0647\u0627 \u0645\u062A\u0631\u06CC\u06A9\
@@ -19,12 +19,12 @@ ClickHouse پشتیبانی از کار با چند جایگزین geobases (م�
 
 این ‘clickhouse-server’ پیکربندی فایل را با سلسله مراتب منطقه ای مشخص می کند::`<path_to_regions_hierarchy_file>/opt/geo/regions_hierarchy.txt</path_to_regions_hierarchy_file>`
 
-علاوه بر این فایل, همچنین برای فایل های جستجو در این نزدیکی هست که نماد \_ و هر پسوند اضافه به نام (قبل از پسوند فایل).
+علاوه بر این فایل, همچنین برای فایل های جستجو در این نزدیکی هست که نماد _ و هر پسوند اضافه به نام (قبل از پسوند فایل).
 مثلا, همچنین فایل را پیدا خواهد کرد `/opt/geo/regions_hierarchy_ua.txt`, اگر در حال حاضر.
 
 `ua` کلید فرهنگ لغت نامیده می شود. برای یک فرهنگ لغت بدون پسوند, کلید یک رشته خالی است.
 
-تمام واژهنامهها دوباره لود شده در زمان اجرا (یک بار در هر تعداد معینی از ثانیه, همانطور که در دستور داخلی تعریف شده \_فرهنگ\_ پارامتر پیکربندی, و یا یک بار در ساعت به طور پیش فرض). با این حال, لیست لغت نامه های موجود تعریف شده است یک بار, زمانی که سرور شروع می شود.
+تمام واژهنامهها دوباره لود شده در زمان اجرا (یک بار در هر تعداد معینی از ثانیه, همانطور که در دستور داخلی تعریف شده _فرهنگ_ پارامتر پیکربندی, و یا یک بار در ساعت به طور پیش فرض). با این حال, لیست لغت نامه های موجود تعریف شده است یک بار, زمانی که سرور شروع می شود.
 
 All functions for working with regions have an optional argument at the end – the dictionary key. It is referred to as the geobase.
 مثال:
@@ -150,7 +150,7 @@ Accepts a UInt32 number – the region ID from the Yandex geobase. Returns an ar
 
 ### شناسه بسته:\]) {#regiontonameid-lang}
 
-Accepts a UInt32 number – the region ID from the Yandex geobase. A string with the name of the language can be passed as a second argument. Supported languages are: ru, en, ua, uk, by, kz, tr. If the second argument is omitted, the language ‘ru’ is used. If the language is not supported, an exception is thrown. Returns a string – the name of the region in the corresponding language. If the region with the specified ID doesn’t exist, an empty string is returned.
+Accepts a UInt32 number – the region ID from the Yandex geobase. A string with the name of the language can be passed as a second argument. Supported languages are: ru, en, ua, uk, by, kz, tr. If the second argument is omitted, the language ‘ru’ is used. If the language is not supported, an exception is thrown. Returns a string – the name of the region in the corresponding language. If the region with the specified ID doesn't exist, an empty string is returned.
 
 `ua` و `uk` هر دو به معنای اوکراین.
 
