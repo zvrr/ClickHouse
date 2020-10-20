@@ -42,6 +42,9 @@ BlockIO InterpreterDropQuery::execute()
     if (!drop.cluster.empty())
         return executeDDLQueryOnCluster(query_ptr, context, getRequiredAccessForDDLOnCluster());
 
+    if (context.getSettingsRef().database_atomic_wait_for_drop_and_detach_synchronously)
+        drop.no_delay = true;
+
     if (!drop.table.empty())
     {
         if (!drop.is_dictionary)
@@ -94,6 +97,7 @@ BlockIO InterpreterDropQuery::executeToTable(
         {
             context.checkAccess(table->isView() ? AccessType::DROP_VIEW : AccessType::DROP_TABLE, table_id);
             table->shutdown();
+
             TableExclusiveLockHolder table_lock;
             if (database->getEngineName() != "Atomic" && database->getEngineName() != "Replicated")
                 table_lock = table->lockExclusively(context.getCurrentQueryId(), context.getSettingsRef().lock_acquire_timeout);
@@ -135,6 +139,19 @@ BlockIO InterpreterDropQuery::executeToTable(
             } else {
                 database->dropTable(context, table_id.table_name, query.no_delay);
             }
+        }
+    }
+
+    table.reset();
+    ddl_guard = {};
+    if (query.no_delay)
+    {
+        if (query.kind == ASTDropQuery::Kind::Drop)
+            DatabaseCatalog::instance().waitTableFinallyDropped(table_id.uuid);
+        else if (query.kind == ASTDropQuery::Kind::Detach)
+        {
+            if (auto * atomic = typeid_cast<DatabaseAtomic *>(database.get()))
+                atomic->waitDetachedTableNotInUse(table_id.uuid);
         }
     }
 
@@ -261,6 +278,9 @@ BlockIO InterpreterDropQuery::executeToDatabase(const String & database_name, AS
                     executeToTable({query.database, query.table}, query);
                 }
             }
+
+            /// Protects from concurrent CREATE TABLE queries
+            auto db_guard = DatabaseCatalog::instance().getExclusiveDDLGuardForDatabase(database_name);
 
             auto * database_atomic = typeid_cast<DatabaseAtomic *>(database.get());
             if (!drop && database_atomic)
