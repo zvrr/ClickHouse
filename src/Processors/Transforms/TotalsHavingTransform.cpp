@@ -13,7 +13,6 @@ namespace DB
 namespace ErrorCodes
 {
     extern const int LOGICAL_ERROR;
-    extern const int ILLEGAL_COLUMN;
 }
 
 void finalizeChunk(Chunk & chunk)
@@ -157,13 +156,6 @@ void TotalsHavingTransform::transform(Chunk & chunk)
         /// Compute the expression in HAVING.
         const auto & cur_header = final ? finalized_header : getInputPort().getHeader();
         auto finalized_block = cur_header.cloneWithColumns(finalized.detachColumns());
-
-        for (const ExpressionAction & action : expression->getActions())
-        {
-            if (action.type == ExpressionAction::ARRAY_JOIN)
-                throw Exception("Having clause cannot contain arrayJoin", ErrorCodes::ILLEGAL_COLUMN);
-        }
-
         expression->execute(finalized_block);
         auto columns = finalized_block.getColumns();
 
@@ -230,9 +222,6 @@ void TotalsHavingTransform::addToTotals(const Chunk & chunk, const IColumn::Filt
             const ColumnAggregateFunction::Container & vec = column->getData();
             size_t size = vec.size();
 
-            if (filter && filter->size() != size)
-                throw Exception("Filter has size which differs from column size", ErrorCodes::LOGICAL_ERROR);
-
             if (filter)
             {
                 for (size_t row = 0; row < size; ++row)
@@ -268,8 +257,7 @@ void TotalsHavingTransform::prepareTotals()
     {
         auto block = finalized_header.cloneWithColumns(totals.detachColumns());
         expression->execute(block);
-        /// Note: after expression totals may have several rows if `arrayJoin` was used in expression.
-        totals = Chunk(block.getColumns(), block.rows());
+        totals = Chunk(block.getColumns(), 1);
     }
 }
 
