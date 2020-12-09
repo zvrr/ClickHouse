@@ -8,7 +8,7 @@ add_executable(zkutil_expiration_test zkutil_expiration_test.cpp)
 target_link_libraries(zkutil_expiration_test PRIVATE clickhouse_common_zookeeper)
 
 add_executable(zkutil_test_async zkutil_test_async.cpp)
-target_link_libraries(zkutil_test_async PRIVATE clickhouse_common_zookeeper)
+target_link_libraries(zkutil_test_async PRIVATE clickhouse_common_zookeeper _boost_context)
 
 add_executable (zk_many_watches_reconnect zk_many_watches_reconnect.cpp)
 target_link_libraries (zk_many_watches_reconnect PRIVATE clickhouse_common_zookeeper clickhouse_common_config)
