@@ -152,6 +152,9 @@ if (NOT EXTERNAL_BOOST_FOUND)
     SET(ASM_OPTIONS "-x assembler-with-cpp")
 
     if (SANITIZE)
+        add_compile_definitions(BOOST_USE_UCONTEXT)
+        add_compile_definitions(BOOST_USE_ASAN)
+
         set (SRCS_CONTEXT
                 ${LIBRARY_DIR}/libs/context/src/fiber.cpp
                 ${LIBRARY_DIR}/libs/context/src/continuation.cpp
