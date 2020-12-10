@@ -92,6 +92,7 @@ public:
     void checkTimeoutImpl() const
     {
         epoll_event events[2];
+        events[0].data.fd = events[1].data.fd = -1;
 
         /// Wait for epoll_fd will not block if it was polled externally.
         int num_events = epoll_wait(epoll_fd, events, 2, 0);
