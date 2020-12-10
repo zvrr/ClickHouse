@@ -151,7 +151,7 @@ if (NOT EXTERNAL_BOOST_FOUND)
     enable_language(ASM)
     SET(ASM_OPTIONS "-x assembler-with-cpp")
 
-    if (SANITIZE)
+    if (SANITIZE AND SANITIZE STREQUAL "address")
         add_compile_definitions(BOOST_USE_UCONTEXT)
         add_compile_definitions(BOOST_USE_ASAN)
 
