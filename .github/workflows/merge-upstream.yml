@@ -33,6 +33,6 @@ jobs:
           #git push origin master
 
           #sync tag
-          git fetch upstream --tags
-          git push --tags
+          #git fetch upstream --tags
+          #git push --tags
           # etc
