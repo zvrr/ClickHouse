@@ -122,6 +122,7 @@ namespace ErrorCodes
     extern const int ILLEGAL_TYPE_OF_ARGUMENT;
     extern const int UNKNOWN_POLICY;
     extern const int NO_SUCH_DATA_PART;
+    extern const int INTERSERVER_SCHEME_DOESNT_MATCH;
 }
 
 namespace ActionLocks
@@ -1508,7 +1509,7 @@ bool StorageReplicatedMergeTree::tryExecuteMerge(const LogEntry & entry)
     {
         part = merger_mutator.mergePartsToTemporaryPart(
             future_merged_part, metadata_snapshot, *merge_entry,
-            table_lock, entry.create_time, global_context, reserved_space, entry.deduplicate);
+            table_lock, entry.create_time, global_context, reserved_space, entry.deduplicate, entry.deduplicate_by_columns);
 
         merger_mutator.renameMergedTemporaryPart(part, parts, &transaction);
 
@@ -2482,23 +2483,23 @@ void StorageReplicatedMergeTree::cloneReplicaIfNeeded(zkutil::ZooKeeperPtr zooke
 
         if (get_is_lost.error != Coordination::Error::ZOK)
         {
-            LOG_INFO(log, "Not cloning {}, cannot get '/is_lost': {}", Coordination::errorMessage(get_is_lost.error));
+            LOG_INFO(log, "Not cloning {}, cannot get '/is_lost': {}", source_replica_name, Coordination::errorMessage(get_is_lost.error));
             continue;
         }
         else if (get_is_lost.data != "0")
         {
-            LOG_INFO(log, "Not cloning {}, it's lost");
+            LOG_INFO(log, "Not cloning {}, it's lost", source_replica_name);
             continue;
         }
 
         if (get_log_pointer.error != Coordination::Error::ZOK)
         {
-            LOG_INFO(log, "Not cloning {}, cannot get '/log_pointer': {}", Coordination::errorMessage(get_log_pointer.error));
+            LOG_INFO(log, "Not cloning {}, cannot get '/log_pointer': {}", source_replica_name, Coordination::errorMessage(get_log_pointer.error));
             continue;
         }
         if (get_queue.error != Coordination::Error::ZOK)
         {
-            LOG_INFO(log, "Not cloning {}, cannot get '/queue': {}", Coordination::errorMessage(get_queue.error));
+            LOG_INFO(log, "Not cloning {}, cannot get '/queue': {}", source_replica_name, Coordination::errorMessage(get_queue.error));
             continue;
         }
 
@@ -2712,6 +2713,7 @@ void StorageReplicatedMergeTree::mergeSelectingTask()
 
     const auto storage_settings_ptr = getSettings();
     const bool deduplicate = false; /// TODO: read deduplicate option from table config
+    const Names deduplicate_by_columns = {};
     CreateMergeEntryResult create_result = CreateMergeEntryResult::Other;
 
     try
@@ -2762,6 +2764,7 @@ void StorageReplicatedMergeTree::mergeSelectingTask()
                     future_merged_part.uuid,
                     future_merged_part.type,
                     deduplicate,
+                    deduplicate_by_columns,
                     nullptr,
                     merge_pred.getVersion(),
                     future_merged_part.merge_type);
@@ -2851,6 +2854,7 @@ StorageReplicatedMergeTree::CreateMergeEntryResult StorageReplicatedMergeTree::c
     const UUID & merged_part_uuid,
     const MergeTreeDataPartType & merged_part_type,
     bool deduplicate,
+    const Names & deduplicate_by_columns,
     ReplicatedMergeTreeLogEntryData * out_log_entry,
     int32_t log_version,
     MergeType merge_type)
@@ -2888,6 +2892,7 @@ StorageReplicatedMergeTree::CreateMergeEntryResult StorageReplicatedMergeTree::c
     entry.new_part_type = merged_part_type;
     entry.merge_type = merge_type;
     entry.deduplicate = deduplicate;
+    entry.deduplicate_by_columns = deduplicate_by_columns;
     entry.merge_type = merge_type;
     entry.create_time = time(nullptr);
 
@@ -3505,7 +3510,7 @@ bool StorageReplicatedMergeTree::fetchPart(const String & part_name, const Stora
             if (interserver_scheme != address.scheme)
                 throw Exception("Interserver schemes are different: '" + interserver_scheme
                     + "' != '" + address.scheme + "', can't fetch part from " + address.host,
-                    ErrorCodes::LOGICAL_ERROR);
+                    ErrorCodes::INTERSERVER_SCHEME_DOESNT_MATCH);
 
             return fetcher.fetchPart(
                 metadata_snapshot, part_name, source_replica_path,
@@ -3862,6 +3867,7 @@ BlockOutputStreamPtr StorageReplicatedMergeTree::write(const ASTPtr & /*query*/,
     const Settings & query_settings = context.getSettingsRef();
     bool deduplicate = storage_settings_ptr->replicated_deduplication_window != 0 && query_settings.insert_deduplicate;
 
+    // TODO: should we also somehow pass list of columns to deduplicate on to the ReplicatedMergeTreeBlockOutputStream ?
     return std::make_shared<ReplicatedMergeTreeBlockOutputStream>(
         *this, metadata_snapshot, query_settings.insert_quorum,
         query_settings.insert_quorum_timeout.totalMilliseconds(),
@@ -3878,6 +3884,7 @@ bool StorageReplicatedMergeTree::optimize(
     const ASTPtr & partition,
     bool final,
     bool deduplicate,
+    const Names & deduplicate_by_columns,
     const Context & query_context)
 {
     assertNotReadonly();
@@ -3935,7 +3942,8 @@ bool StorageReplicatedMergeTree::optimize(
                     ReplicatedMergeTreeLogEntryData merge_entry;
                     CreateMergeEntryResult create_result = createLogEntryToMergeParts(
                         zookeeper, future_merged_part.parts,
-                        future_merged_part.name, future_merged_part.uuid, future_merged_part.type, deduplicate,
+                        future_merged_part.name, future_merged_part.uuid, future_merged_part.type,
+                        deduplicate, deduplicate_by_columns,
                         &merge_entry, can_merge.getVersion(), future_merged_part.merge_type);
 
                     if (create_result == CreateMergeEntryResult::MissingPart)
@@ -3996,7 +4004,8 @@ bool StorageReplicatedMergeTree::optimize(
                 ReplicatedMergeTreeLogEntryData merge_entry;
                 CreateMergeEntryResult create_result = createLogEntryToMergeParts(
                     zookeeper, future_merged_part.parts,
-                    future_merged_part.name, future_merged_part.uuid, future_merged_part.type, deduplicate,
+                    future_merged_part.name, future_merged_part.uuid, future_merged_part.type,
+                    deduplicate, deduplicate_by_columns,
                     &merge_entry, can_merge.getVersion(), future_merged_part.merge_type);
 
                 if (create_result == CreateMergeEntryResult::MissingPart)
@@ -4949,8 +4958,13 @@ void StorageReplicatedMergeTree::fetchPartition(
     const String & from_,
     const Context & query_context)
 {
-    String auxiliary_zookeeper_name = extractZooKeeperName(from_);
-    String from = extractZooKeeperPath(from_);
+    Macros::MacroExpansionInfo info;
+    info.expand_special_macros_only = false;
+    info.table_id = getStorageID();
+    info.table_id.uuid = UUIDHelpers::Nil;
+    auto expand_from = query_context.getMacros()->expand(from_, info);
+    String auxiliary_zookeeper_name = extractZooKeeperName(expand_from);
+    String from = extractZooKeeperPath(expand_from);
     if (from.empty())
         throw Exception("ZooKeeper path should not be empty", ErrorCodes::ILLEGAL_TYPE_OF_ARGUMENT);
 
@@ -6146,7 +6160,7 @@ bool StorageReplicatedMergeTree::dropPart(
         /// DROP_RANGE with detach will move this part together with source parts to `detached/` dir.
         entry.type = LogEntry::DROP_RANGE;
         entry.source_replica = replica_name;
-        entry.new_part_name = drop_part_info.getPartName();
+        entry.new_part_name = getPartNamePossiblyFake(format_version, drop_part_info);
         entry.detach = detach;
         entry.create_time = time(nullptr);
 
