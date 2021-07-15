@@ -90,9 +90,6 @@ void insertPostgreSQLValue(
         case ExternalResultDescription::ValueType::vtDate:
             assert_cast<ColumnUInt16 &>(column).insertValue(UInt16{LocalDate{std::string(value)}.getDayNum()});
             break;
-        case ExternalResultDescription::ValueType::vtDate32:
-            assert_cast<ColumnInt32 &>(column).insertValue(Int32{LocalDate{std::string(value)}.getExtenedDayNum()});
-            break;
         case ExternalResultDescription::ValueType::vtDateTime:
         {
             ReadBufferFromString in(value);
@@ -214,6 +211,8 @@ void preparePostgreSQLArrayInfo(
             ReadBufferFromString in(field);
             time_t time = 0;
             readDateTimeText(time, in, assert_cast<const DataTypeDateTime *>(nested.get())->getTimeZone());
+            if (time < 0)
+                time = 0;
             return time;
         };
     else if (which.isDateTime64())
@@ -222,6 +221,8 @@ void preparePostgreSQLArrayInfo(
             ReadBufferFromString in(field);
             DateTime64 time = 0;
             readDateTime64Text(time, 6, in, assert_cast<const DataTypeDateTime64 *>(nested.get())->getTimeZone());
+            if (time < 0)
+                time = 0;
             return time;
         };
     else if (which.isDecimal32())
